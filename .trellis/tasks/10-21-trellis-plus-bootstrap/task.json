@@ -1,0 +1,35 @@
+{
+  "id": "trellis-plus-bootstrap",
+  "name": "trellis-plus-bootstrap",
+  "title": "Bootstrap SSHX Trellis Plus",
+  "description": "Read design.txt, establish project-owned Trellis Plus policies and mainline, validate policy loading, and close initialization bootstrap safely.",
+  "status": "in_progress",
+  "dev_type": "docs",
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "wkyuu",
+  "assignee": "wkyuu",
+  "createdAt": "2026-10-21",
+  "completedAt": null,
+  "branch": "main",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    ".trellis/spec/trellis-plus/",
+    ".trellis/mainline.md",
+    "third_party/",
+    ".trellis/tasks/00-bootstrap-guidelines/"
+  ],
+  "notes": "",
+  "meta": {
+    "planningApproval": "User approved final initialization plan and implementation on 2026-10-21; no Git commit authority inferred.",
+    "sourceImport": "User requested exact design retention in spec and mainline; canonical source .trellis/spec/trellis-plus/sshx-design.txt.",
+    "commitBatchApproval": "User approved the concrete four local commits and two-task archive plan on 2026-10-21. No push or history rewrite authorized."
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "id": "00-bootstrap-guidelines",
+  "name": "00-bootstrap-guidelines",
+  "title": "Bootstrap Guidelines",
+  "description": "Fill in project development guidelines for AI agents",
+  "status": "in_progress",
+  "dev_type": "docs",
+  "scope": null,
+  "package": null,
+  "priority": "P1",
+  "creator": "wkyuu",
+  "assignee": "wkyuu",
+  "createdAt": "2026-10-21",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": null,
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    ".trellis/spec/backend/",
+    ".trellis/spec/frontend/",
+    ".trellis/spec/trellis-plus/",
+    ".trellis/mainline.md",
+    ".trellis/tasks/10-21-trellis-plus-bootstrap/"
+  ],
+  "notes": "First-time setup task created by trellis init (fullstack project). SSHX initialization supersession is recorded in prd.md; original generic checklist remains unchecked. Initialization checks/review passed; archive and commit pending explicit batch authorization.",
+  "meta": {
+    "initializationDisposition": "Generic backend/frontend/code-example template superseded by project-owned SSHX design-stage policy; no fabricated implementation examples.",
+    "initializationTask": ".trellis/tasks/10-21-trellis-plus-bootstrap"
+  }
+}

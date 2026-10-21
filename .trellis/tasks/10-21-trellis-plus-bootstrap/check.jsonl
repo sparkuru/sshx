@@ -1,0 +1,13 @@
+{"file": ".trellis/spec/guides/index.md", "reason": "Existing project guideline discovery and cross-layer/reuse review triggers"}
+{"file": ".trellis/tasks/10-21-trellis-plus-bootstrap/research/discovery.md", "reason": "Observed repository baseline, design source map, installed interface and write-boundary evidence"}
+{"file": ".trellis/tasks/10-21-trellis-plus-bootstrap/design.md", "reason": "User-approved ownership boundary, loading design and initialization scope"}
+{"file": ".trellis/spec/trellis-plus/sshx-design.txt", "reason": "Canonical complete user-supplied SSHX requirements; source decisions, defaults and unverified work"}
+{"file": ".trellis/tasks/10-21-trellis-plus-bootstrap/research/source-provenance.md", "reason": "Verified source relocation, exact import fidelity and authorization boundary"}
+{"file": ".trellis/spec/trellis-plus/index.md", "reason": "Canonical SSHX index policy; explicit detail loading without following Markdown links"}
+{"file": ".trellis/spec/trellis-plus/development-principles.md", "reason": "Canonical SSHX development-principles policy; explicit detail loading without following Markdown links"}
+{"file": ".trellis/spec/trellis-plus/sshx-contracts.md", "reason": "Canonical SSHX sshx-contracts policy; explicit detail loading without following Markdown links"}
+{"file": ".trellis/spec/trellis-plus/development.md", "reason": "Canonical SSHX development policy; explicit detail loading without following Markdown links"}
+{"file": ".trellis/spec/trellis-plus/validation.md", "reason": "Canonical SSHX validation policy; explicit detail loading without following Markdown links"}
+{"file": ".trellis/spec/trellis-plus/commit-policy.md", "reason": "Canonical SSHX commit-policy policy; explicit detail loading without following Markdown links"}
+{"file": ".trellis/spec/trellis-plus/continuity.md", "reason": "Canonical SSHX continuity policy; explicit detail loading without following Markdown links"}
+{"file": ".trellis/mainline.md", "reason": "Current approved initialization scope, source constraints and guided continuation authority"}
