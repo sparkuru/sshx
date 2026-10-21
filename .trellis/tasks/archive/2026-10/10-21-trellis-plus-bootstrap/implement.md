@@ -1,6 +1,6 @@
 # Execution Plan
 
-The user approved the final planning summary and implementation on 2026-10-21. `task.py start` succeeded; implementation has proceeded within the approved documentation scope. Commit/archive authorization is still pending.
+The user approved the final planning summary, implementation and later the concrete four-commit/two-task archive batch on 2026-10-21. The approved documentation scope and initialization closure have completed; see `check-report.md` for actual work/archive references and session evidence.
 
 ## Ordered steps
 
@@ -15,11 +15,11 @@ The user approved the final planning summary and implementation on 2026-10-21. `
 - [x] Dispatch Trellis check against task acceptance, shared rules and actual context loading. Resolve applicable findings without touching protected paths.
 - [x] Inspect file/link/context validity, protected/input fingerprints and final changed-file inventory; update task/mainline evidence and evaluate human review.
 - [x] Prepare the concrete explicit-path commit/archive plan for the final user handoff because commit authorization is absent. All independent configuration and verification work is complete before requesting that authority.
-- [ ] After required authorization, close generic bootstrap and this task through supported archive commands, verify per-task attribution once, and record session/mainline evidence. Report any blocked closure precisely.
+- [x] After required authorization, close generic bootstrap and this task through supported archive commands, verify per-task attribution once, and record session/mainline evidence. Both archived task contexts/statuses and exact-once attribution were verified; no blocked closure remains.
 
 ## Checks
 
-Runnable now:
+Original planning-time commands below used the active task path. After archival, use `.trellis/tasks/archive/2026-10/10-21-trellis-plus-bootstrap` for validate/list-context; that actual path has been checked successfully. Historical command descriptions remain intact:
 
 ```sh
 python3 .trellis/scripts/task.py validate .trellis/tasks/10-21-trellis-plus-bootstrap

@@ -31,7 +31,7 @@ Complete the repository's Trellis initialization with project-owned development 
 - [x] AC4 (R5): Validation/development profiles distinguish runnable initialization checks, future application checks, native terminal/platform checks, and browser/preview non-applicability.
 - [x] AC5 (R6): Third-party notices match the identified installed distribution exactly, or the precise unresolved material is reported as `license-notice-needed`.
 - [x] AC6 (R7): A report covers IDs 01–34 with source, pre-application situation, final evidence, target, and unresolved actions. Protected/input file content is unchanged and whitespace/context/link checks pass.
-- [ ] AC7 (R8): Bootstrap supersession and closure evidence distinguish policy completion, on-disk archival, and archive commit completion; no unauthorized staging/commit or repeated archive occurs.
+- [x] AC7 (R8): Bootstrap supersession and closure evidence distinguish policy completion, on-disk archival, and archive commit completion; no unauthorized staging/commit or repeated archive occurs.
 
 ## Out of Scope
 
@@ -43,5 +43,5 @@ Complete the repository's Trellis initialization with project-owned development 
 ## Deferred Decisions
 
 - Product implementation and Phase 0 platform/terminal environments belong to later authorized tasks.
-- Git commit authorization will be checked against explicit session instructions at submit-ready time; initialization consent alone is insufficient.
-- The user approved the final planning summary and implementation; the task is in progress. No product decision blocks the approved documentation/configuration work. Final verification and commit/archive authorization remain distinct closure steps.
+- The user approved the concrete four-commit/two-task archive batch after checks; both attributed archive commits and completed status/dates are verified in `check-report.md`.
+- Initialization acceptance is complete. Product work remains proposed; no product or native-platform implementation result is claimed.

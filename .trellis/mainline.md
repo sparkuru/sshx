@@ -3,9 +3,9 @@
 ## Initiative
 
 - title: SSHX — cross-platform SSH sessions and independent plugins
-- parent task: none; the current initialization task is not a product epic
+- parent task: none; the completed initialization task is not a product epic
 - current approved objective: establish project-owned Trellis policies and import the supplied SSHX design, without implementing application features
-- owner decision: on 2026-10-21 the user requested Trellis Plus initialization, consented to the task, approved its final plan, and then explicitly requested importing the source into spec and mainline
+- owner decision: on 2026-10-21 the user requested Trellis Plus initialization, consented to the task, approved its final plan and exact source import, then approved the concrete four-commit/two-task archive batch
 - current task: none; [Trellis Plus bootstrap](tasks/archive/2026-10/10-21-trellis-plus-bootstrap/prd.md) has completed and moved to archive
 
 ## Requirements and sources
@@ -48,7 +48,7 @@ The canonical repository-local design is [SSHX design](spec/trellis-plus/sshx-de
 - mode: guided
 - serial authorization: none
 - next pulse: after archive or a relevant user request with no active task
-- permitted current action: execute the user-approved four local commits and two initialization archives; verify actual closure evidence and retain guided product continuation
+- permitted next action: read-only Project Pulse and recommend architecture/feasibility planning; wait for user selection before creating product work
 - product implementation: proposed; each selected item requires the normal task-creation/planning/start gates
 
 ## Ordered work
@@ -57,7 +57,7 @@ These source-ordered product rows are proposals, not created child tasks or a sc
 
 | order | task / proposed work | state | readiness and dependency evidence |
 | --- | --- | --- | --- |
-| 0 | [Trellis Plus bootstrap](tasks/archive/2026-10/10-21-trellis-plus-bootstrap/prd.md) | complete | Policy/source/checks complete and both task directories archived; current-task archive commit and final journal verification in progress |
+| 0 | [Trellis Plus bootstrap](tasks/archive/2026-10/10-21-trellis-plus-bootstrap/prd.md) | complete | Policy/source/checks delivered, both tasks archived with verified attributed commits, archived contexts valid and session recorded |
 | 1 | Architecture and feasibility plan (XIII) | proposed | Next candidate after initialization closure and user selection; deliver requirement classification, platform matrix, processes, data/state/protocol design, Image Paste failure sequence, ADRs and executable Phase 0 plan |
 | 2 | Phase 0 feasibility (XI) | proposed | Depends on preceding plan, selected primary native environment and controlled SSH/SFTP fixtures; collect methods/results/limitations per platform |
 | 3 | Phase 1 C/S and independent-plugin MVP (XI) | proposed | Depends on evidenced Phase 0 choices; primary-platform vertical slice, plugin failure isolation and honest other-platform gaps |
@@ -70,9 +70,10 @@ These source-ordered product rows are proposals, not created child tasks or a sc
 - Completed evidence: the supplied design is retained in spec, exactly 30,205 bytes with SHA-256 `d115212b36001c4f0f83f128fb0af5f15623d20121bc0e5820d23da76893d4ff`; this is document fidelity, not product verification.
 - Installation evidence: `.trellis/.version` and installed package metadata both identify 0.6.17; all 87 files listed by existing template hashes match, and all 28 installed Python scripts match distribution templates.
 - Verification evidence: both role contexts have 13 valid references and observed complete agent reads; 107 original protected/input fingerprints, 87 template hashes, source/notice bytes, local links and document whitespace checks pass. See [full report](tasks/archive/2026-10/10-21-trellis-plus-bootstrap/check-report.md) and [review](tasks/archive/2026-10/10-21-trellis-plus-bootstrap/research/check-review.md).
-- Current limitation: future tasks need explicit policy reads/context registration; a discovered spec index does not prove automatic policy loading. No actual Trellis update, native application runtime or archive attribution commit has been exercised.
-- Dirty-state warning: the repository has no commits; existing runtime/templates and user files were already untracked. Do not stage them as part of Trellis Plus.
-- Closure: generic bootstrap supersession is recorded, its original unchecked checklist preserved, and documentation review is `human-not-needed`; the user approved the [concrete commit/archive batch](tasks/archive/2026-10/10-21-trellis-plus-bootstrap/research/commit-plan.md). Both tasks have moved successfully to archive with completed status/date 2026-10-21. Generic archive commit: `619ecabcf7342b56803b7dfed08f24fdc8b83962`; current-task archive commit and final journal verification are in progress.
-- Next user decision: none for initialization closure; product work remains guided and requires later selection.
+- Current limitation: future tasks need explicit policy reads/context registration; a discovered spec index does not prove automatic policy loading. No actual Trellis update or native application runtime has been exercised. Final checklist: 21 PASS, 1 GAP (automatic future loading), 1 UNKNOWN (actual update cycle), 11 N/A.
+- Dirty-state warning: existing runtime/templates and user files remain untracked as before; they were excluded from the approved shared-data commits. Do not collect or clean them automatically.
+- Closure: generic bootstrap supersession is recorded, its original unchecked checklist preserved, and documentation review is `human-not-needed`; the approved [batch](tasks/archive/2026-10/10-21-trellis-plus-bootstrap/research/commit-plan.md) produced completed archive status/dates and one exact Codex trailer per archive commit. No active task remains.
+- Session evidence: [Session 1](workspace/wkyuu/journal-1.md) records the actual work/checks/limits and both archives; its developer index reports one session. The separate journal commit also retains final post-archive evidence, without another task trailer.
+- Next user decision: select architecture and feasibility planning if continuing product work. Guided mode grants no automatic task creation or implementation.
 
-Initialization work commit: `7aa9291a0e49a522c962362af095586081531389`. The [generic bootstrap](tasks/archive/2026-10/00-bootstrap-guidelines/prd.md) has moved successfully to archive with completed status/date 2026-10-21; its attributed commit is `619ecabcf7342b56803b7dfed08f24fdc8b83962`; current-task closure is being verified within the approved batch.
+Initialization work commit: `7aa9291a0e49a522c962362af095586081531389`. The [generic bootstrap](tasks/archive/2026-10/00-bootstrap-guidelines/prd.md) archive commit is `619ecabcf7342b56803b7dfed08f24fdc8b83962`; the Trellis Plus task archive commit is `9d1a70ef7fca39db4950d3ca1abb2352d32b0fbf`. Both tasks completed on 2026-10-21, archived references validate, and initialization wrap-up is complete. Product/runtime claims remain proposed or unverified as above.
