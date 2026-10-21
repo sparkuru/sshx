@@ -25,12 +25,13 @@
     ".trellis/spec/frontend/",
     ".trellis/spec/trellis-plus/",
     ".trellis/mainline.md",
-    ".trellis/tasks/10-21-trellis-plus-bootstrap/"
+    ".trellis/tasks/archive/2026-10/10-21-trellis-plus-bootstrap/"
   ],
-  "notes": "First-time setup task created by trellis init (fullstack project). Generic checklist remains unchecked; approved SSHX project policy supersedes its Web/backend assumptions. Initialization checks/review passed; archived through supported --no-commit route on 2026-10-21. Attributed archive commit follows this verified move.",
+  "notes": "First-time setup task created by trellis init (fullstack project). Generic checklist remains unchecked; approved SSHX policy supersedes its Web/backend assumptions. Archived and attributed successfully on 2026-10-21; see archiveCommit and linked initialization evidence.",
   "meta": {
     "initializationDisposition": "Generic backend/frontend/code-example template superseded by project-owned SSHX design-stage policy; no fabricated implementation examples.",
-    "initializationTask": ".trellis/tasks/10-21-trellis-plus-bootstrap",
-    "archiveAuthorization": "User approved the concrete four-commit/two-task archive batch on 2026-10-21."
+    "initializationTask": ".trellis/tasks/archive/2026-10/10-21-trellis-plus-bootstrap",
+    "archiveAuthorization": "User approved the concrete four-commit/two-task archive batch on 2026-10-21.",
+    "archiveCommit": "619ecabcf7342b56803b7dfed08f24fdc8b83962"
   }
 }

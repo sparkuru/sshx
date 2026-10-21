@@ -142,7 +142,7 @@ etc.) I can pull from, or should I scan the codebase from scratch?"
 
 ## SSHX Initialization Disposition (2026-10-21)
 
-The user approved `.trellis/tasks/10-21-trellis-plus-bootstrap/` to complete initialization and then requested importing the supplied design into spec and mainline. The project currently has design documents, no application code, and no Web frontend/database conventions to extract. The project-specific initialization outcome is therefore **supersession of the generic scaffolds**, not a claim that the original unchecked items were delivered literally.
+The user approved `.trellis/tasks/archive/2026-10/10-21-trellis-plus-bootstrap/` to complete initialization and then requested importing the supplied design into spec and mainline. The project currently has design documents, no application code, and no Web frontend/database conventions to extract. The project-specific initialization outcome is therefore **supersession of the generic scaffolds**, not a claim that the original unchecked items were delivered literally.
 
 - Canonical project policy: `.trellis/spec/trellis-plus/index.md` and its six original project-owned detail documents, plus the verbatim `sshx-design.txt` source.
 - Backend scaffold disposition: SSHX process/session/transport/plugin contracts, credential/path/error boundaries and verification requirements are captured in `sshx-contracts.md`, `development-principles.md` and `validation.md`. No existing ORM or application logging implementation exists to document as a proven convention.
@@ -150,6 +150,6 @@ The user approved `.trellis/tasks/10-21-trellis-plus-bootstrap/` to complete ini
 - Code examples disposition: no application code exists. The original example checkbox remains unchecked; concrete code examples must accompany actual future implementation rather than be invented during initialization. Full source retention and explicit requirement contracts satisfy the approved initialization scope.
 - Existing generic specs remain unchanged as provenance-sensitive templates. Agents must use the project-owned namespace and explicit task context registration; a discovered spec directory alone is not evidence of automatic policy loading.
 - Requirement continuity: `.trellis/mainline.md` separates approved initialization/import from proposed source-ordered product work. No product implementation or serial work has been started.
-- Verification and remaining closure evidence: `.trellis/tasks/10-21-trellis-plus-bootstrap/check-report.md` records the complete current checklist, actual checks and limitations.
+- Verification and remaining closure evidence: `.trellis/tasks/archive/2026-10/10-21-trellis-plus-bootstrap/check-report.md` records the complete current checklist, actual checks and limitations.
 
-The original checklist above is intentionally unchanged. Initialization documentation checks and review passed. The user approved the concrete commit/archive batch. This task was archived through the supported --no-commit route on 2026-10-21 with status completed; its explicit attributed archive commit follows the verified move. Work evidence: 7aa9291a0e49a522c962362af095586081531389.
+The original checklist above is intentionally unchanged. Initialization documentation checks and review passed. The user approved the concrete commit/archive batch. This task was archived through the supported --no-commit route on 2026-10-21 with status completed; its explicit attributed archive commit is 619ecabcf7342b56803b7dfed08f24fdc8b83962. Work evidence: 7aa9291a0e49a522c962362af095586081531389.

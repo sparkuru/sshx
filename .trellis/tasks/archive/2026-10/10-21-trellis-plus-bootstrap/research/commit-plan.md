@@ -116,3 +116,7 @@ Existing `.gitattributes`, `AGENTS.md`, `.trellis/workflow.md`, `.trellis/script
 The protected Trellis installation remains untracked as before. This batch does not collect it into an initial runtime distribution; any separate decision to track protected material requires its own source/license-aware path review. That boundary does not authorize a broad add.
 
 Before each commit, inspect complete actual candidates and staged diff; run `git diff --check` and `git diff --cached --check`, use explicit paths only and preserve unrelated staged work. Use temporary message files and `git commit -F`; archive messages receive the exact task trailer once, ordinary/journal messages do not. Keep Git identity unchanged.
+
+## Execution bookkeeping clarification
+
+The approved four-commit order and file ownership boundary are unchanged. The final journal commit also records the actual current-task archive hash and post-commit verification in `.trellis/mainline.md` and this archived task's `check-report.md`, `prd.md`, `implement.md` and `task.json`. These files were already in the approved work/archive path set. Recording that evidence after the archive commit avoids a self-referential hash or an extra fifth commit. No new unapproved file or effect is collected.

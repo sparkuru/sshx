@@ -105,3 +105,7 @@ All existing protected material remains read-only to this enhancement; the exact
 ## Closure execution: generic bootstrap
 
 The user approved the concrete four-commit/two-task archive batch. Work commit: `7aa9291a0e49a522c962362af095586081531389`. `task.py archive 00-bootstrap-guidelines --no-commit --skip-branch-validation` succeeded at `.trellis/tasks/archive/2026-10/00-bootstrap-guidelines`, with completed status/date 2026-10-21 and no remaining active source directory. The original generic checkboxes remain unchecked; verified policy supersession is retained. Its scoped attributed archive commit follows this successful move; the current Trellis Plus task is still active.
+
+## Closure execution: current task move
+
+Generic archive commit `619ecabcf7342b56803b7dfed08f24fdc8b83962` was verified with exactly one matching Codex trailer. The current task archive command also succeeded at `.trellis/tasks/archive/2026-10/10-21-trellis-plus-bootstrap`, completed 2026-10-21. Both 13-entry manifests had their three task-local self-paths reconciled to the actual archive prefix; source/policy references remain unchanged. Mainline and related bootstrap records now point to actual archived paths. Historical agent-loading lists and command descriptions preserve their original pre-archive paths. The current attributed archive commit follows successful archived-context/link checks. Final commit hashes and checklist closure will be recorded with the journal, avoiding a self-referential commit hash.
