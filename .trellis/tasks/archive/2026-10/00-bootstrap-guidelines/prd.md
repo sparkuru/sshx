@@ -152,4 +152,4 @@ The user approved `.trellis/tasks/10-21-trellis-plus-bootstrap/` to complete ini
 - Requirement continuity: `.trellis/mainline.md` separates approved initialization/import from proposed source-ordered product work. No product implementation or serial work has been started.
 - Verification and remaining closure evidence: `.trellis/tasks/10-21-trellis-plus-bootstrap/check-report.md` records the complete current checklist, actual checks and limitations.
 
-The original checklist above is intentionally unchanged. Initialization documentation checks and review passed; this task is eligible for closure by the documented supersession once the concrete archive/commit batch is authorized. No archive or commit has yet occurred.
+The original checklist above is intentionally unchanged. Initialization documentation checks and review passed. The user approved the concrete commit/archive batch. This task was archived through the supported --no-commit route on 2026-10-21 with status completed; its explicit attributed archive commit follows the verified move. Work evidence: 7aa9291a0e49a522c962362af095586081531389.

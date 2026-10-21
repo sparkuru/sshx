@@ -3,7 +3,7 @@
   "name": "00-bootstrap-guidelines",
   "title": "Bootstrap Guidelines",
   "description": "Fill in project development guidelines for AI agents",
-  "status": "in_progress",
+  "status": "completed",
   "dev_type": "docs",
   "scope": null,
   "package": null,
@@ -11,11 +11,11 @@
   "creator": "wkyuu",
   "assignee": "wkyuu",
   "createdAt": "2026-10-21",
-  "completedAt": null,
+  "completedAt": "2026-10-21",
   "branch": null,
   "base_branch": null,
   "worktree_path": null,
-  "commit": null,
+  "commit": "7aa9291a0e49a522c962362af095586081531389",
   "pr_url": null,
   "subtasks": [],
   "children": [],
@@ -27,9 +27,10 @@
     ".trellis/mainline.md",
     ".trellis/tasks/10-21-trellis-plus-bootstrap/"
   ],
-  "notes": "First-time setup task created by trellis init (fullstack project). SSHX initialization supersession is recorded in prd.md; original generic checklist remains unchecked. Initialization checks/review passed; archive and commit pending explicit batch authorization.",
+  "notes": "First-time setup task created by trellis init (fullstack project). Generic checklist remains unchecked; approved SSHX project policy supersedes its Web/backend assumptions. Initialization checks/review passed; archived through supported --no-commit route on 2026-10-21. Attributed archive commit follows this verified move.",
   "meta": {
     "initializationDisposition": "Generic backend/frontend/code-example template superseded by project-owned SSHX design-stage policy; no fabricated implementation examples.",
-    "initializationTask": ".trellis/tasks/10-21-trellis-plus-bootstrap"
+    "initializationTask": ".trellis/tasks/10-21-trellis-plus-bootstrap",
+    "archiveAuthorization": "User approved the concrete four-commit/two-task archive batch on 2026-10-21."
   }
 }

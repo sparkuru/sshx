@@ -15,7 +15,7 @@
   "branch": "main",
   "base_branch": "main",
   "worktree_path": null,
-  "commit": null,
+  "commit": "7aa9291a0e49a522c962362af095586081531389",
   "pr_url": null,
   "subtasks": [],
   "children": [],
@@ -24,12 +24,13 @@
     ".trellis/spec/trellis-plus/",
     ".trellis/mainline.md",
     "third_party/",
-    ".trellis/tasks/00-bootstrap-guidelines/"
+    ".trellis/tasks/archive/2026-10/00-bootstrap-guidelines/"
   ],
   "notes": "",
   "meta": {
     "planningApproval": "User approved final initialization plan and implementation on 2026-10-21; no Git commit authority inferred.",
     "sourceImport": "User requested exact design retention in spec and mainline; canonical source .trellis/spec/trellis-plus/sshx-design.txt.",
-    "commitBatchApproval": "User approved the concrete four local commits and two-task archive plan on 2026-10-21. No push or history rewrite authorized."
+    "commitBatchApproval": "User approved the concrete four local commits and two-task archive plan on 2026-10-21. No push or history rewrite authorized.",
+    "genericBootstrapArchivePath": ".trellis/tasks/archive/2026-10/00-bootstrap-guidelines"
   }
 }

@@ -74,3 +74,5 @@ These source-ordered product rows are proposals, not created child tasks or a sc
 - Dirty-state warning: the repository has no commits; existing runtime/templates and user files were already untracked. Do not stage them as part of Trellis Plus.
 - Closure: generic bootstrap supersession is recorded, its original unchecked checklist preserved, and documentation review is `human-not-needed`; the user approved the [concrete commit/archive batch](tasks/10-21-trellis-plus-bootstrap/research/commit-plan.md). Both tasks remain active until the authorized archive moves and commits succeed.
 - Next user decision: none for initialization closure; product work remains guided and requires later selection.
+
+Initialization work commit: `7aa9291a0e49a522c962362af095586081531389`. The [generic bootstrap](tasks/archive/2026-10/00-bootstrap-guidelines/prd.md) has moved successfully to archive with completed status/date 2026-10-21; its attributed commit and current-task closure are being verified within the approved batch.

@@ -101,3 +101,7 @@ Checklist totals: **18 PASS, 2 GAP, 3 UNKNOWN, 11 N/A (34 items)**. The GAPs are
 No application, Cargo manifest, browser UI or preview service exists. No Cargo/SSH/SFTP/ConPTY/clipboard/browser test was run or reported as passing. Docker/container/cross-compile evidence is not a substitute for the future native platform matrix. No setup secrets, environment keys, service addresses or wrapper permissions were introduced. No UUPM or preview renderer source was copied.
 
 All existing protected material remains read-only to this enhancement; the exact retained license supplements rather than replaces upstream notices. Shared policies, mainline and task evidence are project-owned; platform integrations stay local under existing ignore behavior. No staging paths have been executed and no commit/archive has occurred.
+
+## Closure execution: generic bootstrap
+
+The user approved the concrete four-commit/two-task archive batch. Work commit: `7aa9291a0e49a522c962362af095586081531389`. `task.py archive 00-bootstrap-guidelines --no-commit --skip-branch-validation` succeeded at `.trellis/tasks/archive/2026-10/00-bootstrap-guidelines`, with completed status/date 2026-10-21 and no remaining active source directory. The original generic checkboxes remain unchecked; verified policy supersession is retained. Its scoped attributed archive commit follows this successful move; the current Trellis Plus task is still active.
