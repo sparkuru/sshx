@@ -14,5 +14,6 @@
 {"file":"docs/image-paste.md","reason":"Independent upload, cleanup and input outcomes"}
 {"file":"docs/phase-0.md","reason":"Historical versus prospective runtime gates"}
 {"file":"docs/platform-matrix.md","reason":"Environment-limited claims"}
-{"file":".trellis/tasks/10-22-sshx-upload-root-runtime/research/planning-evidence.md","reason":"Inspected paths, pinned interface and unresolved runtime evidence"}
+{"file":".trellis/tasks/archive/2026-10/10-22-sshx-upload-root-runtime/research/planning-evidence.md","reason":"Inspected paths, pinned interface and unresolved runtime evidence"}
 {"file":".trellis/tasks/archive/2026-10/10-22-sshx-phase0-feasibility/research/dual-target-fixture.md","reason":"Fresh secondary fixture procedure and historical cleanup distinction"}
+{"file": ".trellis/tasks/archive/2026-10/10-22-sshx-upload-root-runtime/research/review-focus.md", "reason": "Independent effect, ownership and evidence review assertions"}
