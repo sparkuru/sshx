@@ -42,3 +42,40 @@ Retained the user design, established project-owned policies and guided mainline
 ### Next Steps
 
 - Guided only: architecture and feasibility planning is proposed; no product task or native runtime test started.
+
+
+## Session 2: SSHX architecture and Phase 0 plan
+<!-- trellis-session: v=2 fp=12fcc31ea24062b1 -->
+
+**Date**: 2026-10-22
+**Task**: SSHX architecture and Phase 0 plan
+**Branch**: `main`
+
+### Summary
+
+Delivered eleven architecture documents and verified source-XIII coverage; archived the task with reconciled references. Native product behavior remains unverified.
+
+### Main Changes
+
+- Defined Client/Core/OpenSSH ownership, public plugin protocol and bounded models, Image Paste transactions, six ADRs and E0-E7 feasibility procedures.
+- Independent review fixed expired-trigger dedup and retained-metadata bounds; shared specs record handoff contracts and incomplete native injection fallback.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `9b483af56c319ef0aff21ac37a4536d17dcb46e6` | docs: define SSHX architecture and Phase 0 plan |
+
+### Testing
+
+- [OK] PASS: independent document checks, all twelve fault groups, five JSON examples, original design SHA-256 and protected fingerprints.
+- [OK] PASS: archived contexts 12 implement / 13 check; 22 Markdown and 81 local links after move; completed status/date and unique archive trailer verified.
+- [NOT RUN] Application/native/SSH/SFTP/clipboard experiments; Mermaid inspected manually without rendering.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Guided only: propose Phase 0 with primary native environment and controlled fixtures selected before execution; no follow-up task created.

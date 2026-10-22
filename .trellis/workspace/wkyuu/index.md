@@ -8,8 +8,8 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 1
-- **Last Active**: 2026-10-21
+- **Total Sessions**: 2
+- **Last Active**: 2026-10-22
 <!-- @@@/auto:current-status -->
 
 ---
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~44 | Active |
+| `journal-1.md` | ~81 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 2 | 2026-10-22 | SSHX architecture and Phase 0 plan | `9b483af56c319ef0aff21ac37a4536d17dcb46e6` | `main` |
 | 1 | 2026-10-21 | SSHX Trellis Plus initialization | `7aa9291a0e49a522c962362af095586081531389` | `main` |
 <!-- @@@/auto:session-history -->
 
