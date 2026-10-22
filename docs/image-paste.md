@@ -1,6 +1,6 @@
 # Image Paste transaction
 
-Status: proposed product transaction, 2026-10-22. Phase 0 now exercises synthetic private-X11 capture, independent PNG encoding and controlled upload/input probes; this does not implement the entire transaction or trusted real-Shell context. See [actual commands and result scope](phase-0.md) and the [image evidence](../.trellis/tasks/10-22-sshx-phase0-feasibility/research/visual-evidence.md). Normative fields, state names, finite limits and error names live in [protocol](protocol.md). This document traces [source V–VII, XII](../.trellis/spec/trellis-plus/sshx-design.txt), R5 and the compositional checks for R4.
+Status: proposed product transaction, 2026-10-22. Phase 0 now exercises synthetic private-X11 capture, independent PNG encoding and controlled upload/input probes; this does not implement the entire transaction or trusted real-Shell context. See [actual commands and result scope](phase-0.md) and the [image evidence](../.trellis/tasks/archive/2026-10/10-22-sshx-phase0-feasibility/research/visual-evidence.md). Normative fields, state names, finite limits and error names live in [protocol](protocol.md). This document traces [source V–VII, XII](../.trellis/spec/trellis-plus/sshx-design.txt), R5 and the compositional checks for R4.
 
 ## Trigger and consent
 

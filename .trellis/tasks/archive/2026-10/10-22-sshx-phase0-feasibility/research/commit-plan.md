@@ -6,7 +6,7 @@ Status: **approved on 2026-10-22 by the user’s “接受” response to this e
 
 Accept the controlled Linux Phase 0 deliverable, including the **negative general SFTP mutable-parent/root feasibility finding**, then authorize the exact local batch below. Acceptance closes AC4 as a documented negative comparison outcome and the human-review portion of AC9. It preserves `phase0_ready: false`, the unsupported general-root guarantee, limited screen/API/platform coverage and the unestablished cause of the preserved initial supplementary timeout. This does not authorize general MVP promotion, real-user deployment or automatic later-phase work.
 
-The execution approval explicitly reserved a later concrete Git/archive batch. [Validation policy](../../../spec/trellis-plus/validation.md#submit-ready-human-review-gate) requires human disposition for actual auth/permission enforcement and unresolved required contracts. [Workflow Phase 3.4](../../../workflow.md#34-commit-changes-required--once) separately requires one-shot approval of concrete commits. No approval is inferred from elapsed time.
+The execution approval explicitly reserved a later concrete Git/archive batch. [Validation policy](../../../../../spec/trellis-plus/validation.md#submit-ready-human-review-gate) requires human disposition for actual auth/permission enforcement and unresolved required contracts. [Workflow Phase 3.4](../../../../../workflow.md#34-commit-changes-required--once) separately requires one-shot approval of concrete commits. No approval is inferred from elapsed time.
 
 ## Sequence and exact messages
 
@@ -201,3 +201,7 @@ Only the following external project-data files currently refer to the active tas
 - `docs/platform-matrix.md`
 
 If the live move/helper produces any other tracked or unignored change, classify it explicitly against this scope before staging. Unrelated paths remain excluded. The archive evidence records completion after user acceptance of the negative deliverable; `phase0_ready: false` and the general-root no-go persist.
+
+## Actual execution checkpoint
+
+User approval “接受” supplied the review and exact local-batch authority. Work commit `620ca22a49611e319daf6df9f9aa22113d428133` includes exactly the 80 classified paths and was fast-forward merged to local `main`. The supported archive move completed on 2026-10-22, with task status/date and cleared pointer verified; archived links/context paths were reconciled. The archive and journal commit OIDs are recorded in mainline/journal after their creation. This inventory retains the original reviewed old/new path mapping and historical baseline. General-root no-go and `phase0_ready: false` persist.

@@ -22,7 +22,7 @@ Mandatory additional direct reads: `docs/phase-0.md`, `docs/platform-matrix.md` 
 
 ## Intended command contract
 
-These were the **planned interfaces at approval**. Implementation and smoke checks established the actual commands recorded in the [runbook](../../../docs/phase-0.md) and evidence; retain this block as the original execution plan.
+These were the **planned interfaces at approval**. Implementation and smoke checks established the actual commands recorded in the [runbook](../../../../../docs/phase-0.md) and evidence; retain this block as the original execution plan.
 
 ~~~text
 ./hako rustc --version
