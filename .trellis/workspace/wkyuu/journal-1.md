@@ -118,3 +118,41 @@ Implemented and independently checked controlled Linux probes; user accepted the
 ### Next Steps
 
 - Guided: decide the supported remote-root capability/environment before a separate MVP plan; no automatic Phase 1 continuation.
+
+
+## Session 4: Cooperative upload-root contract
+<!-- trellis-session: v=2 fp=b576493253ae254a -->
+
+**Date**: 2026-10-22
+**Task**: Cooperative upload-root contract
+**Branch**: `main`
+
+### Summary
+
+Delivered the user-selected cooperative upload-root document contract, independently checked all eight targets, and completed the approved local work/merge/archive sequence. Runtime verification remains deferred.
+
+### Main Changes
+
+- Synchronized protocol/ADR/Image Paste/architecture/platform/runbook and shared contracts: explicit cooperative root policy/digest/B, denial ordering, no-clobber candidate, independent final/cleanup outcomes and conservative owned cleanup.
+- Unified Operation.result with the single UploadResult document type; preserved canonical source, unchanged executable probes and historical phase0_ready:false. No new hardlink/native/runtime experiment or release capability is claimed.
+- Work f56f51312d6e597541ae973f1fb72f0ccf291ebc fast-forward merged to local main. Supported task archival completed as c51f2d4f0c2395b6dbbb30802344a969dede0ca2 at .trellis/tasks/archive/2026-10/10-22-sshx-upload-root-boundary with completed metadata, cleared task pointer and exactly one Codex task trailer.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `f56f51312d6e597541ae973f1fb72f0ccf291ebc` | docs: define cooperative upload-root contract |
+
+### Testing
+
+- [OK] PASS: independent full-scope contract review, five JSON examples and both 21-entry contexts; original document-delivery baseline had exactly eight approved changes and 160 other files byte-identical.
+- [OK] PASS: final pre-commit candidate/data/format/UTF-8 checks, 127 local links including 20 fragments after approved bookkeeping, and exact 18-file archive/reference reconciliation.
+- [OK] PASS: seven independent result/spec fingerprints and source-bound historical machine reports preserved; archive path set/message/ancestry verified without a branch-validation bypass.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Guided only: select a bounded cooperative hardlink/publication/policy/cleanup runtime-verification task before broader MVP activation; no new task or execution is authorized by this session.
