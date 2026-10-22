@@ -1,0 +1,36 @@
+{
+  "scope": "document-only; no new runtime execution",
+  "checks": {
+    "candidate_paths": 23,
+    "existing_changes": 8,
+    "baseline_tracked": 168,
+    "baseline_unchanged": 160,
+    "task_new_files": 15,
+    "markdown_files": 19,
+    "local_links": 111,
+    "heading_fragments": 18,
+    "json_files": 2,
+    "jsonl_records": 42,
+    "embedded_json_examples": 5,
+    "task_status": "in_progress",
+    "staged_paths": 0
+  },
+  "single_final_newline": true,
+  "protocol_json_schema_examples": 4,
+  "raw_framing_example_bytes": 54,
+  "protocol_bytes": 54261,
+  "protocol_lines": 236,
+  "existing_result_sha256": {
+    ".trellis/mainline.md": "0e9785f812b7b459098a09273c8759ecf0592e4ce4f9a1cf77edf889cbd06f43",
+    ".trellis/spec/trellis-plus/sshx-contracts.md": "86e8b7a6abbeb5e47802af6b909039dcc2798a220271042f115197cc5e7db6de",
+    "docs/adr/0003-transfer-backend.md": "0afbc9f459e01ed9e400a9151ee4a3c2a4108c5d7bc9c767476160e01c12542f",
+    "docs/architecture.md": "d03f15507f423e0ce8fb2e0935d236e40175524ea1fd1fbf868d4cddc6cf5df7",
+    "docs/image-paste.md": "1c4b66e77b5128d93c9647ae859dd3b8340319b219b2b940c666163add629350",
+    "docs/phase-0.md": "b86c6fbc31e51c8d7c546ffdda8d0ca8d065a0cf3a384a3d009e39f23da5f02b",
+    "docs/platform-matrix.md": "e5d5dfc88f01c68c19115c445ebbe4ac5fe15e43c1eed3793602655a03c7c2dc",
+    "docs/protocol.md": "02a84fd016a8fb1d7f8950891b94d8af3a044ae0d72c3d0254d08d6868716f82"
+  },
+  "baseline_file": "/tmp/sshx-upload-root-planning-baseline.json",
+  "runtime_tests": "not run; out of this approved document-only scope",
+  "material_unresolved_contract_findings": []
+}

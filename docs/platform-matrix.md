@@ -14,6 +14,21 @@ Status: design targets plus bounded Linux Phase 0 evidence, 2026-10-22. The broa
 
 No host packages were installed. Build-only results are explicitly container results; the image/PTY cases execute on the host kernel using task-private displays and generated data. Physical IME, hardware-key/MFA, Windows/macOS/Wayland, native non-Linux remote servers and reboot are unverified.
 
+## Future cooperative upload eligibility
+
+User-selected mode A is a product environment/trust decision, not another measured platform row. The root is a canonical SFTP namespace scope under explicit local policy, with a cooperative server/account and stable ancestors/operation-owned resources throughout live work and cleanup. No enforced protection against hostile same-account replacement is advertised. Metadata, private permissions and random names do not prove directory identity or close path races. See the authoritative [scope](protocol.md#cooperative-upload-scope), [publication](protocol.md#future-regular-png-publication) and [ADR](adr/0003-transfer-backend.md).
+
+| Independent admission gate | Required evidence / refusal | Current disposition |
+| --- | --- | --- |
+| Actual target/namespace/root cooperative authorization | Existing local-user policy issues `path_scope.policy: "cooperative"` bound by `scope_digest` and B; valid absent/inapplicable scope or stronger confinement requirement gives `PATH_DENIED` after common role/method-grant checks | User chose A for the design; actual per-target product policy flow unimplemented |
+| Target/config, SFTP and auxiliary authentication | Verified target/config generation and remote namespace; `TARGET_UNVERIFIED`/`CONFIG_CHANGED`, `NO_SFTP` or `AUTH_REQUIRED` independently refuse upload while login stays usable | Only recorded Phase 0 combinations have bounded evidence; broader support unverified |
+| Stable cooperative path observations | Canonical component containment and expected type/symlink/access observations at creation/publication/cleanup; stop observed inconsistency | Trust precondition cannot become atomic ancestor enforcement; general mutable-root no-go retained |
+| Regular-file no-overwrite publication | Actual `hardlink@openssh.com` version 1 and server/filesystem collision/cross-device behavior verified; same operation directory/filesystem; no implicit rename fallback | Future candidate only. Historical report records an extension name and baseline rename; no dedicated hardlink/version proof |
+| Final/cleanup/uncertain outcome handling | Final link success plus temp-unlink failure remains committed/pending cleanup; lost link reply gets indeterminate/no replay/input; uncertain ownership/continuity prevents deletion | Dedicated runtime tests deferred; no new passing result here |
+| Shell mapping and insertion context | Explicit tested mapping/encoder and fresh writer/context/lease; unknown values retain transfer result without blind input | Independent of cooperative policy or upload success; real generic Shell/platform evidence still missing |
+
+No server/filesystem is promoted for the future hardlink path by this document update. Missing/unsupported publication is `COMMIT_UNSUPPORTED`, confirmed collision is `NAME_EXISTS`, and generic SFTP I/O/ambiguous failures keep their actual/indeterminate classification. A separately authorized runtime task must establish those distinctions and preserve final files. The decision supports future scoped MVP planning; it does not change the historical `phase0_ready: false` or authorize implementation/release.
+
 ## Client dimensions
 
 Architectures listed are investigation targets, not promised release artifacts. Terminal host and Shell must be recorded independently. POSIX Shell means a separately identified implementation/version, not every Unix Shell.
@@ -58,7 +73,7 @@ ControlMaster is a documented OpenSSH configuration facility, with behavior cont
 | Managed interactive login | E1/E2 native terminal/auth/IPC tests pass for recorded combination | Native passthrough for unclassified invocations |
 | Prefix image action | Host really delivers configured prefix/action bytes; escape/timeout/literal rules pass | Disable/rebind prefix; use explicit Session action |
 | Image snapshot | Triggering Client gets a single supported raw image; limits/alpha verified | Empty, denied and unavailable are different errors; separate file chooser requires fresh user action |
-| Safe upload | One backend passes target, auth, non-overwrite, cancellation and namespace tests | Missing safe-commit capability is unsupported, never silent overwrite |
+| Cooperative upload | Explicit actual-target cooperative policy plus one backend's verified target/auth/namespace, no-overwrite publication, cancellation and cleanup tests; future hardlink gate above | Missing scope gives PATH_DENIED; missing verified publication gives COMMIT_UNSUPPORTED; no silent overwrite or stronger confinement claim |
 | Path insertion | Fresh known mapping and verified edit context or explicit local preview/lease | Retained result/path copy, no blind keystrokes |
 | Detach survival | E5 proves Core/PTY/ssh stay alive after Client loss | Cannot claim screen restoration from process survival |
 | Screen restoration | E5 selects strategy and publishes supported modes/limitations | Restricted redraw explicitly disclaims faithful full-screen restoration |

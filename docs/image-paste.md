@@ -6,7 +6,9 @@ Status: proposed product transaction, 2026-10-22. Phase 0 now exercises syntheti
 
 Client's configurable default prefix is Ctrl+] followed by p. Client intercepts only that prefix sequence: repeated prefix forwards a literal prefix, Esc cancels without remote bytes, timeout forwards the held literal prefix, and an unrecognized action forwards prefix plus following bytes in original order. Prefix can be disabled/rebound per Client; OpenSSH's own escape sequence remains untouched. A partial key/IME sequence must not be decoded per read chunk. E2 records actual delivery/conflicts for each terminal host. Ordinary text paste stays ordinary terminal input; native Ctrl+V/Command+V is not a promised image trigger.
 
-The explicit command/action entry takes a Session/generation and initiating Attachment, resolves its live authenticated Client and requires its writer consent. A management Client without that desktop/writer cannot capture from another Client implicitly. Trigger captures B, outer target label and writer_epoch. Core creates/deduplicates one Operation from the Client's monotone trigger_nonce counter and routes action.run to the independent plugin. The Client retains that counter for retries of the same action; expiry never makes an old counter a fresh action, and reconnect never automatically replays it under a new Client identity. Consent displays the composed effects: read this one desktop image, upload it to this verified outer target/directory, and optionally propose bounded input. Being bundled/installed does not grant them. Basic SSH continues when this plugin is absent or disabled.
+The explicit command/action entry takes a Session/generation and initiating Attachment, resolves its live authenticated Client and requires its writer consent. A management Client without that desktop/writer cannot capture from another Client implicitly. Trigger captures B, outer target label and writer_epoch. Core creates/deduplicates one Operation from the Client's monotone trigger_nonce counter and routes action.run to the independent plugin. The Client retains that counter for retries of the same action; expiry never makes an old counter a fresh action, and reconnect never automatically replays it under a new Client identity. Consent displays the composed effects: read this one desktop image, upload it to this verified outer target/namespace/root under cooperative policy, and optionally propose bounded input. Existing trusted local policy/consent must explicitly authorize that actual scope; a trigger or installation alone does not. Being bundled/installed does not grant them. Basic SSH continues when this plugin is absent or disabled, or upload is unavailable.
+
+The user selected cooperative mode A for future MVP planning: the remote server/account honors SFTP and its programs keep upload ancestors and operation-owned resources stable through cleanup. This is a trust precondition, not a claim to prevent hostile same-account replacement. The logical canonical SFTP root is not an OS jail or inode capability. Core binds the existing `path_scope.policy: "cooperative"` and actual target/namespace/root into `scope_digest` and B; plugins cannot grant or broaden it. Common role/method-grant errors remain separate; a valid upload lacking that path-policy authorization or requiring stronger confinement returns `PATH_DENIED`, while structurally malformed fields retain `-32602`. The [protocol](protocol.md#cooperative-upload-scope) owns the full checks and trust limits.
 
 ## Success sequence
 
@@ -19,7 +21,7 @@ sequenceDiagram
     participant S as SFTP broker
     U->>C: Explicit action on Attachment A
     C->>K: action.invoke (epoch, trigger_nonce)
-    K->>K: Capture immutable B and narrow grants
+    K->>K: Capture B and locally authorized cooperative scope
     K->>P: action.run (operation, target)
     P->>K: clipboard.read_image
     K->>C: clipboard.snapshot (one-shot ticket)
@@ -31,9 +33,11 @@ sequenceDiagram
     P->>K: blob.create, write, seal
     K->>K: Bounded PNG validation and local digest
     P->>K: transfer.upload (upload_key, path, PNG handle)
-    K->>S: Verify B, target/config, root, exclusive temp
-    S->>S: Write, close, validate, safe no-clobber commit
+    K->>S: Verify B, target/config, scope, publication capability
+    S->>S: Exclusive operation dir/temp, stream, close, recheck
+    S->>S: Verified hardlink v1 to new final basename
     S-->>K: Confirmed transfer result and mapping evidence
+    K->>S: Separate owned-temp cleanup, or record pending
     K-->>P: operation.result event (upload committed)
     P->>K: terminal.propose_insert (insert_key, format, context)
     K->>C: Preview/confirmation if integration unavailable
@@ -44,7 +48,7 @@ sequenceDiagram
     P->>K: Release image/PNG handles
 ~~~
 
-No progress, filename or error message is written into the remote Shell. Terminal input remains user-owned except a clearly indicated cancellable local insertion lease. Any input that would invalidate a preview cancels the lease before being forwarded; input is not silently lost. The Core must continue draining terminal output while encoding/uploading.
+This is the proposed future success flow, not a hardlink execution report. Acknowledged final publication is committed independently of temp cleanup; cleanup failure retains that result with `cleanup_pending: true`. No progress, filename or error message is written into the remote Shell. Terminal input remains user-owned except a clearly indicated cancellable local insertion lease. Any input that would invalidate a preview cancels the lease before being forwarded; input is not silently lost. The Core must continue draining terminal output while encoding/uploading.
 
 ## Snapshot and PNG
 
@@ -58,15 +62,16 @@ Naming is plugin policy: a timestamp label plus random operation-unique suffix a
 
 Before any auxiliary connection/file effect, the broker checks B, actual plugin instance, grants, immutable config generation and verified outer target. It distinguishes configuration reuse, identity reuse and actual network reuse. Additional interactive authentication in MVP returns AUTH_REQUIRED; the broker does not borrow the live Shell terminal, scrape passwords or let the plugin prompt for credentials.
 
-Use a canonical SFTP-confirmed user-root subdirectory, or an explicitly configured and validated namespace/root grant. Never treat '~', the initial SFTP directory or a local Path join as Shell cwd. Proposed upload stages are:
+Use a canonical SFTP-confirmed user-root subdirectory, or an explicitly configured and validated namespace/root grant. Never treat '~', the initial SFTP directory or a local Path join as Shell cwd. Proposed upload stages follow the authoritative [publication contract](protocol.md#future-regular-png-publication):
 
-1. Prove resolved directory authorization and backend/server exclusive-create/no-clobber capabilities. If proof is unavailable, fail before data creation where possible.
-2. Exclusively create an operation-owned private directory or temporary file under the granted root; record returned ownership evidence/namespace and exact path. Reject existing/symlinked resources and unsupported TOCTOU protections. Use only backend-verified path encoding; reject unsupported names rather than Shell-escape a guessed SFTP command language.
-3. Stream the sealed PNG, checking grants/quota/deadlines and cancellation between steps. Close successfully. Record local SHA-256 and actual remote verification level; equal size means size-only evidence.
-4. Commit to the final basename only with a demonstrated no-overwrite primitive. Baseline or extension names alone do not prove that the chosen client/server/filesystem implementation satisfies it. A stat-then-overwriting-rename sequence is prohibited. No safe commit: COMMIT_UNSUPPORTED, no final result or insertion. Retain an owned temporary artifact only for bounded cleanup/reconciliation, never advertise it as a usable final file.
-5. On confirmed commit, retain result metadata independently of the plugin/Attachment. Verify an explicit versioned mapping before returning a Shell path. Unknown mapping still permits a transfer-path-only user result, never a guessed Shell path.
+1. Require applicable cooperative policy, verified target/config/namespace/canonical containment and B/grants, plus actual server/filesystem evidence for the selected regular-file no-overwrite publication. Advertisement alone cannot admit data creation; absent capability gives `COMMIT_UNSUPPORTED`.
+2. Exclusively create a private operation directory and regular temp within it under the granted root. Record exact paths/namespace and acknowledged creation in Core's resource ledger; verify type/access observations. Do not adopt existing/symlinked resources. Use remote namespace component semantics and backend-verified filename encoding, not local Path joins or raw prefixes.
+3. Stream the sealed PNG through the file handle, checking grants/quota/deadlines/cancel at every external step. Close successfully, then revalidate scope/observations and serialized publication admission. Record local SHA-256 and actual remote verification level; equal size means size-only evidence.
+4. The future candidate in existing backend B is verified `hardlink@openssh.com` version 1: link the closed regular temp to a new final basename in the same operation directory/filesystem. The final path includes that directory; no directory rename is needed. Confirmed collision gives `NAME_EXISTS` without changing existing bytes. Unsupported version/filesystem/cross-device capability gives `COMMIT_UNSUPPORTED`; no baseline/POSIX rename, scp or remote-command fallback. Other generic SFTP failures retain observed I/O/indeterminate outcomes, not invented collision/unsupported classifications.
+5. An acknowledged link commits the final user file. Separately unlink only the owned temp under the cleanup rules; failure leaves the upload committed with `cleanup_pending: true`, never deletes the final name to compensate. A lost publication reply instead leaves `upload_state: indeterminate`/`final_commit: "indeterminate"`, no insertion or automatic replay. Reconciliation is read-only until explicit disposition; no temp path is a completed result.
+6. Retain confirmed result metadata independently of the plugin/Attachment. Verify an explicit versioned mapping before returning a Shell path. Unknown mapping still permits a transfer-path-only user result, never a guessed Shell path. Cleanup pending alone does not invalidate a confirmed final path; fresh insertion gates remain mandatory.
 
-Remote servers and same-user-writable directories are not fully trusted. If the backend cannot constrain symlink/root races on its server set, it cannot be selected for those uploads. A private unique directory is useful only if its exclusive creation and ownership assumptions are actually verified. Atomicity, overwrite behavior, durability and content verification are separate evidence fields. A lost commit reply produces indeterminate status; do not retry or delete an uncertain final file blindly.
+Check known ancestor/type/symlink/access/containment observations before creation, publication and cleanup; observed inconsistency stops new effects. Portable attributes, private 0700 directories, exclusive leaf creation and random names do not prove durable identity or prevent replacement/ABA between requests. The selected cooperative assumption is required through cleanup; hostile servers and competing same-account replacement remain outside its enforced guarantee. Atomicity, no-overwrite, durability and content verification are distinct. Phase 0's positive baseline-rename observations and general-root no-go remain historical; the hardlink path is not implemented or runtime-verified by this document task.
 
 ## Insertion and formatting
 
@@ -93,9 +98,13 @@ The serialization/point-of-no-rollback rules in [Effect ordering](protocol.md#ef
 | Empty/denied/unavailable clipboard | None; explicit snapshot error | No text fallback; new action needed for new snapshot |
 | Corrupt/oversized raw image or PNG | None; reject before unsafe allocation/transfer | Release owned blobs and report correct validation error |
 | No SFTP / extra auth | NO_SFTP / AUTH_REQUIRED | Main login unaffected; no hidden alternative backend/credential replay |
-| Denied directory, symlink/root change, disk full | Failed; stop and clean only owned temp | Never insert partial path; cleanup failure remains pending |
+| No cooperative path authorization / stronger confinement required | PATH_DENIED after common role/method-grant checks; no new path effects | Login remains independent; no silent downgrade or self-grant |
+| Denied directory, observed symlink/root change, disk full | Failed; stop new effects; cleanup only if ownership/continuity remain adequate | Never insert partial path; uncertain resources stay pending |
 | Name collision | NAME_EXISTS; existing destination untouched | Same effect key cannot create another file automatically |
-| Safe rename unavailable | COMMIT_UNSUPPORTED; owned temp cleanup/reconciliation | No success or insertion from temp path |
+| Verified hardlink publication unavailable | COMMIT_UNSUPPORTED; no overwrite-capable fallback | No success or insertion from temp path; clean only demonstrably owned resources |
+| Final link acknowledged; temp unlink fails | Committed final result, cleanup_pending true | Final file remains user data; independent mapping/context gates still apply |
+| Publication reply lost/ambiguous | Indeterminate; no automatic link replay | Read-only reconciliation; no input or guessed final deletion |
+| Cleanup ownership/target/namespace/continuity uncertain | Pending cleanup; stop automatic path deletion | No replacement-path removal, reconnect adoption or recursive sweep |
 | A switches to B during encode/upload | Cancel further A effects; already committed A file remains | Revoke A delivery; never insert into B; retained A result |
 | Detach, Client crash/window close | Cancel further effects; in-flight effect may complete | No stale delivery; user can inspect retained metadata later |
 | Network loss / Session close / new generation | Stop old transport; reconcile uncertain commit | Old B/grants invalid; never deliver on new generation |
@@ -116,9 +125,9 @@ The serialization/point-of-no-rollback rules in [Effect ordering](protocol.md#ef
 | Raw and encoded blobs | Core reserved bounded memory/temp storage, instance/operation-bound opaque handles; release after in-flight pins, deadline, cancel or plugin stop |
 | Encoder memory | Trusted plugin's finite image contract; OS sandbox/resource confinement is not yet present |
 | Auxiliary transport/child | Core broker; close owned resource only; never close the interactive ssh/master merely to cancel a file |
-| Remote temporary files/directory | Core operation ledger; exact owned paths only, bounded cleanup; disconnected cleanup is pending, not reported as success |
+| Remote temporary files/directory | Core operation ledger; exact acknowledged resources and live verified continuity only; after cancel/revoke narrow Core cleanup authority never renews plugin upload. A directory containing a final file is retained |
 | Confirmed remote final file | User data after commit; never auto-delete on cancel/insertion failure or dedup expiry |
 | Result/dedup ledger | Core bounded same-boot metadata under RESULT_TTL; owning Client may inspect, plugins only their own grants; no image/terminal body persistence |
 | Input lease | Core/triggering Client; expires or revokes on any conflicting change; no cross-Attachment transfer |
 
-For late results, Core may show operation status in user-local management without delivering input or clipboard effects. Another Attachment may manually copy/use a path through a new explicit user interaction, not inherit an old pending insert key. Releasing blobs does not delete final files. Cleanup retries need a still-valid matching target/config and owned-path evidence; unknown remote files are never broad-cleaned. [Phase 0 E3/E4/E7](phase-0.md) must test these branches; none is runtime evidence today.
+For late results, Core may show operation status in user-local management without delivering input or clipboard effects. Another Attachment may manually copy/use a path through a new explicit user interaction, not inherit an old pending insert key. Releasing blobs does not delete final files. Every cleanup removal rechecks the exact ledger entry, target/config/namespace and cooperative continuity; cancellation/revocation permits only Core's narrow pre-existing cleanup authority, no new publication. Lost/missing ownership evidence, transport loss or a new Core/generation leaves cleanup pending: do not adopt names after reconnect, guess deletion from matching attributes, follow replacement symlinks or sweep recursively. The [cleanup contract](protocol.md#owned-cleanup-authority) owns these rules. Existing bounded Phase 0 results are historical; dedicated hardlink/collision/lost-reply/cleanup and policy-binding tests remain future runtime requirements in [E4/E7](phase-0.md).

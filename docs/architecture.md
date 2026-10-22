@@ -58,6 +58,24 @@ Future source layout follows real boundaries: crates/cli, crates/core, crates/pr
 
 All resource constants live in [protocol limits](protocol.md#limits). Live terminal passthrough is not a sanitization guarantee. MVP intercepts local SSHX prefix and blocks remote OSC 52/5522 clipboard operations in the managed output path; it grants no desktop access from terminal output. Other terminal sequences pass through under host permissions and are not called safe. A later Clipboard Bridge needs explicit permissions and tested combinations. Reattach must render selected safe state, never replay side-effect sequences. Prefix/control-sequence parsing must carry state across reads and stay bounded.
 
+## Cooperative upload boundary
+
+On 2026-10-22 the user chose A for the future MVP upload contract: trust a cooperative remote server/account and stable upload hierarchy through cleanup. A root is a canonical, locally authorized scope in the verified target's SFTP namespace, not an OS jail or durable inode capability. This narrows the planned environment without overturning the accepted Phase 0 no-go for arbitrary same-account ancestor replacement. The [protocol](protocol.md#cooperative-upload-scope) owns the existing grant policy/digest and effect-site rules; [ADR 3](adr/0003-transfer-backend.md) records the decision and source evidence.
+
+| Principal / asset boundary | Proposed obligation or limit |
+| --- | --- |
+| Local user/Client policy | Explicitly authorize actual target/namespace/root and `path_scope.policy: "cooperative"`; Core binds `scope_digest` and B. A clipboard action or installation alone is insufficient |
+| Official/community plugin | Same method grants, path scope, quotas, cancellation and input-context checks; no self-grants, credentials, raw executor or target substitution |
+| Other local users | Existing authenticated IPC and protected local resources remain required; this is separate from remote cooperation |
+| Cooperative server/account programs | Honor SFTP results and leave ancestors/operation-owned resources stable throughout live work and cleanup; distinct SSHX operations use separate resources |
+| Final user files / competing final names | Verified no-overwrite publication; confirmed final data survives cancellation, insertion failure and temp-cleanup failure |
+| Hostile server / same-account resource replacement | Outside enforced guarantees; metadata, random names and 0700 do not establish identity or atomic confinement. Observed inconsistency stops effects; undetected interference is not claimed prevented |
+| Input receiver / namespaces | Confirmed upload does not supply a Shell mapping or fresh edit context; insertion is a separately authorized effect |
+
+The selected future regular-PNG publication in existing backend B uses capability/version-verified `hardlink@openssh.com` v1 from a closed temp to a new final basename in the same operation directory/filesystem, then separate owned-temp cleanup. It is not implemented or newly tested here. Unsupported publication remains unavailable, with no overwrite-capable rename/remote-command fallback. Confirmed final plus failed temp unlink stays committed with `cleanup_pending`; lost publication reply is indeterminate and cannot trigger replay/input. Core's narrow ledger authority may clean known temps after revocation only while ownership and verified cooperative continuity remain adequate; loss of evidence leaves cleanup pending, never a guessed deletion or recursive sweep. [Image Paste](image-paste.md) composes those rules.
+
+This document decision supplies a boundary for later MVP planning, not runtime/release readiness or automatic next-phase authority. Dedicated hardlink/policy/cleanup tests, target/auth binding, real Shell mapping/context and native-platform evidence remain gates. Historical probes and `phase0_ready: false` are unchanged.
+
 ## Invocation contract
 
 The independent executable must not install an ssh alias, replace ssh or adopt an existing ssh process. Proposed grammar reserves top-level connect, session, plugin and core; use “sshx connect -- session” for a host named session. After connect's required separator, all tokens belong to OpenSSH. In shorthand, the original option/destination vector is preserved. An unrecognized SSH option is forwarded using native passthrough, never guessed or dropped. Unknown management options fail locally. CLI parse failures use the protocol's local exit status; native passthrough preserves the child's status and platform signal semantics.
