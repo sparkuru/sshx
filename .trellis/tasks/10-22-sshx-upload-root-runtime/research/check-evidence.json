@@ -1,0 +1,48 @@
+{
+  "date": "2026-10-23",
+  "role": "independent trellis-check",
+  "baseline_total": 186,
+  "baseline_unchanged": 173,
+  "baseline_changed": [
+    ".trellis/mainline.md",
+    ".trellis/spec/trellis-plus/development.md",
+    ".trellis/spec/trellis-plus/sshx-contracts.md",
+    "docs/adr/0003-transfer-backend.md",
+    "docs/architecture.md",
+    "docs/image-paste.md",
+    "docs/phase-0.md",
+    "docs/platform-matrix.md",
+    "docs/protocol.md",
+    "probes/phase0/harness/src/core.rs",
+    "probes/phase0/harness/src/main.rs",
+    "probes/phase0/harness/src/sftp.rs",
+    "probes/phase0/harness/src/suite.rs"
+  ],
+  "sources": {
+    "probes/phase0/harness/src/core.rs": "09420b19ac2ee77dfd6e0779d803d478d724e3f7431d97392c21cc137b5a4145",
+    "probes/phase0/harness/src/main.rs": "de56d47d1c6c79ecac1d9aec8e8b052e79e6d11c16df71c54d63767838ccc3e9",
+    "probes/phase0/harness/src/sftp.rs": "1df9837b724409a9b96b58184c73b6cd22a28c125420d23cc7a6bf9196badf67",
+    "probes/phase0/harness/src/suite.rs": "5f4195f2dcfa219a265638811d086407915fefde96cfcf3e957e4385ece385eb",
+    "probes/phase0/harness/src/upload.rs": "665f761a9ff9729ccaebbd0be7ac520f561bee7917413fe4befb6d695b8f7bd7",
+    "probes/phase0/harness/src/suite/upload_cases.rs": "9e13aa4678848f765c221d5c6e55d866d9c724ae32ca7b722eddbcae4919cc11",
+    "probes/phase0/Cargo.lock": "0a274b8219488db7067d87b3a0d706f0925a6e4acb5784fb058d6537daf7ee45"
+  },
+  "focused_report_sources_match": true,
+  "commands": {
+    "cargo_fmt": "pass",
+    "cargo_clippy": "pass",
+    "cargo_check": "pass",
+    "cargo_test": "pass: 16 tests",
+    "cargo_build": "pass",
+    "focused_upload": "pass: 13 top-level groups",
+    "headless_core": "pass: 43 top-level cases; 1 desktop case excluded"
+  },
+  "sandbox": "initial Docker socket denial; same authorized commands passed with scoped escalation",
+  "fixture_teardown": "pass: main-owned cleanup.json reviewed; exact fixture identities match, generated run directories independently confirmed absent",
+  "limitations": [
+    "No desktop or clipboard run",
+    "No production v1 or general-root guarantee"
+  ],
+  "headless_local_runtime_removed": true,
+  "technical_acceptance": "AC1\u2013AC6 pass for bounded probe; human-required closure disposition pending"
+}

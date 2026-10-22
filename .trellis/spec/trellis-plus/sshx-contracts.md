@@ -46,7 +46,7 @@ Test three recovery claims separately: Core/PTY/OpenSSH survival after Client de
 
 OpenSSH retains config, identities, agent, jump hosts, known-host verification and interactive authentication. Never silently accept a changed host key. Distinguish configuration reuse, authentication identity reuse and actual network connection reuse. Probe multiplexing for the exact platform/version; an auxiliary same-target transfer may need separate authentication.
 
-Phase 0 compared system `sftp` with system `ssh` opening SFTP through a mature protocol library. Backend B remains the measured cooperative experiment route; the user-selected cooperative product contract and future verified hardlink publication are documented in [ADR 3](../../../docs/adr/0003-transfer-backend.md). No general mutable-root backend or new publication runtime is established. Do not implement a second SSH stack or two complete transfer backends without evidence. Batch `sftp` cannot borrow the main Shell terminal for hidden prompts. MVP transfer may require agent/key or a verified reusable connection; return `AUTH_REQUIRED` for unsupported additional interactive authentication. Do not cache/replay passwords or pass credentials to plugins.
+Phase 0 compared system `sftp` with system `ssh` opening SFTP through a mature protocol library. Backend B remains the cooperative experiment route; the selected product contract and bounded hardlink probe follow-up are documented in [ADR 3](../../../docs/adr/0003-transfer-backend.md). The current probe implements direct hardlink publication; its task evidence determines the measured fixture scope. No general mutable-root backend or released upload capability is established. Do not implement a second SSH stack or two complete transfer backends without evidence. Batch `sftp` cannot borrow the main Shell terminal for hidden prompts. MVP transfer may require agent/key or a verified reusable connection; return `AUTH_REQUIRED` for unsupported additional interactive authentication. Do not cache/replay passwords or pass credentials to plugins.
 
 Auxiliary connection mappings must verify `-F`, `-p`/`-P`, `-i`, `-J`, `ProxyCommand` and `-o`, while avoiding duplicated RemoteCommand, forwarding and forced RequestTTY. Bind transfers to the original configuration generation and verified target; ambiguous/config-changed targets require rejection or reselection.
 
@@ -142,10 +142,54 @@ Good: A's upload finishes after the user switches to B; A's user-visible metadat
 
 The full product must validate framing/version/role refusal, bounded queues, same-key dedup and refreshed-context insertion, switch/detach/reconnect/revoke/cancel ordering, lost publication acknowledgements and partial PTY writes. Bounded historical Phase 0 examples do not implement the complete product contract.
 
-Cooperative-mode runtime assertions remain future work: absent policy/cross-plugin/changed target-root grants admit no effects; malformed input preserves common validation; observed ancestor/symlink changes stop effects; an actual hardlink collision preserves existing bytes; unsupported version/filesystem and cross-device results have no fallback; lost link reply does not replay or insert; confirmed final plus failed temp unlink retains final data and cleanup pending; uncertain/replaced cleanup paths remain untouched; per-step cancel/revoke and independent mapping/context refusal produce the promised actual remote-file/PTY results. Record server, filesystem and extension version, not only extension names. This document-only task executes no new runtime case; advertisement and library source inspection are not passing effect tests. Read the runbook and actual task/fixture prerequisites before a separately authorized execution.
+Required cooperative-mode assertions are: absent policy/cross-plugin/changed target-root grants admit no effects; malformed input preserves common validation; observed ancestor/symlink changes stop effects; actual hardlink collisions preserve existing bytes; unsupported capability and cross-device results have no fallback; lost link replies do not replay or insert; confirmed final plus failed temp unlink retains final data and cleanup pending; uncertain/replaced cleanup paths remain untouched; per-step cancel/revoke and independent mapping/context refusal produce the promised remote-file/PTY outcomes. The [bounded runtime task](../../tasks/10-22-sshx-upload-root-runtime/prd.md) exercises a probe subset, with actual cases and limitations in its evidence. Record server, filesystem and extension version, not only extension names. Advertisement and library inspection are not passing effect tests, and probe Client ownership is not full production cross-plugin authorization coverage.
 
 ### 7. Wrong versus correct
 
 Wrong: treat cancellation as remote rollback, or resend a partial insertion because its RPC response was lost. Correct: serialize effect admission against B/grants/cancel, record known and uncertain external outcomes, and retain the result for explicit reconciliation. Core crash invalidates boot-scoped authority; metadata does not restore a live Session or exactly-once guarantee.
 
 For cooperative upload, wrong is interpreting a configured root or metadata snapshot as enforced confinement, or mapping every generic remote failure to `NAME_EXISTS`. Correct is explicit narrow local policy, verified publication capability, honest confirmed/indeterminate outcomes and conservative ledger-only cleanup. The general-root no-go and unchanged Phase 0 reports remain historical evidence.
+
+## Bounded cooperative upload probe contract
+
+### 1. Scope / trigger
+
+Apply when modifying `probes/phase0/harness` upload, policy, SFTP faults or its tests. This is an experimental Linux/generated-fixture contract, not the proposed production v1 API. Keep real-server observations, injected failures and historical evidence separate. See the current task's design and independent review before claiming a capability passed.
+
+### 2. Signatures
+
+`phase0-probe core [--qualify-upload] --fixture STATE [--fixture-secondary STATE] --runtime DIR` defaults to no upload policy. The explicit fixture-owner flag performs synthetic qualification and writes private runtime evidence; it is not plugin-granted authority. `upload-suite --fixture STATE --fixture-secondary STATE --output NEW_JSON` exercises the focused matrix. `suite --headless ...` uses synthetic PNG data and explicitly excludes desktop capture; ordinary desktop mode needs its own authority.
+
+### 3. Contracts
+
+Core binds cooperative mode, canonical root, namespace, frozen config and actual fixture target/run into scope_digest. Preserve that authority at every effect. Retain extension values and require version 1 plus run-scoped observed qualification; advertisement alone is insufficient. Dispatch, definitive rejection, confirmed final commit, content verification and cleanup are independent facts. Probe results expose final_commit and cleanup_pending; a lost reply cannot be promoted by matching bytes observed on another connection. Cleanup uses narrow original ledger authority, not a revived plugin grant.
+
+Upload success does not freeze authorization for later input. Fresh or previously refused `probe.insert` must recheck both common B/grants and current scope before writing PTY bytes. A policy/root/namespace change after publication must deny new insertion while retaining final user data; read-only replay of an already completed result is a separate dedup path.
+
+Deterministic probe barriers have one publisher: the worker that is actually waiting. Request admission reports `starting`, never the worker's `before_open` barrier before it runs; otherwise a Client release can be overwritten by worker startup. Tests wait for the appropriate barrier and for `completed` when they inspect readback/cleanup, since committed publication does not mean cleanup has finished.
+
+### 4. Validation and error matrix
+
+| Observed condition | Probe rule |
+| --- | --- |
+| No applicable policy / changed scope | PATH_DENIED after common identity/grant checks; no upload directory |
+| Unqualified or unsupported extension | COMMIT_UNSUPPORTED; no rename fallback |
+| Final name known occupied before dispatch | NAME_EXISTS; preserve its data |
+| Generic SFTP failure after concurrent creation/cross-device attempt | Preserve IO_ERROR/generic status; fixture knowledge does not become runtime EEXIST/EXDEV |
+| Acknowledged link then readback/cleanup error | Keep confirmed commit; do not delete final file |
+| Lost link reply | Indeterminate, no replay/input; retain cleanup uncertainty |
+| Lost ledger/transport/boot/generation continuity | Pending cleanup, no path adoption or guessed removal |
+
+Probe INVALID_PARAMS and Client ownership checks are not a claim of complete v1 malformed-input or plugin-role conformance.
+
+### 5. Good / base / bad cases
+
+Good: confirmed final data remains while temp cleanup is pending. Base: Core without explicit fixture qualification still supports login but refuses upload. Bad: clearing dispatch history after a server rejection, or deleting a final name to compensate for a temp-unlink failure.
+
+### 6. Tests required
+
+Assert remote presence/hashes and PTY effects, not only error enums. Test ordinary and concurrent collisions, matching framed lost replies including split/coalesced I/O, per-step revoke/cancel, scope drift both before upload and after commit before insertion, real generation change, replaced resources and both pre-unlink refusal and remove-error propagation. A fault must alter the fact consumed by a normal guard or the actual response boundary; a fault-name shortcut returning the desired error does not prove that guard. Headless exclusions and source-bound failed checkpoints must remain visible. Fixture teardown is independent evidence, not successful Core cleanup.
+
+### 7. Wrong versus correct
+
+Wrong: label a passing C13 bookkeeping record as completed independent review/teardown, or cite a historical desktop report as a current run. Correct: retain fresh output/source identities, explicit excluded/pending states, separate independent verification and exact owned-container cleanup. No test count changes the general-root no-go or historical phase0_ready:false.

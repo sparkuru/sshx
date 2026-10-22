@@ -4,6 +4,7 @@ mod plugin;
 mod seal;
 mod sftp;
 mod suite;
+mod upload;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use sha2::{Digest, Sha256};
@@ -107,7 +108,7 @@ fn run() -> Result<()> {
     let args: Vec<_> = std::env::args().skip(1).collect();
     match args.first().map(String::as_str) {
         None | Some("--help") => {
-            println!("SSHX Phase 0 Linux probes\n\nUsage:\n  phase0-probe suite --fixture STATE [--fixture-secondary STATE] --output FILE\n  phase0-probe case --fixture STATE --case ID --output FILE\n  phase0-probe plugin --fixture STATE --output FILE\n  phase0-probe core --fixture STATE [--fixture-secondary STATE] --runtime DIR\n  phase0-probe client --socket SOCKET\n  phase0-probe passthrough -- SSH_ARGS...\n\nOnly task-owned generated fixtures are supported. Probe RPC extensions are not a released SSHX API.");
+            println!("SSHX Phase 0 Linux probes\n\nUsage:\n  phase0-probe suite [--headless] --fixture STATE [--fixture-secondary STATE] --output FILE\n  phase0-probe upload-suite --fixture STATE --fixture-secondary STATE --output FILE\n  phase0-probe case --fixture STATE --case ID --output FILE\n  phase0-probe plugin --fixture STATE --output FILE\n  phase0-probe core [--qualify-upload] --fixture STATE [--fixture-secondary STATE] --runtime DIR\n  phase0-probe client --socket SOCKET\n  phase0-probe passthrough -- SSH_ARGS...\n\nOnly task-owned generated fixtures are supported. Probe RPC extensions are not a released SSHX API.");
             Ok(())
         }
         Some("case") => suite::run_case(
@@ -133,10 +134,16 @@ fn run() -> Result<()> {
             }
             Ok(())
         }
+        Some("upload-suite") => suite::run_upload(
+            &flag(&args, "--fixture")?,
+            &flag(&args, "--fixture-secondary")?,
+            &flag(&args, "--output")?,
+        ),
         Some("suite") => suite::run(
             &flag(&args, "--fixture")?,
             optional_flag(&args, "--fixture-secondary")?.as_deref(),
             &flag(&args, "--output")?,
+            args.iter().any(|a| a == "--headless"),
         ),
         Some("core") => core::serve(
             Fixture::load(&flag(&args, "--fixture")?)?,
@@ -144,6 +151,7 @@ fn run() -> Result<()> {
                 .map(|p| Fixture::load(&p))
                 .transpose()?,
             &flag(&args, "--runtime")?,
+            args.iter().any(|a| a == "--qualify-upload"),
         ),
         Some("client") => core::proxy(&flag(&args, "--socket")?),
         Some("passthrough") => {

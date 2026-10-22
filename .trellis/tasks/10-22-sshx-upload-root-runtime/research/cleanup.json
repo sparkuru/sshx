@@ -1,0 +1,35 @@
+{
+  "checked_utc": "2026-10-22T16:09:55.135652+00:00",
+  "status": "pass",
+  "fixtures": [
+    {
+      "role": "primary",
+      "container_id": "93eef31692c8367e4205f3e8e43d4ac026beaace6ad51fc3518c83b2057552ba",
+      "run_id": "b590f2c6767da5384787f0c063feaa79",
+      "container_absent": true,
+      "run_directory_absent": true,
+      "pointer_absent": true,
+      "port": 32781,
+      "port_rebind_passed": true
+    },
+    {
+      "role": "secondary",
+      "container_id": "d4f0fbbccff01bdbd41599ac32aacb3065f599213ef00624fb2b468b1916c0fb",
+      "run_id": "93f2db10abe08010513e2956a7ac4369",
+      "container_absent": true,
+      "run_directory_absent": true,
+      "pointer_absent": true,
+      "port": 32782,
+      "port_rebind_passed": true
+    }
+  ],
+  "remaining_matching_native_pids": [],
+  "secondary_runtime_absent": true,
+  "retained": [
+    "pre-existing .devhome/phase0/lifecycle.lock",
+    "pinned build/fixture images and development caches",
+    "redacted current-task reports; known scratch validation logs in /tmp"
+  ],
+  "scope": "Exact fixture container/run/credentials removal; port rebind and matching native-process absence. This is fixture-owner teardown, not Core cleanup of uncertain user paths.",
+  "credential_scan": "Before teardown, exact generated client-key/password bodies were compared against all 35 then-current tracked/untracked task candidate files: no matches; no secret body printed."
+}

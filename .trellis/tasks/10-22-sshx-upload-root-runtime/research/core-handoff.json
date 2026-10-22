@@ -1,0 +1,2297 @@
+{
+  "cases": [
+    {
+      "case": "two-native-client-processes",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Two distinct native Clients negotiate one Core",
+      "experiment": "E1",
+      "limitations": [],
+      "observations": {
+        "client_id_distinct": true,
+        "client_pids": [
+          471297,
+          471326
+        ],
+        "core_pid": 471278
+      },
+      "status": "pass"
+    },
+    {
+      "case": "concurrent-core-start-lock",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "A second Core cannot replace a running endpoint",
+      "experiment": "E1",
+      "limitations": [],
+      "observations": {
+        "second_start_exit": 1
+      },
+      "status": "pass"
+    },
+    {
+      "case": "writer-contention-and-resize",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Only initiating writer can attach/input/resize",
+      "experiment": "E1",
+      "limitations": [],
+      "observations": {
+        "loser_bytes_written": 0,
+        "writer_resize_applied": true
+      },
+      "status": "pass"
+    },
+    {
+      "case": "native-pty-unicode-binary-prefix",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Core-owned SSH PTY preserves byte patterns; prefix action writes no trigger bytes",
+      "experiment": "E2",
+      "limitations": [],
+      "observations": {
+        "forwarded_sha256": "65d30b92cbd4151877c0b1560e023f322a3c5d34c47f13018214a0f906400731",
+        "oracle": "synthetic stty-raw cat, not Shell readiness",
+        "prefix_actions": 1,
+        "unicode_length": 15
+      },
+      "status": "pass"
+    },
+    {
+      "case": "busy-core-stop",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Busy Core refuses normal stop",
+      "experiment": "E1",
+      "limitations": [],
+      "observations": {
+        "ssh_preserved": true
+      },
+      "status": "pass"
+    },
+    {
+      "case": "one-active-attachment-per-client",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Starting another Session revokes the same Client's old writer/leases while retaining old SSH",
+      "experiment": "E1/E7",
+      "limitations": [],
+      "observations": {
+        "global_active_session": false,
+        "invalid_target_and_receiver_types_denied_without_fallback": true,
+        "old_operation_future_effects": 0,
+        "old_ssh_survived": true,
+        "start_and_attach_revoke_previous_writer": true
+      },
+      "status": "pass"
+    },
+    {
+      "case": "wrong-role-identity-and-unknown-method",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Client cannot self-assign identity or obtain unavailable executor/history methods",
+      "experiment": "E6",
+      "limitations": [],
+      "observations": {
+        "forged_identity_denied": true,
+        "reserved_methods_unavailable": true
+      },
+      "status": "pass"
+    },
+    {
+      "case": "canonical-trigger-counter",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Malformed counters fail without advancing admission high-water",
+      "experiment": "E7",
+      "limitations": [],
+      "observations": {
+        "malformed_or_skipped_counters": 7,
+        "next_admitted_counter_in_following_case": "1"
+      },
+      "status": "pass"
+    },
+    {
+      "case": "cancel-before-open",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Barrier prevents actual remote creation and PTY insertion",
+      "experiment": "E7",
+      "limitations": [],
+      "observations": {
+        "operation": {
+          "ack_dropped": false,
+          "barrier": "completed",
+          "binding": {
+            "attachment_id": "7412e803acb89e7104586841fa191fb6",
+            "client_id": "340525cde8162a002c54ae1541920406",
+            "config_generation": 1,
+            "core_instance_id": "078f38b2ab699a9f0d0d8927d02d1465",
+            "generation": 1,
+            "operation_id": "d6cbb5461daaeb91126913635a0b15ef",
+            "profile_id": "primary",
+            "session_id": "1648ca29ca58d96db04da45c88022093",
+            "writer_epoch": 1
+          },
+          "bytes_written": 0,
+          "cancel_requested": true,
+          "cleanup_pending": false,
+          "cleanup_steps": 0,
+          "commit_dispatched": false,
+          "commit_rejected": false,
+          "error": "CANCELLED",
+          "external_steps_admitted": 0,
+          "insert_state": "none",
+          "last_step": "none",
+          "result": null,
+          "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+          "upload_state": "failed"
+        },
+        "other_pty_no_path": true,
+        "remote_path_absent": true
+      },
+      "status": "pass"
+    },
+    {
+      "case": "revoke-before-open",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Barrier prevents actual remote creation and PTY insertion",
+      "experiment": "E7",
+      "limitations": [],
+      "observations": {
+        "operation": {
+          "ack_dropped": false,
+          "barrier": "completed",
+          "binding": {
+            "attachment_id": "7412e803acb89e7104586841fa191fb6",
+            "client_id": "340525cde8162a002c54ae1541920406",
+            "config_generation": 1,
+            "core_instance_id": "078f38b2ab699a9f0d0d8927d02d1465",
+            "generation": 1,
+            "operation_id": "bb55c13f6c734e6d5c8472afdd3f4237",
+            "profile_id": "primary",
+            "session_id": "1648ca29ca58d96db04da45c88022093",
+            "writer_epoch": 1
+          },
+          "bytes_written": 0,
+          "cancel_requested": false,
+          "cleanup_pending": false,
+          "cleanup_steps": 0,
+          "commit_dispatched": false,
+          "commit_rejected": false,
+          "error": "CAPABILITY_DENIED",
+          "external_steps_admitted": 0,
+          "insert_state": "none",
+          "last_step": "none",
+          "result": null,
+          "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+          "upload_state": "failed"
+        },
+        "other_pty_no_path": true,
+        "remote_path_absent": true
+      },
+      "status": "pass"
+    },
+    {
+      "case": "expire-before-open",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Barrier prevents actual remote creation and PTY insertion",
+      "experiment": "E7",
+      "limitations": [],
+      "observations": {
+        "operation": {
+          "ack_dropped": false,
+          "barrier": "completed",
+          "binding": {
+            "attachment_id": "7412e803acb89e7104586841fa191fb6",
+            "client_id": "340525cde8162a002c54ae1541920406",
+            "config_generation": 1,
+            "core_instance_id": "078f38b2ab699a9f0d0d8927d02d1465",
+            "generation": 1,
+            "operation_id": "351568fd44db400e1a89c8cc59038be0",
+            "profile_id": "primary",
+            "session_id": "1648ca29ca58d96db04da45c88022093",
+            "writer_epoch": 1
+          },
+          "bytes_written": 0,
+          "cancel_requested": false,
+          "cleanup_pending": false,
+          "cleanup_steps": 0,
+          "commit_dispatched": false,
+          "commit_rejected": false,
+          "error": "EXPIRED",
+          "external_steps_admitted": 0,
+          "insert_state": "none",
+          "last_step": "none",
+          "result": null,
+          "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+          "upload_state": "failed"
+        },
+        "other_pty_no_path": true,
+        "remote_path_absent": true
+      },
+      "status": "pass"
+    },
+    {
+      "case": "disable-before-open",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Barrier prevents actual remote creation and PTY insertion",
+      "experiment": "E7",
+      "limitations": [],
+      "observations": {
+        "operation": {
+          "ack_dropped": false,
+          "barrier": "completed",
+          "binding": {
+            "attachment_id": "7412e803acb89e7104586841fa191fb6",
+            "client_id": "340525cde8162a002c54ae1541920406",
+            "config_generation": 1,
+            "core_instance_id": "078f38b2ab699a9f0d0d8927d02d1465",
+            "generation": 1,
+            "operation_id": "e71fe2f1ec5125ce3122d808d149923e",
+            "profile_id": "primary",
+            "session_id": "1648ca29ca58d96db04da45c88022093",
+            "writer_epoch": 1
+          },
+          "bytes_written": 0,
+          "cancel_requested": false,
+          "cleanup_pending": false,
+          "cleanup_steps": 0,
+          "commit_dispatched": false,
+          "commit_rejected": false,
+          "error": "CAPABILITY_DENIED",
+          "external_steps_admitted": 0,
+          "insert_state": "none",
+          "last_step": "none",
+          "result": null,
+          "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+          "upload_state": "failed"
+        },
+        "other_pty_no_path": true,
+        "remote_path_absent": true
+      },
+      "status": "pass"
+    },
+    {
+      "case": "revoke-during-real-stream",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Partial remote bytes exist at deterministic streaming barrier; revocation cleans only owned partial and never inserts",
+      "experiment": "E7",
+      "limitations": [],
+      "observations": {
+        "actual_remote_bytes_before_revoke": 1,
+        "final_created": false,
+        "insert_bytes": 0,
+        "temporary_removed": true
+      },
+      "status": "pass"
+    },
+    {
+      "case": "cancel-before-sftp-mkdir",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Cancellation wins before the next external request; only owned temporary resources are cleaned",
+      "experiment": "E7",
+      "limitations": [],
+      "observations": {
+        "insert_bytes": 0,
+        "invalid_fault_control_checks": {
+          "admission_consumed": false,
+          "cases": 4,
+          "oversized_bytes": 65536
+        },
+        "owned_directory_absent": true,
+        "stage": "mkdir",
+        "steps_after_cancel": 2,
+        "steps_before_cancel": 2
+      },
+      "status": "pass"
+    },
+    {
+      "case": "cancel-before-sftp-open",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Cancellation wins before the next external request; only owned temporary resources are cleaned",
+      "experiment": "E7",
+      "limitations": [],
+      "observations": {
+        "insert_bytes": 0,
+        "invalid_fault_control_checks": null,
+        "owned_directory_absent": true,
+        "stage": "open",
+        "steps_after_cancel": 4,
+        "steps_before_cancel": 4
+      },
+      "status": "pass"
+    },
+    {
+      "case": "cancel-before-sftp-write",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Cancellation wins before the next external request; only owned temporary resources are cleaned",
+      "experiment": "E7",
+      "limitations": [],
+      "observations": {
+        "insert_bytes": 0,
+        "invalid_fault_control_checks": null,
+        "owned_directory_absent": true,
+        "stage": "write",
+        "steps_after_cancel": 5,
+        "steps_before_cancel": 5
+      },
+      "status": "pass"
+    },
+    {
+      "case": "cancel-before-sftp-close",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Cancellation wins before the next external request; only owned temporary resources are cleaned",
+      "experiment": "E7",
+      "limitations": [],
+      "observations": {
+        "insert_bytes": 0,
+        "invalid_fault_control_checks": null,
+        "owned_directory_absent": true,
+        "stage": "close",
+        "steps_after_cancel": 6,
+        "steps_before_cancel": 6
+      },
+      "status": "pass"
+    },
+    {
+      "case": "same-target-concurrent-uploads",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Two Sessions sharing one target keep simultaneous upload ledgers, file hashes and PTY writes distinct",
+      "experiment": "E7",
+      "limitations": [],
+      "observations": {
+        "cross_session_input_bytes": 0,
+        "distinct_session_ids": [
+          "1648ca29ca58d96db04da45c88022093",
+          "ce71904403b64c73f0d9e33dd84eaf89"
+        ],
+        "same_profile": "primary",
+        "sha256": [
+          "db7f799a1de69ea2838af2bdbb9d3e744e1298b6d64e2157e4261cf656de61c1",
+          "54623481ad7b6c415e9bf0bf8cf3253844c972251a7d7376ff35036650f9d36b"
+        ],
+        "simultaneous_partial_files": 2
+      },
+      "status": "pass"
+    },
+    {
+      "case": "bounded-grant-ticket-churn",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Renewed grants/tickets replace bounded owned records and consumed tickets cannot replay",
+      "experiment": "E6",
+      "limitations": [],
+      "observations": {
+        "counts": {
+          "clients": 3,
+          "grants": 13,
+          "metadata_accounted_upper_bound": 728576,
+          "metadata_budget": 16777216,
+          "operations": 13,
+          "sessions": 4,
+          "tickets": 0
+        },
+        "iterations": 300,
+        "stream_ticket_scope": "actual IPC admission/consume; data stream codec tested independently"
+      },
+      "status": "pass"
+    },
+    {
+      "case": "cancel-before-commit",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Actual remote temp is removed and final absent after cancel barrier",
+      "experiment": "E7",
+      "limitations": [],
+      "observations": {
+        "operation": {
+          "ack_dropped": false,
+          "barrier": "completed",
+          "binding": {
+            "attachment_id": "7412e803acb89e7104586841fa191fb6",
+            "client_id": "340525cde8162a002c54ae1541920406",
+            "config_generation": 1,
+            "core_instance_id": "078f38b2ab699a9f0d0d8927d02d1465",
+            "generation": 1,
+            "operation_id": "8ec8f54bbbe73919460cb749be37c46b",
+            "profile_id": "primary",
+            "session_id": "1648ca29ca58d96db04da45c88022093",
+            "writer_epoch": 1
+          },
+          "bytes_written": 0,
+          "cancel_requested": true,
+          "cleanup_pending": false,
+          "cleanup_steps": 2,
+          "commit_dispatched": false,
+          "commit_rejected": false,
+          "error": "CANCELLED",
+          "external_steps_admitted": 7,
+          "insert_state": "none",
+          "last_step": "close",
+          "result": null,
+          "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+          "upload_state": "failed"
+        },
+        "temp_and_final_absent": true
+      },
+      "status": "pass"
+    },
+    {
+      "case": "cancel-after-confirmed-commit",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Cancellation/revocation after actual commit retains verified final but blocks new insertion",
+      "experiment": "E7",
+      "limitations": [],
+      "observations": {
+        "automatic_rollback": false,
+        "file_commit_confirmed_before_transition": true,
+        "new_insert_bytes": 0,
+        "remote_sha256": "8f64b0678a54c82b75da86cdd1edab9685b6b3b9e2a83e1ea1c2c19927788095"
+      },
+      "status": "pass"
+    },
+    {
+      "case": "revoke-after-confirmed-commit",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Cancellation/revocation after actual commit retains verified final but blocks new insertion",
+      "experiment": "E7",
+      "limitations": [],
+      "observations": {
+        "automatic_rollback": false,
+        "file_commit_confirmed_before_transition": true,
+        "new_insert_bytes": 0,
+        "remote_sha256": "8f64b0678a54c82b75da86cdd1edab9685b6b3b9e2a83e1ea1c2c19927788095"
+      },
+      "status": "pass"
+    },
+    {
+      "case": "upload-zero-byte-refresh-and-response-loss",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Insertion retry after refused context reuses committed file; lost ack never writes twice",
+      "experiment": "E7",
+      "limitations": [],
+      "observations": {
+        "image_flow": {
+          "desktop_capture": "excluded by --headless",
+          "evidence_kind": "synthetic_png"
+        },
+        "insert_bytes": 66,
+        "mapping": "explicit synthetic receiver attestation only; no general Shell mapping",
+        "other_pty_path_absent": true,
+        "pty_length_before": 109,
+        "repeat_wrote_bytes": false,
+        "sealed_sha256": "07c87dbcfc61bbfaa33378fd130fae5aab39cb7e65687c563a5cbba70a2c38dc",
+        "upload_sha256": "07c87dbcfc61bbfaa33378fd130fae5aab39cb7e65687c563a5cbba70a2c38dc"
+      },
+      "status": "pass"
+    },
+    {
+      "case": "partial-pty-write-no-replay",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Observed prefix written to actual SSH PTY cannot be replayed",
+      "experiment": "E7",
+      "limitations": [],
+      "observations": {
+        "actual_prefix_bytes": 3,
+        "automatic_replay": false,
+        "fault_injection": "Core write slice cut at admission, actual syscall/remote PTY observed"
+      },
+      "status": "pass"
+    },
+    {
+      "case": "network-child-loss-new-generation",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Loss of owned SSH invalidates effects; explicit reconnect starts new PTY/generation and never receives old input",
+      "experiment": "E7",
+      "limitations": [],
+      "observations": {
+        "generation": 2,
+        "owned_channel_failure": "SIGTERM only generated-fixture ssh child, no host network alteration",
+        "remote_job_recovery_claim": false,
+        "stale_input_bytes": 0
+      },
+      "status": "pass"
+    },
+    {
+      "case": "actual-insert-ipc-response-loss",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Actual initiating Client loses IPC reply after admitted PTY write; another user Client can query redacted retained status",
+      "experiment": "E7",
+      "limitations": [],
+      "observations": {
+        "actual_pty_occurrences": 1,
+        "fault_boundary": "Core closes real Client IPC after syscall, before framed response",
+        "ipc_reply_received": false,
+        "retained_insert_state": "committed",
+        "retarget_retry_denied": true
+      },
+      "status": "pass"
+    },
+    {
+      "case": "cancel-and-switch-during-private-capture",
+      "cleanup_status": "no resources",
+      "expected": "Desktop cases excluded by --headless",
+      "experiment": "E7",
+      "limitations": [
+        "No desktop access authorized for this run"
+      ],
+      "observations": null,
+      "status": "excluded"
+    },
+    {
+      "case": "trigger-highwater-after-retention",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Removed retained record cannot recreate an old nonce",
+      "experiment": "E7",
+      "limitations": [],
+      "observations": {
+        "clock": "explicit test retention-removal hook; not elapsed-wallclock evidence",
+        "old_nonce_recreated": false,
+        "retained_record_removed": true
+      },
+      "status": "pass"
+    },
+    {
+      "case": "two-target-concurrent-uploads-and-midstream-switch",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "One Core keeps distinct prevalidated targets and immutable operation/PTY destinations",
+      "experiment": "E7",
+      "limitations": [],
+      "observations": {
+        "core_pid": 471278,
+        "cross_target_file_absent": true,
+        "cross_target_pty_bytes": 0,
+        "fixture_ids": [
+          "b590f2c6767da5384787f0c063feaa79",
+          "93f2db10abe08010513e2956a7ac4369"
+        ],
+        "profile_ids": [
+          "primary",
+          "secondary"
+        ],
+        "scope": "two independent servers on one Docker host",
+        "simultaneous_open_partial_files": 2,
+        "switch_during_real_stream_cancelled": true,
+        "target_sha256": [
+          "e4102cf460a3721d54661f740c2ce9e7f2922e52063cbc5ff74cf5e25f1d61fd",
+          "9e92272dc71630d758ad64a5a33f6a2ddbe1bd37fd47d58465201bcbfac5fee2"
+        ]
+      },
+      "status": "pass"
+    },
+    {
+      "case": "detach-switch-before-commit",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Detached initiating writer cannot deliver to another real Session",
+      "experiment": "E7",
+      "limitations": [],
+      "observations": {
+        "cross_client_operation_denied": true,
+        "other_pty_sha256": "d89b80f89506728f774bcda78d1326d453ca1481b8402f37725c706a80f653da"
+      },
+      "status": "pass"
+    },
+    {
+      "case": "client-crash-preserves-ssh",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Killing Client revokes writer while Core-owned SSH survives and fresh writer gets epoch",
+      "experiment": "E1",
+      "limitations": [],
+      "observations": {
+        "new_writer_epoch": 2,
+        "ssh_pid_alive": 471329
+      },
+      "status": "pass"
+    },
+    {
+      "case": "bounded-output-and-blocked-input",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "A stopped receiver cannot block RPC; output overflow revokes writer and keeps draining with finite storage",
+      "experiment": "E1/E2/E5",
+      "limitations": [],
+      "observations": {
+        "body_limit": 262144,
+        "cancel_and_status_ms": 0,
+        "nonblocking_syscall": true,
+        "output": {
+          "bytes_read": 4194316,
+          "display_incomplete": true,
+          "has_writer": false,
+          "retained_bytes": 0,
+          "ring_capacity": 1048576
+        },
+        "probe_output_chunk_limit": 32768,
+        "separate_pty_drain_continued": true,
+        "stopped_receiver_accepted_bytes_before_busy": 2124800
+      },
+      "status": "pass"
+    },
+    {
+      "case": "retained-session-client-cap",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Exited Session/disconnected Client churn hits finite admission caps",
+      "experiment": "E6",
+      "limitations": [],
+      "observations": {
+        "clients": 16,
+        "grants": 25,
+        "metadata_accounted_upper_bound": 657408,
+        "metadata_budget": 16777216,
+        "operations": 25,
+        "sessions": 32,
+        "tickets": 0
+      },
+      "status": "pass"
+    },
+    {
+      "case": "endpoint-and-dynamic-config-refusal",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Owned symlink endpoint and executable dynamicconfig are refused without effect",
+      "experiment": "E1/E4",
+      "limitations": [],
+      "observations": {
+        "auxiliary_profile": "explicit frozen numeric loopback route, public expected hostkey copied into Core-owned snapshot",
+        "dynamic_match_exec": "TARGET_UNVERIFIED before SSH/config evaluation",
+        "endpoint_symlink_refused_without_unlink": true,
+        "helper_executed": false
+      },
+      "status": "pass"
+    },
+    {
+      "case": "actual-core-crash-new-boot",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Forced owned Core loss invalidates IPC/B; new Core starts empty and owned ssh is reaped",
+      "experiment": "E5",
+      "limitations": [],
+      "observations": {
+        "core_sigkill": true,
+        "metadata_adopted": false,
+        "new_boot": true,
+        "orphan_ssh_pid_reaped": 472538,
+        "owned_runtime_cleanup": true,
+        "remote_work_recovery": "not provided"
+      },
+      "status": "pass"
+    },
+    {
+      "case": "passthrough-byte-stdio-exit",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Native passthrough preserves independent binary stdout/stderr and exit status",
+      "experiment": "E1",
+      "limitations": [],
+      "observations": {
+        "core_started": false,
+        "exit": 7,
+        "stderr_sha256": "af440ad05977eb32497d31a5b5d920c93802c972b980dea9b7f086b4582888fb",
+        "stdout_sha256": "3507b01e644277ad3cd10dadd6e33cb801151e62e3cb899a67409ef701d6079c"
+      },
+      "status": "pass"
+    },
+    {
+      "case": "password-and-host-key",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "OpenSSH owns password interaction and refuses mismatched expected host key",
+      "experiment": "E2",
+      "limitations": [],
+      "observations": {
+        "hostkey_mismatch_exit": 255,
+        "password_authentication": "observed via owned PTY",
+        "secret_logged": false
+      },
+      "status": "pass"
+    },
+    {
+      "case": "remote-control-resize-exit",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Owned native terminal exercises remote control keys, job control and resize",
+      "experiment": "E2",
+      "limitations": [],
+      "observations": {
+        "ctrl_c": "remote foreground interrupted, shell survives",
+        "ctrl_z": "job stopped and explicitly killed",
+        "exit_status": 23,
+        "physical_ime": false,
+        "resize": [
+          101,
+          37
+        ],
+        "terminal_scope": "owned synthetic PTY, no user's termios changed"
+      },
+      "status": "pass"
+    },
+    {
+      "case": "owned-agent-authentication",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Auxiliary SSH authenticates with only a generated key in an owned agent",
+      "experiment": "E2",
+      "limitations": [],
+      "observations": {
+        "authentication": "generated key in owned ssh-agent",
+        "identity_file": "none in ssh argv",
+        "owned_agent_only": true,
+        "personal_agent_inherited": false
+      },
+      "status": "pass"
+    },
+    {
+      "case": "clipboard-control-gate",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Split/C1 OSC52/5522 denied; UTF8 remains intact and overflow stops display",
+      "experiment": "E2",
+      "limitations": [],
+      "observations": {
+        "native_emulator_oracle": "not exercised here; byte gate only",
+        "overflow_display_detached": true,
+        "split_cases": 77
+      },
+      "status": "pass"
+    },
+    {
+      "case": "native-route-reuse-chroot",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Native OpenSSH maps trusted jump/proxy/config and demonstrates real master reuse; chroot namespace stays distinct",
+      "experiment": "E4",
+      "limitations": [],
+      "observations": {
+        "chroot": {
+          "canonical_path": "/upload",
+          "normal_root_unavailable": true,
+          "shell_mapping": null
+        },
+        "config_identity_reuse": true,
+        "core_policy": "dynamic proxy/helper routes remain rejected for auxiliary effects until their closure can be frozen/bound",
+        "network_reuse": {
+          "owned_master_pid": 472633,
+          "sftp_with_fresh_auth_disabled": true,
+          "ssh_command_with_fresh_auth_disabled": true
+        },
+        "proxy_command": "observed owned helper route",
+        "proxy_jump": "observed two-hop generated fixture route"
+      },
+      "status": "pass"
+    },
+    {
+      "case": "sftp-backend-comparison",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Small A/B probes record no-clobber difference and readback content",
+      "experiment": "E4",
+      "limitations": [],
+      "observations": {
+        "backend_a": {
+          "put_overwrites_existing": true,
+          "selection": "rejected unsafe default put; batch surface has no demonstrated exclusive-open primitive"
+        },
+        "backend_b": {
+          "baseline_rename_no_clobber": true,
+          "exclusive_open": true,
+          "extensions": {
+            "copy-data": "1",
+            "expand-path@openssh.com": "1",
+            "fstatvfs@openssh.com": "2",
+            "fsync@openssh.com": "1",
+            "hardlink@openssh.com": "1",
+            "home-directory": "1",
+            "limits@openssh.com": "1",
+            "lsetstat@openssh.com": "1",
+            "posix-rename@openssh.com": "1",
+            "statvfs@openssh.com": "2",
+            "users-groups-by-id@openssh.com": "1"
+          },
+          "library": "russh-sftp3.0.1 rawsession",
+          "readback_sha256": true,
+          "special_names": 9,
+          "symlink_collision_refused": true
+        },
+        "canonical_home_reply_entries": 1,
+        "disk_full": "1MiB owned tmpfs rejected 2MiB stream",
+        "extra_auth": "noninteractive refused; no main PTY prompt",
+        "no_sftp": "observed closed subsystem",
+        "selection": "B viable only for measured controlled fixture; general route/root guarantees unverified"
+      },
+      "status": "pass"
+    },
+    {
+      "case": "sftp-commit-reply-loss",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Actual owned SFTP reply loss yields uncertain delivery and read-only known-path reconciliation",
+      "experiment": "E7",
+      "limitations": [],
+      "observations": {
+        "cleanup": "explicit known-final removal after reconciliation",
+        "fault_boundary": "actual SFTP subsystem pipe adapter consumes reply then aborts channel; no host/network disruption",
+        "owned_pipe_reply_discarded_after_request_write": true,
+        "read_only_reconciliation": {
+          "final_sha256": "3d8eec891e30474f5dc1b5194f49e5aa8790a546da8ccdb95291416c75829b99",
+          "temp_absent": true
+        },
+        "rename_client_result": "error/unknown delivery",
+        "reupload_attempts": 0
+      },
+      "status": "pass"
+    },
+    {
+      "case": "independent-python-plugin",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Non-Rust public stdio framing negotiates without Core-private code",
+      "experiment": "E6",
+      "limitations": [],
+      "observations": {
+        "cases": [
+          {
+            "case": "plugin-unicode-split",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [],
+              "elapsed_ms": 121,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "dd56c997ebfcf10d010f5d273473cad1",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "negotiated",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472765,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 1,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 178
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 154,
+              "ssh_pty_bytes_before": 22,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-response-order",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [],
+              "elapsed_ms": 123,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "1d5afebc75ee20e4d7323464221e584a",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "pending ids 2/3 resolved in order 3/2",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472768,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 1,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 151
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 286,
+              "ssh_pty_bytes_before": 154,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-role-upgrade",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [
+                "ROLE_DENIED"
+              ],
+              "elapsed_ms": 122,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "37cbd37586e081fe21cc7becf0d0bbf6",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "negotiated",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472771,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 1,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 178
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 418,
+              "ssh_pty_bytes_before": 286,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-identity-spoof",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [
+                "INVALID_PARAMS"
+              ],
+              "elapsed_ms": 123,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "dfd487789bde615cef6eee20f370c03c",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "negotiated",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472774,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 1,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 178
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 550,
+              "ssh_pty_bytes_before": 418,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-cross-operation",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [
+                "CAPABILITY_DENIED"
+              ],
+              "elapsed_ms": 124,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "a78a01cd81131a1b21325f4d2290e0d9",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "negotiated",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472777,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 1,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 178
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 682,
+              "ssh_pty_bytes_before": 550,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-revoked-grant",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [
+                "CAPABILITY_DENIED"
+              ],
+              "elapsed_ms": 120,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": true,
+              "instance_id": "5f3427ea264f892cd3defec5603c82e0",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "negotiated",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472780,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 1,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 191
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 814,
+              "ssh_pty_bytes_before": 682,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-composed-grant",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [
+                "CAPABILITY_DENIED"
+              ],
+              "elapsed_ms": 120,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "cbac0c81201d1187ee56b789aec88ea0",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "negotiated",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472785,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 1,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 298
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 946,
+              "ssh_pty_bytes_before": 814,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-unknown-method",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [
+                "METHOD_NOT_FOUND"
+              ],
+              "elapsed_ms": 121,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "f8e3c383d6ae32ffb42ea4c9b1d93455",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "negotiated",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472789,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 1,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 178
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 1078,
+              "ssh_pty_bytes_before": 946,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-stderr-flood",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [],
+              "elapsed_ms": 121,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "368097595582aa417aa7cc0dcfd36339",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 262144,
+                "bytes_retained": 262144,
+                "bytes_seen": 524288,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "negotiated",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472792,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 1,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 178
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 1210,
+              "ssh_pty_bytes_before": 1078,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-stderr-long-line",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [],
+              "elapsed_ms": 122,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "f583c437078f8d7e4f22f65c688d8191",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 520192,
+                "bytes_retained": 4096,
+                "bytes_seen": 524288,
+                "line_bytes_dropped": 520192,
+                "line_limit": 4096
+              },
+              "observed": "negotiated",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472795,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 1,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 178
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 1342,
+              "ssh_pty_bytes_before": 1210,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-events",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [],
+              "elapsed_ms": 352,
+              "event_bytes_peak": 9281,
+              "event_queue_peak": 128,
+              "events_dropped": 256,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "f67f4121c2bd2ec6f39fd1affae2e648",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "negotiated",
+              "operation_requeried": true,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472798,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 1,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 187
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 1738,
+              "ssh_pty_bytes_before": 1342,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-crash",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [],
+              "elapsed_ms": 122,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "e3b86fbe95a1529475739dc90dd2f741",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "isolated exit 42",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472801,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 1,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 118
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 1870,
+              "ssh_pty_bytes_before": 1738,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-wrong-version",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [],
+              "elapsed_ms": 125,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "10758a0e44800bb5e8fee0adbd075566",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "VERSION_MISMATCH",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472804,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 1,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 119
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 2002,
+              "ssh_pty_bytes_before": 1870,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-stdout-log",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [],
+              "elapsed_ms": 123,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "89ecb8fb1b9e0f524a86c91fa9017236",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "invalid header",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472807,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 2,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 151
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 2134,
+              "ssh_pty_bytes_before": 2002,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-duplicate-header",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [],
+              "elapsed_ms": 125,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "d34a19c8828985d68a807d01bc611ad2",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "unsupported header",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472810,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 1,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 151
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 2288,
+              "ssh_pty_bytes_before": 2134,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-bare-lf",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [],
+              "elapsed_ms": 121,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "a55920b01c646e9b23d814c9aa055049",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "invalid header",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472813,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 2,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 151
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 2420,
+              "ssh_pty_bytes_before": 2288,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-oversize",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [],
+              "elapsed_ms": 123,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "45f824c758fc38460c3f6fd29bb769d5",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "body limit",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472816,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 1,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 151
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 2552,
+              "ssh_pty_bytes_before": 2420,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-duplicate-key",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [],
+              "elapsed_ms": 123,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "410e1fbb4107a8b77405e935bb59580b",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "duplicate key at line 1 column 30",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472820,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 1,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 151
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 2684,
+              "ssh_pty_bytes_before": 2552,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-batch",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [],
+              "elapsed_ms": 123,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "62727a4d3f895ffbd44e865557a0d297",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "single object required",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472823,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 2,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 151
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 2816,
+              "ssh_pty_bytes_before": 2684,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-depth",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [],
+              "elapsed_ms": 123,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "ff408b93bade071fdbe1ef2e4d35fa67",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "JSON depth limit at line 1 column 37",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472827,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 1,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 151
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 2948,
+              "ssh_pty_bytes_before": 2816,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-trailing-json",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [],
+              "elapsed_ms": 123,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "2f969aaaffd5d95c76f6342403399619",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "trailing characters at line 1 column 4",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472830,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 1,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 151
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 3080,
+              "ssh_pty_bytes_before": 2948,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-invalid-utf8",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [],
+              "elapsed_ms": 123,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "2a7b28bee0ff2e9dc2cc4eda9aacee77",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "invalid unicode code point at line 1 column 7",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472833,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 1,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 151
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 3234,
+              "ssh_pty_bytes_before": 3102,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-bom",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [],
+              "elapsed_ms": 124,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "b55d10a47d73a4be584a10c760ecacd8",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "BOM",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472836,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 2,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 151
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 3366,
+              "ssh_pty_bytes_before": 3234,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-nonfinite",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [],
+              "elapsed_ms": 123,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "9140e9907be0daf4c1713b2ecac9ef54",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "expected value at line 1 column 6",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472839,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 1,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 151
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 3498,
+              "ssh_pty_bytes_before": 3366,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-counter-replay",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [],
+              "elapsed_ms": 126,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "0087f7fd1af9e04ad44e79599605e143",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "request counter closed",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472842,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 1,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 151
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 3630,
+              "ssh_pty_bytes_before": 3498,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-counter-skipped",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [],
+              "elapsed_ms": 123,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "f0ab23f941419dd2fc36105539dc81a0",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "request counter closed",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472845,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 1,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 151
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 3762,
+              "ssh_pty_bytes_before": 3630,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-partial-frame",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [],
+              "elapsed_ms": 5043,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "598c6b9b6b3baee9b5b48d68f3092c0b",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "TIMEOUT",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472848,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 1,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 151
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 9284,
+              "ssh_pty_bytes_before": 3784,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-handshake-timeout",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [],
+              "elapsed_ms": 5001,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "01705b98294bb86d89b949259c33f106",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "TIMEOUT",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472888,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 1,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 0
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 14762,
+              "ssh_pty_bytes_before": 9284,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-blocked-rpc",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [],
+              "elapsed_ms": 10036,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "8b15ad6dbb28dc4811bc9c6c70947de8",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "TIMEOUT at plugin.stop",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 472934,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 1,
+                "overflow_refused": false,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 178
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 25762,
+              "ssh_pty_bytes_before": 14762,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-queue-byte-flood",
+            "cleanup_status": "exact plugin child killed/waited; reader/logger threads joined",
+            "expected": "Public framed peer fault remains isolated while actual SSH PTY bytes progress; expected refusal/correlation/budget applies",
+            "observations": {
+              "denied": [],
+              "elapsed_ms": 122,
+              "event_bytes_peak": 0,
+              "event_queue_peak": 0,
+              "events_dropped": 0,
+              "grant_records": 2,
+              "image_grant_was_active_then_revoked": false,
+              "instance_id": "26749d1493d28351dde94e57a127a1f4",
+              "logs": {
+                "body_recorded": false,
+                "bytes_dropped": 0,
+                "bytes_retained": 0,
+                "bytes_seen": 0,
+                "line_bytes_dropped": 0,
+                "line_limit": 4096
+              },
+              "observed": "CONTROL_QUEUE_MAX at fifth valid large frame",
+              "operation_requeried": false,
+              "pending_channel_frames_max": 16,
+              "plugin_environment": "python3 -I -S; env_clear; PATH and LANG only",
+              "plugin_pid": 473151,
+              "private_handles_passed": false,
+              "queue": {
+                "frames_limit": 16,
+                "frames_peak": 4,
+                "overflow_refused": true,
+                "scope": "queued wire bytes including headers; JSON heap and one bounded in-flight parser frame are separate",
+                "wire_bytes_limit": 1048576,
+                "wire_bytes_peak": 960376
+              },
+              "request_counter_storage": "one high-water counter plus bounded pending channel",
+              "ssh_pty_bytes_after": 25894,
+              "ssh_pty_bytes_before": 25762,
+              "ungranted_effects_dispatched": 0
+            },
+            "status": "pass"
+          },
+          {
+            "case": "plugin-restart-ceiling",
+            "cleanup_status": "all three exact plugin children waited",
+            "expected": "Initial start plus at most two automatic restarts; new instance/grants and no action replay",
+            "observations": {
+              "action_replays": 0,
+              "actual_starts": 3,
+              "automatic_restarts": 2,
+              "backoff_seconds": [
+                1,
+                4
+              ],
+              "fourth_start_refused": true,
+              "instance_ids": [
+                "da3fba054a881ab2889caebb30a0d798",
+                "293214ef40dac7d9860c11145fbded1e",
+                "6f12d5fbb3cc26953ce8a9a9b9cbdb9d"
+              ],
+              "restart_window_seconds": 60
+            },
+            "status": "pass"
+          },
+          {
+            "case": "bounded-package-archive-gate",
+            "cleanup_status": "Python TemporaryDirectory removed archives; exact child waited",
+            "expected": "Valid synthetic USTAR+gzip accepted; traversal/absolute/duplicate/link/device/API/platform/entrypoint/install-hook/manifest/file-count/decompression attacks rejected without extraction",
+            "observations": {
+              "cases": [
+                {
+                  "accepted": true,
+                  "case": "valid",
+                  "expanded_bytes": 10240,
+                  "extracted_files": 0,
+                  "files": 2,
+                  "max_decompression_chunk": 65536,
+                  "reason": null,
+                  "status": "pass"
+                },
+                {
+                  "accepted": false,
+                  "case": "traversal",
+                  "reason": "package path",
+                  "status": "pass"
+                },
+                {
+                  "accepted": false,
+                  "case": "absolute",
+                  "reason": "package path",
+                  "status": "pass"
+                },
+                {
+                  "accepted": false,
+                  "case": "duplicate",
+                  "reason": "package path",
+                  "status": "pass"
+                },
+                {
+                  "accepted": false,
+                  "case": "symlink",
+                  "reason": "package link/device/extended metadata",
+                  "status": "pass"
+                },
+                {
+                  "accepted": false,
+                  "case": "hardlink",
+                  "reason": "package link/device/extended metadata",
+                  "status": "pass"
+                },
+                {
+                  "accepted": false,
+                  "case": "device",
+                  "reason": "package link/device/extended metadata",
+                  "status": "pass"
+                },
+                {
+                  "accepted": false,
+                  "case": "entrypoint",
+                  "reason": "entrypoint",
+                  "status": "pass"
+                },
+                {
+                  "accepted": false,
+                  "case": "api",
+                  "reason": "API/platform mismatch",
+                  "status": "pass"
+                },
+                {
+                  "accepted": false,
+                  "case": "platform",
+                  "reason": "API/platform mismatch",
+                  "status": "pass"
+                },
+                {
+                  "accepted": false,
+                  "case": "install-hook",
+                  "reason": "manifest schema/install hooks",
+                  "status": "pass"
+                },
+                {
+                  "accepted": false,
+                  "case": "manifest-limit",
+                  "reason": "MANIFEST_MAX",
+                  "status": "pass"
+                },
+                {
+                  "accepted": false,
+                  "case": "file-count",
+                  "reason": "PACKAGE_FILES_MAX",
+                  "status": "pass"
+                },
+                {
+                  "accepted": false,
+                  "case": "decompression-limit",
+                  "reason": "PACKAGE_MAX",
+                  "status": "pass"
+                }
+              ],
+              "cleanup_status": "temporary archive directory removed",
+              "profile": "bounded USTAR+gzip; no extraction/install execution"
+            },
+            "status": "pass"
+          }
+        ],
+        "failed": 0,
+        "limitations": [
+          "Focused trusted-plugin broker and bounded USTAR+gzip package profile are feasibility probes, not the product plugin manager/installer",
+          "Request, event, log and restart budgets exercised here; full Core grant/ticket/metadata admission uses separate Core probes",
+          "Independent process isolation is not a same-user malicious-code sandbox"
+        ],
+        "ssh_progress_oracle": {
+          "bytes_read": 32076,
+          "owner": "native harness PTY/OpenSSH child",
+          "terminal_bodies_sent_to_plugin": false
+        },
+        "status": "pass"
+      },
+      "status": "pass"
+    }
+  ],
+  "cleanup": {
+    "removed": [
+      "core.lock",
+      "qualification.json"
+    ],
+    "runtime_removed": true
+  },
+  "controlled_linux_cases_passed": true,
+  "environment": {
+    "architecture": "x86_64",
+    "auth_mode": "generated key/password",
+    "backend": "system ssh pipes + russh-sftp3.0.1 probe",
+    "client_os": "Linux native",
+    "display": "none; desktop execution excluded",
+    "local_shell": "no user shell used",
+    "ssh_build": "OpenSSH_10.0p2 Debian-7+deb13u4, OpenSSL 3.5.7 9 Jun 2026",
+    "terminal_host": "native Unix PTY / synthetic raw cat"
+  },
+  "fixture_id": "b590f2c6767da5384787f0c063feaa79",
+  "limitations": [
+    "Probe-specific RPC methods differ from Phase1 public API and accept only synthetic owned fixtures",
+    "No all-platform or full-product support claim",
+    "Only explicitly generated controlled roots are advertised; lstat cannot defeat a malicious same-UID remote directory swap",
+    "Desktop capture excluded; synthetic PNG preserves changed transfer/insert coverage"
+  ],
+  "phase0_ready": false,
+  "schema": 1,
+  "scope_limits": [
+    {
+      "status": "deferred-outside-approved-fixtures",
+      "surface": "physical IME/hardware key/MFA; Windows/macOS/Wayland/native non-Linux servers; reboot"
+    },
+    {
+      "status": "rejected-before-helper-execution; native trusted jump/proxy/reuse and chroot separately executed",
+      "surface": "Core dynamic Include/Match/proxy config binding"
+    },
+    {
+      "status": "not-implemented; deterministic representative barriers exercise the shared admission checks",
+      "surface": "full Phase1 product API, installer, real-Shell context and every dispatch race permutation"
+    }
+  ],
+  "secondary_fixture_id": "93f2db10abe08010513e2956a7ac4369",
+  "supplemental_evidence": [
+    {
+      "fault_group": "E1 other-user IPC",
+      "report": ".trellis/tasks/archive/2026-10/10-22-sshx-phase0-feasibility/research/ipc-crossuid.json",
+      "scope": "native kernel DAC and SO_PEERCRED refusal; not rerun inside this suite",
+      "status": "historical; not executed in this run"
+    },
+    {
+      "fault_group": "E6 packages/events",
+      "report": ".trellis/tasks/archive/2026-10/10-22-sshx-phase0-feasibility/research/check-plugin-results.json",
+      "scope": "bounded test broker/USTAR gate, not production installer",
+      "status": "historical detailed report; current nested plugin cases are inside this report"
+    }
+  ]
+}

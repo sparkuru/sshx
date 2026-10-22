@@ -1,0 +1,72 @@
+{
+  "task": "10-22-sshx-upload-root-runtime",
+  "host": "Linux-6.12.111+deb13-amd64-x86_64-with-glibc2.41",
+  "fixtures": [
+    {
+      "role": "primary",
+      "state_file": "/home/wkyuu/cargo/repo/29-sshx/.devhome/phase0/b590f2c6767da5384787f0c063feaa79/state.json",
+      "run_id": "b590f2c6767da5384787f0c063feaa79",
+      "container_id": "93eef31692c8367e4205f3e8e43d4ac026beaace6ad51fc3518c83b2057552ba",
+      "image_id": "sha256:cb3eb061776d0835b474754593e692492c473a811607dbab68a815b02cedc70c",
+      "ports": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "32781"
+        }
+      ],
+      "labels": {
+        "hako.repo": "/home/wkyuu/cargo/repo/29-sshx",
+        "hako.scope": "dev.sh",
+        "hako.service": "ssh",
+        "sshx.run": "b590f2c6767da5384787f0c063feaa79",
+        "sshx.task": "10-22-sshx-phase0-feasibility"
+      },
+      "server_package": "1:9.2p1-2+deb12u10",
+      "filesystems": [
+        "/home/probe/probe-data overlayfs 191ea70de7545f03",
+        "/quota tmpfs 53614b91da473a0c"
+      ],
+      "devices": [
+        "/home/probe/probe-data 58 1000 755",
+        "/quota 133 0 1777"
+      ],
+      "host_key_fingerprint": "256 SHA256:kCzkc4XWp6aeJixs0qyH6J3d0EpnwiYGHfGBgnwmZ9w phase0-host (ED25519)",
+      "state_mode": "0o600",
+      "readiness": "strict generated host-key authenticated lifecycle readiness passed"
+    },
+    {
+      "role": "secondary",
+      "state_file": "/home/wkyuu/cargo/repo/29-sshx/.devhome/phase0/secondary/93f2db10abe08010513e2956a7ac4369/state.json",
+      "run_id": "93f2db10abe08010513e2956a7ac4369",
+      "container_id": "d4f0fbbccff01bdbd41599ac32aacb3065f599213ef00624fb2b468b1916c0fb",
+      "image_id": "sha256:cb3eb061776d0835b474754593e692492c473a811607dbab68a815b02cedc70c",
+      "ports": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "32782"
+        }
+      ],
+      "labels": {
+        "hako.repo": "/home/wkyuu/cargo/repo/29-sshx",
+        "hako.scope": "dev.sh",
+        "hako.service": "ssh",
+        "sshx.run": "93f2db10abe08010513e2956a7ac4369",
+        "sshx.task": "10-22-sshx-phase0-feasibility"
+      },
+      "server_package": "1:9.2p1-2+deb12u10",
+      "filesystems": [
+        "/home/probe/probe-data overlayfs d10d10ca4de4f5a2",
+        "/quota tmpfs df0abad169aa833c"
+      ],
+      "devices": [
+        "/home/probe/probe-data 139 1000 755",
+        "/quota 147 0 1777"
+      ],
+      "host_key_fingerprint": "256 SHA256:UD1PIHW3mJ7jNL0E/XgJ4pqeeYqVkb4dV1fUXYYIIHg phase0-host (ED25519)",
+      "state_mode": "0o600",
+      "readiness": "strict generated host-key authenticated lifecycle readiness passed"
+    }
+  ],
+  "cleanup": "pending; main owns exact teardown",
+  "scope": "two distinct generated services on one Docker host; no production or cross-platform evidence"
+}

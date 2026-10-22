@@ -8,9 +8,9 @@ Source basis: [XI–XIII](../.trellis/spec/trellis-plus/sshx-design.txt). Experi
 
 After accepting the Phase 0 negative deliverable, the user selected A on 2026-10-22: a cooperative remote server/account with stable upload ancestors and no independent modification/replacement of operation-owned resources through cleanup. The [protocol scope](protocol.md#cooperative-upload-scope) now makes this an explicit per-target local policy precondition using existing `path_scope.policy: "cooperative"`, `scope_digest` and B. A logical canonical SFTP root is not a jail or durable directory capability; 0700/random names/metadata do not establish one. Stronger same-account confinement remains unsupported, and observed path/ownership inconsistency stops new effects. Login and input-context authorization remain independent.
 
-The future regular-PNG candidate in B uses verified `hardlink@openssh.com` v1 to publish a closed temp to a new final basename in the same operation directory/filesystem, then separate owned-temp cleanup. [ADR 3](adr/0003-transfer-backend.md) records version-pinned source evidence that baseline rename may fall back to a racy stat/rename on selected filesystem errors. This caveat does not rewrite the historical positive fixture result. The existing probe still calls `raw.rename`; recorded extension names prove neither version nor dedicated hardlink execution. Source-bound reports, their checksums and `phase0_ready: false` are unchanged.
+The future regular-PNG candidate in B uses verified `hardlink@openssh.com` v1 to publish a closed temp to a new final basename in the same operation directory/filesystem, then separate owned-temp cleanup. [ADR 3](adr/0003-transfer-backend.md) records version-pinned source evidence that baseline rename may fall back to a racy stat/rename on selected filesystem errors. This caveat does not rewrite the historical positive fixture result. The archived probe revision used `raw.rename`; the current Core path now uses hardlink under explicit fixture qualification. Historical extension names alone prove neither version nor dedicated hardlink execution. Source-bound reports, their checksums and `phase0_ready: false` are unchanged.
 
-This document-only scope decision supplies input to later MVP planning. It implements no new capability and performs no new native/SSH/SFTP experiment. Before promoting the proposed upload path, a separately authorized runtime task must cover:
+The original document-only scope decision supplied input to later MVP planning. The subsequently authorized runtime task now exercises the bounded probe path below. These product acceptance obligations remain applicable:
 
 | Future assertion point | Required observable outcome |
 | --- | --- |
@@ -23,7 +23,24 @@ This document-only scope decision supplies input to later MVP planning. It imple
 | Cleanup ownership/target/continuity lost | Pending cleanup; no replacement-path deletion, recursive sweep or adoption after reconnect/new Core/generation. Preserve committed final files and their containing operation directory |
 | Confirmed final versus insertion | Mapping/context/writer failure retains final result with no guessed path/input; zero-byte insertion retry does not repeat publication |
 
-Use actual remote bytes/path/PTY and effect counters, not merely expected state enums. Advertisement, source review and these future assertions are not passing runtime results. Existing target/config/auth, platform and full-product gaps remain; cooperative scope does not grant general MVP promotion or automatic Phase 1 execution.
+Use actual remote bytes/path/PTY and effect counters, not merely expected state enums. Advertisement and source review alone are not passing runtime results; the current checkpoint below links executed observations. Existing target/config/auth, platform and full-product gaps remain; cooperative scope does not grant general MVP promotion or automatic Phase 1 execution.
+
+## Cooperative runtime checkpoint
+
+The current [runtime task](../.trellis/tasks/10-22-sshx-upload-root-runtime/prd.md) extends the existing Core path, not the archived report. Its [implementation evidence](../.trellis/tasks/10-22-sshx-upload-root-runtime/research/implementation-evidence.md) records source-linked commands and case mapping. Two fresh generated Debian OpenSSH 9.2p1 containers on one Docker host provide separate targets; their upload root is overlayfs and `/quota` is a distinct tmpfs. No other server/filesystem is certified.
+
+The fixture-owner CLI flag `core --qualify-upload` explicitly authorizes synthetic preparation before serving requests: check extension value 1, link/read back a regular file, verify occupied-name preservation, then remove those acknowledged preparation resources. Core retains the resulting policy/qualification only for that process and actual fixture/config/namespace/root. Without the flag, login remains available but uploads have no policy. Action invocation or plugin requests cannot trigger qualification or create policy. Preparation failure aborts startup and never qualifies the fixture; uncertain preparation resources are left for exact fixture teardown.
+
+`upload-suite` executes C01–C13 through the same Core upload path. C01–C12 cover qualification/policy refusal, publication and collisions, unavailable capability, path observations, cancel/revoke, final-versus-cleanup outcomes, matching reply loss, cleanup continuity, dedup/context and target isolation. C13 is source/environment bookkeeping; a passing case is **not** independent review or teardown completion. The report intentionally retains `acceptance_complete: false` until those separate records exist.
+
+Real cases observe remote hashes/presence and native synthetic PTY bytes. Missing/unsupported advertisement, explicit unsupported response, lost reply and altered cleanup evidence are labeled fault injection. Cross-device rejection is a real SFTP generic failure; privileged device metadata is separate fixture evidence and never runtime EXDEV authority. A concurrent creator after precheck likewise retains generic IO_ERROR rather than inventing EEXIST. Actual permission denial is checked independently; Core conservatively stops at changed parent mode, with a separate injected REMOVE error covering result propagation. Unknown publication remains indeterminate even when an independent connection reads matching final bytes.
+
+~~~sh
+.devhome/target/debug/phase0-probe upload-suite --fixture PRIMARY_STATE --fixture-secondary SECOND_STATE --output NEW_UPLOAD_JSON
+.devhome/target/debug/phase0-probe suite --headless --fixture PRIMARY_STATE --fixture-secondary SECOND_STATE --output NEW_CORE_JSON
+~~~
+
+`--headless` excludes the desktop capture/switch case and uses a generated PNG for the upload/insert regression; the excluded case is not counted as passed. The ordinary suite retains its explicitly authorized private-desktop mode. Current probe RPC projections use `final_commit: confirmed/indeterminate`, independent `cleanup_pending`, immutable dispatch plus definitive-rejection facts and cleanup counters. They remain an experimental subset: synthetic non-PNG bytes are also accepted by probe.upload, plugin/Client fixture identities are not a complete v1 implementation, and general Shell context, arbitrary configurations, hostile same-account confinement and platform promotion remain unsupported. Historical `phase0_ready: false` remains unchanged.
 
 ## Runnable Linux probe interfaces
 

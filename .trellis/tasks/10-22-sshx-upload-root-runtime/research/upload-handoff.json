@@ -1,0 +1,3140 @@
+{
+  "acceptance_complete": false,
+  "cases": [
+    {
+      "case": "C01",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Real qualification and default-unavailable Core; unqualified upload creates nothing",
+      "experiment": "upload",
+      "limitations": [],
+      "observations": {
+        "preparation_authority": "explicit --qualify-upload fixture-owner CLI; never action/plugin admission",
+        "qualification": [
+          {
+            "collision_preserved": true,
+            "container_id": "93eef31692c8367e4205f3e8e43d4ac026beaace6ad51fc3518c83b2057552ba",
+            "evidence_kind": "real_server",
+            "extension_version": "1",
+            "limitation": "run-scoped cooperative fixture; no inode confinement or durability claim",
+            "linked_sha256": "83678fb010625be2ce4f287e9a1019e0d0950d8999a3a5cf4c42977937b6149a",
+            "namespace": "fixture-sftp:b590f2c6767da5384787f0c063feaa79",
+            "preparation_cleanup": "confirmed",
+            "root": "/home/probe/probe-data",
+            "run_id": "b590f2c6767da5384787f0c063feaa79",
+            "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3"
+          },
+          {
+            "collision_preserved": true,
+            "container_id": "d4f0fbbccff01bdbd41599ac32aacb3065f599213ef00624fb2b468b1916c0fb",
+            "evidence_kind": "real_server",
+            "extension_version": "1",
+            "limitation": "run-scoped cooperative fixture; no inode confinement or durability claim",
+            "linked_sha256": "83678fb010625be2ce4f287e9a1019e0d0950d8999a3a5cf4c42977937b6149a",
+            "namespace": "fixture-sftp:93f2db10abe08010513e2956a7ac4369",
+            "preparation_cleanup": "confirmed",
+            "root": "/home/probe/probe-data",
+            "run_id": "93f2db10abe08010513e2956a7ac4369",
+            "scope_digest": "b14989b8573780ab53c40acdfa15e5dcb039a890b999f11ac21d63075bd981be"
+          }
+        ],
+        "without_policy": [
+          {
+            "exists": false,
+            "path": "/home/probe/probe-data/4bf3c384cc0c5eb72bf901b9a7aee348"
+          },
+          {
+            "exists": false,
+            "path": "/home/probe/probe-data/4bf3c384cc0c5eb72bf901b9a7aee348/.partial"
+          },
+          {
+            "exists": false,
+            "path": "/home/probe/probe-data/4bf3c384cc0c5eb72bf901b9a7aee348/final.png"
+          }
+        ],
+        "without_qualification": "denied before connection"
+      },
+      "status": "pass"
+    },
+    {
+      "case": "C02",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Acknowledged link, exact bytes, separate owned-temp cleanup and retained final directory",
+      "experiment": "upload",
+      "limitations": [],
+      "observations": {
+        "evidence_kind": "real_server",
+        "files": [
+          {
+            "exists": true,
+            "path": "/home/probe/probe-data/89e0c54e388618b68b83a826a922bf05",
+            "permissions": 16832,
+            "sha256": null,
+            "size": 4096,
+            "symlink": false
+          },
+          {
+            "exists": false,
+            "path": "/home/probe/probe-data/89e0c54e388618b68b83a826a922bf05/.partial"
+          },
+          {
+            "exists": true,
+            "path": "/home/probe/probe-data/89e0c54e388618b68b83a826a922bf05/final.png",
+            "permissions": 33152,
+            "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+            "size": 4,
+            "symlink": false
+          }
+        ],
+        "insertion_bytes": 0,
+        "operation": {
+          "ack_dropped": false,
+          "barrier": "completed",
+          "binding": {
+            "attachment_id": "fd73d64fdbd911a8d99d5f9b65fab6dd",
+            "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+            "config_generation": 1,
+            "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+            "generation": 1,
+            "operation_id": "89e0c54e388618b68b83a826a922bf05",
+            "profile_id": "primary",
+            "session_id": "d9a7f273da3ea5b09f730c9f7c6fb325",
+            "writer_epoch": 1
+          },
+          "bytes_written": 0,
+          "cancel_requested": false,
+          "cleanup_pending": false,
+          "cleanup_steps": 1,
+          "commit_dispatched": true,
+          "commit_rejected": false,
+          "error": null,
+          "external_steps_admitted": 10,
+          "insert_state": "none",
+          "last_step": "readback",
+          "result": {
+            "cleanup_pending": false,
+            "final_commit": "confirmed",
+            "mapping_id": null,
+            "readback_verified": true,
+            "shell_path": null,
+            "transfer_path": "/home/probe/probe-data/89e0c54e388618b68b83a826a922bf05/final.png"
+          },
+          "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+          "upload_state": "committed"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "C03",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Existing regular/symlink and concurrent creator preserve destination; no retry/fallback",
+      "experiment": "upload",
+      "limitations": [],
+      "observations": {
+        "cases": [
+          {
+            "files": [
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/dd7e8e52ff2c9ccd7a8b55c1f1d2f17c",
+                "permissions": 16832,
+                "sha256": null,
+                "size": 4096,
+                "symlink": false
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/dd7e8e52ff2c9ccd7a8b55c1f1d2f17c/.partial"
+              },
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/dd7e8e52ff2c9ccd7a8b55c1f1d2f17c/final.png",
+                "permissions": 33188,
+                "sha256": "962f85a27854336f3286ad54b49321f62525043b5f3508b2ecc887fdd6e7550e",
+                "size": 8,
+                "symlink": false
+              }
+            ],
+            "kind": "existing",
+            "operation": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "fd73d64fdbd911a8d99d5f9b65fab6dd",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "dd7e8e52ff2c9ccd7a8b55c1f1d2f17c",
+                "profile_id": "primary",
+                "session_id": "d9a7f273da3ea5b09f730c9f7c6fb325",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": true,
+              "cleanup_steps": 1,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "NAME_EXISTS",
+              "external_steps_admitted": 8,
+              "insert_state": "none",
+              "last_step": "commit_parent_lstat",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            },
+            "preserved_sha256": "962f85a27854336f3286ad54b49321f62525043b5f3508b2ecc887fdd6e7550e",
+            "replay": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "fd73d64fdbd911a8d99d5f9b65fab6dd",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "dd7e8e52ff2c9ccd7a8b55c1f1d2f17c",
+                "profile_id": "primary",
+                "session_id": "d9a7f273da3ea5b09f730c9f7c6fb325",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": true,
+              "cleanup_steps": 1,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "NAME_EXISTS",
+              "external_steps_admitted": 8,
+              "insert_state": "none",
+              "last_step": "commit_parent_lstat",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            }
+          },
+          {
+            "files": [
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/845475301db5700949c05f3835b18b4f",
+                "permissions": 16832,
+                "sha256": null,
+                "size": 4096,
+                "symlink": false
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/845475301db5700949c05f3835b18b4f/.partial"
+              },
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/845475301db5700949c05f3835b18b4f/final.png",
+                "permissions": 41471,
+                "sha256": null,
+                "size": 64,
+                "symlink": true
+              }
+            ],
+            "kind": "symlink",
+            "operation": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "fd73d64fdbd911a8d99d5f9b65fab6dd",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "845475301db5700949c05f3835b18b4f",
+                "profile_id": "primary",
+                "session_id": "d9a7f273da3ea5b09f730c9f7c6fb325",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": true,
+              "cleanup_steps": 1,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "NAME_EXISTS",
+              "external_steps_admitted": 8,
+              "insert_state": "none",
+              "last_step": "commit_parent_lstat",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            },
+            "preserved_sha256": "962f85a27854336f3286ad54b49321f62525043b5f3508b2ecc887fdd6e7550e",
+            "replay": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "fd73d64fdbd911a8d99d5f9b65fab6dd",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "845475301db5700949c05f3835b18b4f",
+                "profile_id": "primary",
+                "session_id": "d9a7f273da3ea5b09f730c9f7c6fb325",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": true,
+              "cleanup_steps": 1,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "NAME_EXISTS",
+              "external_steps_admitted": 8,
+              "insert_state": "none",
+              "last_step": "commit_parent_lstat",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            }
+          },
+          {
+            "files": [
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/76ab4e4166e26590f0fa05cfcb5e2ef0",
+                "permissions": 16832,
+                "sha256": null,
+                "size": 4096,
+                "symlink": false
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/76ab4e4166e26590f0fa05cfcb5e2ef0/.partial"
+              },
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/76ab4e4166e26590f0fa05cfcb5e2ef0/final.png",
+                "permissions": 33188,
+                "sha256": "962f85a27854336f3286ad54b49321f62525043b5f3508b2ecc887fdd6e7550e",
+                "size": 8,
+                "symlink": false
+              }
+            ],
+            "kind": "concurrent",
+            "operation": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "fd73d64fdbd911a8d99d5f9b65fab6dd",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "76ab4e4166e26590f0fa05cfcb5e2ef0",
+                "profile_id": "primary",
+                "session_id": "d9a7f273da3ea5b09f730c9f7c6fb325",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": true,
+              "cleanup_steps": 1,
+              "commit_dispatched": true,
+              "commit_rejected": true,
+              "error": "IO_ERROR",
+              "external_steps_admitted": 9,
+              "insert_state": "none",
+              "last_step": "link",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            },
+            "preserved_sha256": "962f85a27854336f3286ad54b49321f62525043b5f3508b2ecc887fdd6e7550e",
+            "replay": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "fd73d64fdbd911a8d99d5f9b65fab6dd",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "76ab4e4166e26590f0fa05cfcb5e2ef0",
+                "profile_id": "primary",
+                "session_id": "d9a7f273da3ea5b09f730c9f7c6fb325",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": true,
+              "cleanup_steps": 1,
+              "commit_dispatched": true,
+              "commit_rejected": true,
+              "error": "IO_ERROR",
+              "external_steps_admitted": 9,
+              "insert_state": "none",
+              "last_step": "link",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            }
+          }
+        ],
+        "evidence_kind": "real_server"
+      },
+      "status": "pass"
+    },
+    {
+      "case": "C04",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Unavailable version/explicit unsupported injection and real cross-device failure never fall back",
+      "experiment": "upload",
+      "limitations": [],
+      "observations": {
+        "cross_device": {
+          "classification": "generic SFTP failure; distinct-device fixture facts are separate, not runtime EXDEV authority",
+          "destination_absent": true,
+          "error": "Failure: Failure",
+          "evidence_kind": "real_server",
+          "fallback": false
+        },
+        "injected": [
+          {
+            "evidence_kind": "fault_injection",
+            "fault": "missing_extension",
+            "files": [
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/ac8530fce9390326794ed0d83bd258c1"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/ac8530fce9390326794ed0d83bd258c1/.partial"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/ac8530fce9390326794ed0d83bd258c1/final.png"
+              }
+            ],
+            "operation": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "fd73d64fdbd911a8d99d5f9b65fab6dd",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "ac8530fce9390326794ed0d83bd258c1",
+                "profile_id": "primary",
+                "session_id": "d9a7f273da3ea5b09f730c9f7c6fb325",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": false,
+              "cleanup_steps": 0,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "COMMIT_UNSUPPORTED",
+              "external_steps_admitted": 1,
+              "insert_state": "none",
+              "last_step": "connect",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            }
+          },
+          {
+            "evidence_kind": "fault_injection",
+            "fault": "unsupported_version",
+            "files": [
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/bf420c6b9076c4b1862ed325b437722f"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/bf420c6b9076c4b1862ed325b437722f/.partial"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/bf420c6b9076c4b1862ed325b437722f/final.png"
+              }
+            ],
+            "operation": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "fd73d64fdbd911a8d99d5f9b65fab6dd",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "bf420c6b9076c4b1862ed325b437722f",
+                "profile_id": "primary",
+                "session_id": "d9a7f273da3ea5b09f730c9f7c6fb325",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": false,
+              "cleanup_steps": 0,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "COMMIT_UNSUPPORTED",
+              "external_steps_admitted": 1,
+              "insert_state": "none",
+              "last_step": "connect",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            }
+          },
+          {
+            "evidence_kind": "fault_injection",
+            "fault": "unsupported_response",
+            "files": [
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/98d8b29807c8ffe42d3a930aa864bee8"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/98d8b29807c8ffe42d3a930aa864bee8/.partial"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/98d8b29807c8ffe42d3a930aa864bee8/final.png"
+              }
+            ],
+            "operation": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "fd73d64fdbd911a8d99d5f9b65fab6dd",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "98d8b29807c8ffe42d3a930aa864bee8",
+                "profile_id": "primary",
+                "session_id": "d9a7f273da3ea5b09f730c9f7c6fb325",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": false,
+              "cleanup_steps": 2,
+              "commit_dispatched": false,
+              "commit_rejected": true,
+              "error": "COMMIT_UNSUPPORTED",
+              "external_steps_admitted": 9,
+              "insert_state": "none",
+              "last_step": "link",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            }
+          }
+        ]
+      },
+      "status": "pass"
+    },
+    {
+      "case": "C05",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Policy/scope changes, stronger request, wrong owner/grant and malformed request fail before effects",
+      "experiment": "upload",
+      "limitations": [],
+      "observations": {
+        "cases": [
+          {
+            "change": "absent",
+            "denial": {
+              "error": {
+                "code": -32000,
+                "data": {
+                  "name": "PATH_DENIED",
+                  "operation_id": null,
+                  "phase": null,
+                  "retryable": false
+                },
+                "message": "PATH_DENIED"
+              },
+              "id": "237",
+              "jsonrpc": "2.0"
+            },
+            "files": [
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/b540e7cb487cb66eb7b2a2bc80a1addd"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/b540e7cb487cb66eb7b2a2bc80a1addd/.partial"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/b540e7cb487cb66eb7b2a2bc80a1addd/final.png"
+              }
+            ]
+          },
+          {
+            "change": "root",
+            "denial": {
+              "error": {
+                "code": -32000,
+                "data": {
+                  "name": "PATH_DENIED",
+                  "operation_id": null,
+                  "phase": null,
+                  "retryable": false
+                },
+                "message": "PATH_DENIED"
+              },
+              "id": "260",
+              "jsonrpc": "2.0"
+            },
+            "files": [
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/40012d375cb40e9854c1e3c289e22f29"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/40012d375cb40e9854c1e3c289e22f29/.partial"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/40012d375cb40e9854c1e3c289e22f29/final.png"
+              }
+            ]
+          },
+          {
+            "change": "namespace",
+            "denial": {
+              "error": {
+                "code": -32000,
+                "data": {
+                  "name": "PATH_DENIED",
+                  "operation_id": null,
+                  "phase": null,
+                  "retryable": false
+                },
+                "message": "PATH_DENIED"
+              },
+              "id": "284",
+              "jsonrpc": "2.0"
+            },
+            "files": [
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/6644fb40eca4b2a283410b43fc09f769"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/6644fb40eca4b2a283410b43fc09f769/.partial"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/6644fb40eca4b2a283410b43fc09f769/final.png"
+              }
+            ]
+          },
+          {
+            "change": "policy",
+            "denial": {
+              "error": {
+                "code": -32000,
+                "data": {
+                  "name": "PATH_DENIED",
+                  "operation_id": null,
+                  "phase": null,
+                  "retryable": false
+                },
+                "message": "PATH_DENIED"
+              },
+              "id": "308",
+              "jsonrpc": "2.0"
+            },
+            "files": [
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/82d7ed861865cb811b065b44fc2a1ae7"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/82d7ed861865cb811b065b44fc2a1ae7/.partial"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/82d7ed861865cb811b065b44fc2a1ae7/final.png"
+              }
+            ]
+          }
+        ],
+        "config_change": {
+          "denial": {
+            "error": {
+              "code": -32000,
+              "data": {
+                "name": "CONFIG_CHANGED",
+                "operation_id": null,
+                "phase": null,
+                "retryable": false
+              },
+              "message": "CONFIG_CHANGED"
+            },
+            "id": "23",
+            "jsonrpc": "2.0"
+          },
+          "evidence_kind": "real_local_config_change",
+          "files": [
+            {
+              "exists": false,
+              "path": "/home/probe/probe-data/fc6838b9361864c5aab9dceed0428090"
+            },
+            {
+              "exists": false,
+              "path": "/home/probe/probe-data/fc6838b9361864c5aab9dceed0428090/.partial"
+            },
+            {
+              "exists": false,
+              "path": "/home/probe/probe-data/fc6838b9361864c5aab9dceed0428090/final.png"
+            }
+          ],
+          "original_fixture_config": "unchanged; test changed isolated copy"
+        },
+        "limitation": "probe Client ownership represents instance; production plugin admission remains separate",
+        "malformed": {
+          "ack_dropped": false,
+          "barrier": "none",
+          "binding": {
+            "attachment_id": "4dec5811e0306fc1bedd0a4e6ad0ddcd",
+            "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+            "config_generation": 1,
+            "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+            "generation": 1,
+            "operation_id": "1d48312fbd48460ceac536a8f68fe0af",
+            "profile_id": "primary",
+            "session_id": "ef25e76b36ead98c03e5ac241ce6bda7",
+            "writer_epoch": 1
+          },
+          "bytes_written": 0,
+          "cancel_requested": false,
+          "cleanup_pending": false,
+          "cleanup_steps": 0,
+          "commit_dispatched": false,
+          "commit_rejected": false,
+          "error": null,
+          "external_steps_admitted": 0,
+          "insert_state": "none",
+          "last_step": "none",
+          "result": null,
+          "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+          "upload_state": "none"
+        },
+        "revoked_before_policy": "CAPABILITY_DENIED",
+        "stronger_requirement": "PATH_DENIED",
+        "wrong_client_instance": "CAPABILITY_DENIED"
+      },
+      "status": "pass"
+    },
+    {
+      "case": "C06",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Traversal and observed symlink/type replacement block publication and cleanup",
+      "experiment": "upload",
+      "limitations": [],
+      "observations": {
+        "containment_unit_test": "prefix-confusable/traversal",
+        "evidence_kind": "real_server",
+        "limitation": "observed replacement only; no ABA guarantee",
+        "observations": {
+          "original_temp_sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+          "replacement_symlink": true
+        },
+        "operation": {
+          "ack_dropped": false,
+          "barrier": "completed",
+          "binding": {
+            "attachment_id": "7600c13b6964d746386426f89d80adb4",
+            "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+            "config_generation": 1,
+            "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+            "generation": 1,
+            "operation_id": "ca05b3ec988c437f1620384b8d2d5751",
+            "profile_id": "primary",
+            "session_id": "4202994acdf95766e1537a46827b0742",
+            "writer_epoch": 1
+          },
+          "bytes_written": 0,
+          "cancel_requested": false,
+          "cleanup_pending": true,
+          "cleanup_steps": 0,
+          "commit_dispatched": false,
+          "commit_rejected": false,
+          "error": "PATH_DENIED",
+          "external_steps_admitted": 8,
+          "insert_state": "none",
+          "last_step": "commit_parent_lstat",
+          "result": null,
+          "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+          "upload_state": "failed"
+        },
+        "precreation": {
+          "files": {
+            "preexisting_symlink_retained": true,
+            "sentinel_sha256": "4a756874b22139408e6116b11e9df7c06c63d7926688227a1b812ee063441fb3",
+            "temp_absent": true
+          },
+          "operation": {
+            "ack_dropped": false,
+            "barrier": "completed",
+            "binding": {
+              "attachment_id": "7600c13b6964d746386426f89d80adb4",
+              "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+              "config_generation": 1,
+              "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+              "generation": 1,
+              "operation_id": "8418631e698ae32aeb482fb76674ba50",
+              "profile_id": "primary",
+              "session_id": "4202994acdf95766e1537a46827b0742",
+              "writer_epoch": 1
+            },
+            "bytes_written": 0,
+            "cancel_requested": false,
+            "cleanup_pending": false,
+            "cleanup_steps": 0,
+            "commit_dispatched": false,
+            "commit_rejected": false,
+            "error": "PATH_DENIED",
+            "external_steps_admitted": 2,
+            "insert_state": "none",
+            "last_step": "root_lstat",
+            "result": null,
+            "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+            "upload_state": "failed"
+          },
+          "stage": "before mkdir/open; preexisting operation-directory symlink"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "C07",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Cancel/revoke at each step prohibit new requests; owned cleanup separate",
+      "experiment": "upload",
+      "limitations": [],
+      "observations": {
+        "cases": [
+          {
+            "after": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "9babb74fb35b9d03897129a021405f6a",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": true,
+              "cleanup_pending": false,
+              "cleanup_steps": 0,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "CANCELLED",
+              "external_steps_admitted": 2,
+              "insert_state": "none",
+              "last_step": "root_lstat",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            },
+            "before": {
+              "ack_dropped": false,
+              "barrier": "before_mkdir",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "9babb74fb35b9d03897129a021405f6a",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": false,
+              "cleanup_steps": 0,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": null,
+              "external_steps_admitted": 2,
+              "insert_state": "none",
+              "last_step": "root_lstat",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "in_progress"
+            },
+            "files": [
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/9babb74fb35b9d03897129a021405f6a"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/9babb74fb35b9d03897129a021405f6a/.partial"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/9babb74fb35b9d03897129a021405f6a/final.png"
+              }
+            ],
+            "stage": "mkdir",
+            "transition": "operation.cancel"
+          },
+          {
+            "after": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "b068318f69439f88702c5a87a828e262",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": true,
+              "cleanup_pending": false,
+              "cleanup_steps": 1,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "CANCELLED",
+              "external_steps_admitted": 4,
+              "insert_state": "none",
+              "last_step": "parent_lstat",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            },
+            "before": {
+              "ack_dropped": false,
+              "barrier": "before_open",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "b068318f69439f88702c5a87a828e262",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": false,
+              "cleanup_steps": 0,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": null,
+              "external_steps_admitted": 4,
+              "insert_state": "none",
+              "last_step": "parent_lstat",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "in_progress"
+            },
+            "files": [
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/b068318f69439f88702c5a87a828e262"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/b068318f69439f88702c5a87a828e262/.partial"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/b068318f69439f88702c5a87a828e262/final.png"
+              }
+            ],
+            "stage": "open",
+            "transition": "operation.cancel"
+          },
+          {
+            "after": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "43ca3adab80350943fb80b5c6445b09d",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": true,
+              "cleanup_pending": false,
+              "cleanup_steps": 2,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "CANCELLED",
+              "external_steps_admitted": 5,
+              "insert_state": "none",
+              "last_step": "open",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            },
+            "before": {
+              "ack_dropped": false,
+              "barrier": "before_write",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "43ca3adab80350943fb80b5c6445b09d",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": false,
+              "cleanup_steps": 0,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": null,
+              "external_steps_admitted": 5,
+              "insert_state": "none",
+              "last_step": "open",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "in_progress"
+            },
+            "files": [
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/43ca3adab80350943fb80b5c6445b09d"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/43ca3adab80350943fb80b5c6445b09d/.partial"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/43ca3adab80350943fb80b5c6445b09d/final.png"
+              }
+            ],
+            "stage": "write",
+            "transition": "operation.cancel"
+          },
+          {
+            "after": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "8b09ae0162dcfa13f7fa6aa69634853a",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": true,
+              "cleanup_pending": false,
+              "cleanup_steps": 2,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "CANCELLED",
+              "external_steps_admitted": 6,
+              "insert_state": "none",
+              "last_step": "write",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            },
+            "before": {
+              "ack_dropped": false,
+              "barrier": "before_close",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "8b09ae0162dcfa13f7fa6aa69634853a",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": false,
+              "cleanup_steps": 0,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": null,
+              "external_steps_admitted": 6,
+              "insert_state": "none",
+              "last_step": "write",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "in_progress"
+            },
+            "files": [
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/8b09ae0162dcfa13f7fa6aa69634853a"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/8b09ae0162dcfa13f7fa6aa69634853a/.partial"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/8b09ae0162dcfa13f7fa6aa69634853a/final.png"
+              }
+            ],
+            "stage": "close",
+            "transition": "operation.cancel"
+          },
+          {
+            "after": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "063b745edd694e0f0ddf05d8ebe62a83",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": true,
+              "cleanup_pending": false,
+              "cleanup_steps": 2,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "CANCELLED",
+              "external_steps_admitted": 8,
+              "insert_state": "none",
+              "last_step": "commit_parent_lstat",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            },
+            "before": {
+              "ack_dropped": false,
+              "barrier": "before_link",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "063b745edd694e0f0ddf05d8ebe62a83",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": false,
+              "cleanup_steps": 0,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": null,
+              "external_steps_admitted": 8,
+              "insert_state": "none",
+              "last_step": "commit_parent_lstat",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "in_progress"
+            },
+            "files": [
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/063b745edd694e0f0ddf05d8ebe62a83"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/063b745edd694e0f0ddf05d8ebe62a83/.partial"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/063b745edd694e0f0ddf05d8ebe62a83/final.png"
+              }
+            ],
+            "stage": "link",
+            "transition": "operation.cancel"
+          },
+          {
+            "after": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "e6f89cb50edd69fdd5f575f58beef880",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": true,
+              "cleanup_pending": false,
+              "cleanup_steps": 2,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "CANCELLED",
+              "external_steps_admitted": 6,
+              "insert_state": "none",
+              "last_step": "write",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            },
+            "before": {
+              "ack_dropped": false,
+              "barrier": "during_stream",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "e6f89cb50edd69fdd5f575f58beef880",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": false,
+              "cleanup_steps": 0,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": null,
+              "external_steps_admitted": 6,
+              "insert_state": "none",
+              "last_step": "write",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "in_progress"
+            },
+            "files": [
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/e6f89cb50edd69fdd5f575f58beef880"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/e6f89cb50edd69fdd5f575f58beef880/.partial"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/e6f89cb50edd69fdd5f575f58beef880/final.png"
+              }
+            ],
+            "stage": "stream",
+            "transition": "operation.cancel"
+          },
+          {
+            "after": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "8a604a8dc76b38c06af5daff3c33fd9f",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": false,
+              "cleanup_steps": 0,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "CAPABILITY_DENIED",
+              "external_steps_admitted": 2,
+              "insert_state": "none",
+              "last_step": "root_lstat",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            },
+            "before": {
+              "ack_dropped": false,
+              "barrier": "before_mkdir",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "8a604a8dc76b38c06af5daff3c33fd9f",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": false,
+              "cleanup_steps": 0,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": null,
+              "external_steps_admitted": 2,
+              "insert_state": "none",
+              "last_step": "root_lstat",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "in_progress"
+            },
+            "files": [
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/8a604a8dc76b38c06af5daff3c33fd9f"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/8a604a8dc76b38c06af5daff3c33fd9f/.partial"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/8a604a8dc76b38c06af5daff3c33fd9f/final.png"
+              }
+            ],
+            "stage": "mkdir",
+            "transition": "grant.revoke"
+          },
+          {
+            "after": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "5fbe9fc9d8afc6e8a070dbad6e79529d",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": false,
+              "cleanup_steps": 1,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "CAPABILITY_DENIED",
+              "external_steps_admitted": 4,
+              "insert_state": "none",
+              "last_step": "parent_lstat",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            },
+            "before": {
+              "ack_dropped": false,
+              "barrier": "before_open",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "5fbe9fc9d8afc6e8a070dbad6e79529d",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": false,
+              "cleanup_steps": 0,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": null,
+              "external_steps_admitted": 4,
+              "insert_state": "none",
+              "last_step": "parent_lstat",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "in_progress"
+            },
+            "files": [
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/5fbe9fc9d8afc6e8a070dbad6e79529d"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/5fbe9fc9d8afc6e8a070dbad6e79529d/.partial"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/5fbe9fc9d8afc6e8a070dbad6e79529d/final.png"
+              }
+            ],
+            "stage": "open",
+            "transition": "grant.revoke"
+          },
+          {
+            "after": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "2d4920bf6aca575b776dc15546e1e78a",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": false,
+              "cleanup_steps": 2,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "CAPABILITY_DENIED",
+              "external_steps_admitted": 5,
+              "insert_state": "none",
+              "last_step": "open",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            },
+            "before": {
+              "ack_dropped": false,
+              "barrier": "before_write",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "2d4920bf6aca575b776dc15546e1e78a",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": false,
+              "cleanup_steps": 0,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": null,
+              "external_steps_admitted": 5,
+              "insert_state": "none",
+              "last_step": "open",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "in_progress"
+            },
+            "files": [
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/2d4920bf6aca575b776dc15546e1e78a"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/2d4920bf6aca575b776dc15546e1e78a/.partial"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/2d4920bf6aca575b776dc15546e1e78a/final.png"
+              }
+            ],
+            "stage": "write",
+            "transition": "grant.revoke"
+          },
+          {
+            "after": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "96480a0231f84b1a74f7b3f2da9ea992",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": false,
+              "cleanup_steps": 2,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "CAPABILITY_DENIED",
+              "external_steps_admitted": 6,
+              "insert_state": "none",
+              "last_step": "write",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            },
+            "before": {
+              "ack_dropped": false,
+              "barrier": "before_close",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "96480a0231f84b1a74f7b3f2da9ea992",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": false,
+              "cleanup_steps": 0,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": null,
+              "external_steps_admitted": 6,
+              "insert_state": "none",
+              "last_step": "write",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "in_progress"
+            },
+            "files": [
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/96480a0231f84b1a74f7b3f2da9ea992"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/96480a0231f84b1a74f7b3f2da9ea992/.partial"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/96480a0231f84b1a74f7b3f2da9ea992/final.png"
+              }
+            ],
+            "stage": "close",
+            "transition": "grant.revoke"
+          },
+          {
+            "after": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "a54307e50546103bb2c8ba70f97d05ee",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": false,
+              "cleanup_steps": 2,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "CAPABILITY_DENIED",
+              "external_steps_admitted": 8,
+              "insert_state": "none",
+              "last_step": "commit_parent_lstat",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            },
+            "before": {
+              "ack_dropped": false,
+              "barrier": "before_link",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "a54307e50546103bb2c8ba70f97d05ee",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": false,
+              "cleanup_steps": 0,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": null,
+              "external_steps_admitted": 8,
+              "insert_state": "none",
+              "last_step": "commit_parent_lstat",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "in_progress"
+            },
+            "files": [
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/a54307e50546103bb2c8ba70f97d05ee"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/a54307e50546103bb2c8ba70f97d05ee/.partial"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/a54307e50546103bb2c8ba70f97d05ee/final.png"
+              }
+            ],
+            "stage": "link",
+            "transition": "grant.revoke"
+          },
+          {
+            "after": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "49e22eb1361e54b7c3302abba9d8a4db",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": false,
+              "cleanup_steps": 2,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "CAPABILITY_DENIED",
+              "external_steps_admitted": 6,
+              "insert_state": "none",
+              "last_step": "write",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            },
+            "before": {
+              "ack_dropped": false,
+              "barrier": "during_stream",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "49e22eb1361e54b7c3302abba9d8a4db",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": false,
+              "cleanup_steps": 0,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": null,
+              "external_steps_admitted": 6,
+              "insert_state": "none",
+              "last_step": "write",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "in_progress"
+            },
+            "files": [
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/49e22eb1361e54b7c3302abba9d8a4db"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/49e22eb1361e54b7c3302abba9d8a4db/.partial"
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/49e22eb1361e54b7c3302abba9d8a4db/final.png"
+              }
+            ],
+            "stage": "stream",
+            "transition": "grant.revoke"
+          },
+          {
+            "after": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "5dd5b2f94290c067b76f7ead1e347e70",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": true,
+              "cleanup_pending": false,
+              "cleanup_steps": 2,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "CANCELLED",
+              "external_steps_admitted": 6,
+              "insert_state": "none",
+              "last_step": "write",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            },
+            "iteration": 0,
+            "kind": "fast_initial_release_stress",
+            "worker_barrier_observed": true
+          },
+          {
+            "after": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "e797f52763cb12e75325a43c28ad83eb",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": true,
+              "cleanup_pending": false,
+              "cleanup_steps": 2,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "CANCELLED",
+              "external_steps_admitted": 6,
+              "insert_state": "none",
+              "last_step": "write",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            },
+            "iteration": 1,
+            "kind": "fast_initial_release_stress",
+            "worker_barrier_observed": true
+          },
+          {
+            "after": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "39b1ce71f24d312e99072226267d11e0",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": true,
+              "cleanup_pending": false,
+              "cleanup_steps": 2,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "CANCELLED",
+              "external_steps_admitted": 6,
+              "insert_state": "none",
+              "last_step": "write",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            },
+            "iteration": 2,
+            "kind": "fast_initial_release_stress",
+            "worker_barrier_observed": true
+          },
+          {
+            "after": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "9356ec719690a9f419b141d8dd47d3aa",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": true,
+              "cleanup_pending": false,
+              "cleanup_steps": 2,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "CANCELLED",
+              "external_steps_admitted": 6,
+              "insert_state": "none",
+              "last_step": "write",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            },
+            "iteration": 3,
+            "kind": "fast_initial_release_stress",
+            "worker_barrier_observed": true
+          },
+          {
+            "after": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "469960c96da5641e01cfaae0f5b7bdc7",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": true,
+              "cleanup_pending": false,
+              "cleanup_steps": 2,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "CANCELLED",
+              "external_steps_admitted": 6,
+              "insert_state": "none",
+              "last_step": "write",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            },
+            "iteration": 4,
+            "kind": "fast_initial_release_stress",
+            "worker_barrier_observed": true
+          },
+          {
+            "after": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "645d26edd56e01b0d5839e59724627d3",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": true,
+              "cleanup_pending": false,
+              "cleanup_steps": 2,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "CANCELLED",
+              "external_steps_admitted": 6,
+              "insert_state": "none",
+              "last_step": "write",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            },
+            "iteration": 5,
+            "kind": "fast_initial_release_stress",
+            "worker_barrier_observed": true
+          },
+          {
+            "after": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "d8fc1edb28c7facb3e1e50c00e9ee486",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": true,
+              "cleanup_pending": false,
+              "cleanup_steps": 2,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "CANCELLED",
+              "external_steps_admitted": 6,
+              "insert_state": "none",
+              "last_step": "write",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            },
+            "iteration": 6,
+            "kind": "fast_initial_release_stress",
+            "worker_barrier_observed": true
+          },
+          {
+            "after": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "d4120c3eed9b751d28bd7279923b7eb2",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": true,
+              "cleanup_pending": false,
+              "cleanup_steps": 2,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "CANCELLED",
+              "external_steps_admitted": 6,
+              "insert_state": "none",
+              "last_step": "write",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            },
+            "iteration": 7,
+            "kind": "fast_initial_release_stress",
+            "worker_barrier_observed": true
+          },
+          {
+            "after": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "e80db645022a984daa64ec037c32cda9",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": true,
+              "cleanup_pending": false,
+              "cleanup_steps": 2,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "CANCELLED",
+              "external_steps_admitted": 6,
+              "insert_state": "none",
+              "last_step": "write",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            },
+            "iteration": 8,
+            "kind": "fast_initial_release_stress",
+            "worker_barrier_observed": true
+          },
+          {
+            "after": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "ca0d2196c7c954e3d84edfd6ad550475",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": true,
+              "cleanup_pending": false,
+              "cleanup_steps": 2,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "CANCELLED",
+              "external_steps_admitted": 6,
+              "insert_state": "none",
+              "last_step": "write",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            },
+            "iteration": 9,
+            "kind": "fast_initial_release_stress",
+            "worker_barrier_observed": true
+          },
+          {
+            "after": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "7ef4a6b387abb00b1b0e3a7782ef2568",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": true,
+              "cleanup_pending": false,
+              "cleanup_steps": 2,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "CANCELLED",
+              "external_steps_admitted": 6,
+              "insert_state": "none",
+              "last_step": "write",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            },
+            "iteration": 10,
+            "kind": "fast_initial_release_stress",
+            "worker_barrier_observed": true
+          },
+          {
+            "after": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "5eb5758d9c899f625aabad9b0ceb17ea",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": true,
+              "cleanup_pending": false,
+              "cleanup_steps": 2,
+              "commit_dispatched": false,
+              "commit_rejected": false,
+              "error": "CANCELLED",
+              "external_steps_admitted": 6,
+              "insert_state": "none",
+              "last_step": "write",
+              "result": null,
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "failed"
+            },
+            "iteration": 11,
+            "kind": "fast_initial_release_stress",
+            "worker_barrier_observed": true
+          }
+        ],
+        "evidence_kind": "real_server_deterministic_barriers",
+        "input_bytes": 0
+      },
+      "status": "pass"
+    },
+    {
+      "case": "C08",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Confirmed final survives real directory permission denial of temporary cleanup",
+      "experiment": "upload",
+      "limitations": [],
+      "observations": {
+        "evidence_kind": "real_server",
+        "files": [
+          {
+            "exists": true,
+            "path": "/home/probe/probe-data/46a9043af2a16010d5f5915026dcfa80",
+            "permissions": 16704,
+            "sha256": null,
+            "size": 4096,
+            "symlink": false
+          },
+          {
+            "exists": true,
+            "path": "/home/probe/probe-data/46a9043af2a16010d5f5915026dcfa80/.partial",
+            "permissions": 33152,
+            "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+            "size": 4,
+            "symlink": false
+          },
+          {
+            "exists": true,
+            "path": "/home/probe/probe-data/46a9043af2a16010d5f5915026dcfa80/final.png",
+            "permissions": 33152,
+            "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+            "size": 4,
+            "symlink": false
+          }
+        ],
+        "operation": {
+          "ack_dropped": false,
+          "barrier": "completed",
+          "binding": {
+            "attachment_id": "7600c13b6964d746386426f89d80adb4",
+            "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+            "config_generation": 1,
+            "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+            "generation": 1,
+            "operation_id": "46a9043af2a16010d5f5915026dcfa80",
+            "profile_id": "primary",
+            "session_id": "4202994acdf95766e1537a46827b0742",
+            "writer_epoch": 1
+          },
+          "bytes_written": 0,
+          "cancel_requested": false,
+          "cleanup_pending": true,
+          "cleanup_steps": 0,
+          "commit_dispatched": true,
+          "commit_rejected": false,
+          "error": null,
+          "external_steps_admitted": 10,
+          "insert_state": "none",
+          "last_step": "readback",
+          "result": {
+            "cleanup_pending": true,
+            "final_commit": "confirmed",
+            "mapping_id": null,
+            "readback_verified": true,
+            "shell_path": null,
+            "transfer_path": "/home/probe/probe-data/46a9043af2a16010d5f5915026dcfa80/final.png"
+          },
+          "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+          "upload_state": "committed"
+        },
+        "permission_oracle": "independent SFTP REMOVE denied; Core observes changed mode and conservatively refuses before unlink",
+        "remove_error_branch": {
+          "evidence_kind": "fault_injection",
+          "files": [
+            {
+              "exists": true,
+              "path": "/home/probe/probe-data/cd782c141c5008932888979753d588cc",
+              "permissions": 16832,
+              "sha256": null,
+              "size": 4096,
+              "symlink": false
+            },
+            {
+              "exists": true,
+              "path": "/home/probe/probe-data/cd782c141c5008932888979753d588cc/.partial",
+              "permissions": 33152,
+              "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+              "size": 4,
+              "symlink": false
+            },
+            {
+              "exists": true,
+              "path": "/home/probe/probe-data/cd782c141c5008932888979753d588cc/final.png",
+              "permissions": 33152,
+              "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+              "size": 4,
+              "symlink": false
+            }
+          ],
+          "operation": {
+            "ack_dropped": false,
+            "barrier": "completed",
+            "binding": {
+              "attachment_id": "7600c13b6964d746386426f89d80adb4",
+              "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+              "config_generation": 1,
+              "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+              "generation": 1,
+              "operation_id": "cd782c141c5008932888979753d588cc",
+              "profile_id": "primary",
+              "session_id": "4202994acdf95766e1537a46827b0742",
+              "writer_epoch": 1
+            },
+            "bytes_written": 0,
+            "cancel_requested": false,
+            "cleanup_pending": true,
+            "cleanup_steps": 0,
+            "commit_dispatched": true,
+            "commit_rejected": false,
+            "error": null,
+            "external_steps_admitted": 10,
+            "insert_state": "none",
+            "last_step": "readback",
+            "result": {
+              "cleanup_pending": true,
+              "final_commit": "confirmed",
+              "mapping_id": null,
+              "readback_verified": true,
+              "shell_path": null,
+              "transfer_path": "/home/probe/probe-data/cd782c141c5008932888979753d588cc/final.png"
+            },
+            "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+            "upload_state": "committed"
+          },
+          "site": "REMOVE result after successful ownership observations, before successful-cleanup bookkeeping; no remove wire request"
+        },
+        "rollback_final": false
+      },
+      "status": "pass"
+    },
+    {
+      "case": "C09",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Matching link reply loss is indeterminate despite read-only final observation; no replay/input/deletion",
+      "experiment": "upload",
+      "limitations": [],
+      "observations": {
+        "evidence_kind": "fault_injection",
+        "input_bytes": 0,
+        "operation": {
+          "ack_dropped": true,
+          "barrier": "completed",
+          "binding": {
+            "attachment_id": "7600c13b6964d746386426f89d80adb4",
+            "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+            "config_generation": 1,
+            "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+            "generation": 1,
+            "operation_id": "f06e7818f06fe24e3b0f01ffb6911158",
+            "profile_id": "primary",
+            "session_id": "4202994acdf95766e1537a46827b0742",
+            "writer_epoch": 1
+          },
+          "bytes_written": 0,
+          "cancel_requested": false,
+          "cleanup_pending": true,
+          "cleanup_steps": 0,
+          "commit_dispatched": true,
+          "commit_rejected": false,
+          "error": "sender dropped",
+          "external_steps_admitted": 9,
+          "insert_state": "none",
+          "last_step": "link",
+          "result": {
+            "cleanup_pending": true,
+            "final_commit": "indeterminate",
+            "mapping_id": null,
+            "readback_verified": false,
+            "shell_path": null,
+            "transfer_path": "/home/probe/probe-data/f06e7818f06fe24e3b0f01ffb6911158/final.png"
+          },
+          "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+          "upload_state": "indeterminate"
+        },
+        "read_only_observation": [
+          {
+            "exists": true,
+            "path": "/home/probe/probe-data/f06e7818f06fe24e3b0f01ffb6911158",
+            "permissions": 16832,
+            "sha256": null,
+            "size": 4096,
+            "symlink": false
+          },
+          {
+            "exists": true,
+            "path": "/home/probe/probe-data/f06e7818f06fe24e3b0f01ffb6911158/.partial",
+            "permissions": 33152,
+            "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+            "size": 4,
+            "symlink": false
+          },
+          {
+            "exists": true,
+            "path": "/home/probe/probe-data/f06e7818f06fe24e3b0f01ffb6911158/final.png",
+            "permissions": 33152,
+            "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+            "size": 4,
+            "symlink": false
+          }
+        ],
+        "retry": {
+          "ack_dropped": true,
+          "barrier": "completed",
+          "binding": {
+            "attachment_id": "7600c13b6964d746386426f89d80adb4",
+            "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+            "config_generation": 1,
+            "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+            "generation": 1,
+            "operation_id": "f06e7818f06fe24e3b0f01ffb6911158",
+            "profile_id": "primary",
+            "session_id": "4202994acdf95766e1537a46827b0742",
+            "writer_epoch": 1
+          },
+          "bytes_written": 0,
+          "cancel_requested": false,
+          "cleanup_pending": true,
+          "cleanup_steps": 0,
+          "commit_dispatched": true,
+          "commit_rejected": false,
+          "error": "sender dropped",
+          "external_steps_admitted": 9,
+          "insert_state": "none",
+          "last_step": "link",
+          "result": {
+            "cleanup_pending": true,
+            "final_commit": "indeterminate",
+            "mapping_id": null,
+            "readback_verified": false,
+            "shell_path": null,
+            "transfer_path": "/home/probe/probe-data/f06e7818f06fe24e3b0f01ffb6911158/final.png"
+          },
+          "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+          "upload_state": "indeterminate"
+        },
+        "site": "framed SFTP STATUS matching actual hardlink request id, after real server execution"
+      },
+      "status": "pass"
+    },
+    {
+      "case": "C10",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Uncertain ledger/continuity and replaced temp are never deleted",
+      "experiment": "upload",
+      "limitations": [],
+      "observations": {
+        "cases": [
+          {
+            "evidence_kind": "fault_injection",
+            "files": [
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/7404718c2b0e9b6281dd74967581bb41",
+                "permissions": 16832,
+                "sha256": null,
+                "size": 4096,
+                "symlink": false
+              },
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/7404718c2b0e9b6281dd74967581bb41/.partial",
+                "permissions": 33152,
+                "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+                "size": 4,
+                "symlink": false
+              },
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/7404718c2b0e9b6281dd74967581bb41/final.png",
+                "permissions": 33152,
+                "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+                "size": 4,
+                "symlink": false
+              }
+            ],
+            "kind": "missing_ledger",
+            "operation": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "7404718c2b0e9b6281dd74967581bb41",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": true,
+              "cleanup_steps": 0,
+              "commit_dispatched": true,
+              "commit_rejected": false,
+              "error": null,
+              "external_steps_admitted": 10,
+              "insert_state": "none",
+              "last_step": "readback",
+              "result": {
+                "cleanup_pending": true,
+                "final_commit": "confirmed",
+                "mapping_id": null,
+                "readback_verified": true,
+                "shell_path": null,
+                "transfer_path": "/home/probe/probe-data/7404718c2b0e9b6281dd74967581bb41/final.png"
+              },
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "committed"
+            },
+            "site": "remove actual directory ledger observation while retaining acknowledged creation"
+          },
+          {
+            "evidence_kind": "fault_injection",
+            "files": [
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/6589697139f25697904a44a25bd3984b",
+                "permissions": 16832,
+                "sha256": null,
+                "size": 4096,
+                "symlink": false
+              },
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/6589697139f25697904a44a25bd3984b/.partial",
+                "permissions": 33152,
+                "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+                "size": 4,
+                "symlink": false
+              },
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/6589697139f25697904a44a25bd3984b/final.png",
+                "permissions": 33152,
+                "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+                "size": 4,
+                "symlink": false
+              }
+            ],
+            "kind": "lost_transport",
+            "operation": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "6589697139f25697904a44a25bd3984b",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": true,
+              "cleanup_steps": 0,
+              "commit_dispatched": true,
+              "commit_rejected": false,
+              "error": null,
+              "external_steps_admitted": 10,
+              "insert_state": "none",
+              "last_step": "readback",
+              "result": {
+                "cleanup_pending": true,
+                "final_commit": "confirmed",
+                "mapping_id": null,
+                "readback_verified": true,
+                "shell_path": null,
+                "transfer_path": "/home/probe/probe-data/6589697139f25697904a44a25bd3984b/final.png"
+              },
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "committed"
+            },
+            "site": "close actual SFTP session and kill its owned ssh child"
+          },
+          {
+            "evidence_kind": "fault_injection",
+            "files": [
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/8b09cefdbf0a43757b23bb528b30e0c4",
+                "permissions": 16832,
+                "sha256": null,
+                "size": 4096,
+                "symlink": false
+              },
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/8b09cefdbf0a43757b23bb528b30e0c4/.partial",
+                "permissions": 33152,
+                "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+                "size": 4,
+                "symlink": false
+              },
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/8b09cefdbf0a43757b23bb528b30e0c4/final.png",
+                "permissions": 33152,
+                "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+                "size": 4,
+                "symlink": false
+              }
+            ],
+            "kind": "boot_change",
+            "operation": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "8b09cefdbf0a43757b23bb528b30e0c4",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": true,
+              "cleanup_steps": 0,
+              "commit_dispatched": true,
+              "commit_rejected": false,
+              "error": null,
+              "external_steps_admitted": 10,
+              "insert_state": "none",
+              "last_step": "readback",
+              "result": {
+                "cleanup_pending": true,
+                "final_commit": "confirmed",
+                "mapping_id": null,
+                "readback_verified": true,
+                "shell_path": null,
+                "transfer_path": "/home/probe/probe-data/8b09cefdbf0a43757b23bb528b30e0c4/final.png"
+              },
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "committed"
+            },
+            "site": "substitute distinct boot identity into ledger"
+          },
+          {
+            "evidence_kind": "real_server",
+            "files": [
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/7273e562a2b0436f3f98a743b71088e1",
+                "permissions": 16832,
+                "sha256": null,
+                "size": 4096,
+                "symlink": false
+              },
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/7273e562a2b0436f3f98a743b71088e1/.partial",
+                "permissions": 33188,
+                "sha256": "a6bc354aae552fc70f354fe212c35f0662415a373fadcf501dca970450e6c7cb",
+                "size": 18,
+                "symlink": false
+              },
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/7273e562a2b0436f3f98a743b71088e1/final.png",
+                "permissions": 33152,
+                "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+                "size": 4,
+                "symlink": false
+              }
+            ],
+            "kind": "replaced_temp",
+            "operation": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "7273e562a2b0436f3f98a743b71088e1",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": true,
+              "cleanup_steps": 0,
+              "commit_dispatched": true,
+              "commit_rejected": false,
+              "error": null,
+              "external_steps_admitted": 10,
+              "insert_state": "none",
+              "last_step": "readback",
+              "result": {
+                "cleanup_pending": true,
+                "final_commit": "confirmed",
+                "mapping_id": null,
+                "readback_verified": true,
+                "shell_path": null,
+                "transfer_path": "/home/probe/probe-data/7273e562a2b0436f3f98a743b71088e1/final.png"
+              },
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "committed"
+            },
+            "site": "actual remote temp replacement"
+          },
+          {
+            "evidence_kind": "real_server",
+            "files": [
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/9ed50c18db7496728f2604984f7b5bd6",
+                "permissions": 41471,
+                "sha256": null,
+                "size": 64,
+                "symlink": true
+              },
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/9ed50c18db7496728f2604984f7b5bd6/.partial",
+                "permissions": 33152,
+                "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+                "size": 4,
+                "symlink": false
+              },
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/9ed50c18db7496728f2604984f7b5bd6/final.png",
+                "permissions": 33152,
+                "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+                "size": 4,
+                "symlink": false
+              }
+            ],
+            "kind": "replaced_parent",
+            "operation": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "9ed50c18db7496728f2604984f7b5bd6",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": false,
+              "cleanup_pending": true,
+              "cleanup_steps": 0,
+              "commit_dispatched": true,
+              "commit_rejected": false,
+              "error": null,
+              "external_steps_admitted": 10,
+              "insert_state": "none",
+              "last_step": "readback",
+              "result": {
+                "cleanup_pending": true,
+                "final_commit": "confirmed",
+                "mapping_id": null,
+                "readback_verified": true,
+                "shell_path": null,
+                "transfer_path": "/home/probe/probe-data/9ed50c18db7496728f2604984f7b5bd6/final.png"
+              },
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "committed"
+            },
+            "site": "actual parent symlink replacement after confirmed publication; normal cleanup ancestor check"
+          },
+          {
+            "evidence_kind": "real_core_transition",
+            "files": [
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/ec7da15e3849a12ab13da3d8ae2deb75",
+                "permissions": 16832,
+                "sha256": null,
+                "size": 4096,
+                "symlink": false
+              },
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/ec7da15e3849a12ab13da3d8ae2deb75/.partial",
+                "permissions": 33152,
+                "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+                "size": 4,
+                "symlink": false
+              },
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/ec7da15e3849a12ab13da3d8ae2deb75/final.png",
+                "permissions": 33152,
+                "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+                "size": 4,
+                "symlink": false
+              }
+            ],
+            "kind": "new_generation",
+            "operation": {
+              "ack_dropped": false,
+              "barrier": "completed",
+              "binding": {
+                "attachment_id": "7600c13b6964d746386426f89d80adb4",
+                "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+                "config_generation": 1,
+                "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+                "generation": 1,
+                "operation_id": "ec7da15e3849a12ab13da3d8ae2deb75",
+                "profile_id": "primary",
+                "session_id": "4202994acdf95766e1537a46827b0742",
+                "writer_epoch": 1
+              },
+              "bytes_written": 0,
+              "cancel_requested": true,
+              "cleanup_pending": true,
+              "cleanup_steps": 0,
+              "commit_dispatched": true,
+              "commit_rejected": false,
+              "error": null,
+              "external_steps_admitted": 10,
+              "insert_state": "none",
+              "last_step": "readback",
+              "result": {
+                "cleanup_pending": true,
+                "final_commit": "confirmed",
+                "mapping_id": null,
+                "readback_verified": true,
+                "shell_path": null,
+                "transfer_path": "/home/probe/probe-data/ec7da15e3849a12ab13da3d8ae2deb75/final.png"
+              },
+              "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+              "upload_state": "committed"
+            }
+          }
+        ],
+        "limitation": "missing/stale ledger is injected evidence mutation; transport is actually closed; C09 is reply loss and full suite covers Core restart"
+      },
+      "status": "pass"
+    },
+    {
+      "case": "C11",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Same-key success and changed-intent retries cannot republish; context refusal retains final",
+      "experiment": "upload",
+      "limitations": [],
+      "observations": {
+        "context_regression": "headless full Core suite exercises zero-byte refreshed context on same committed result",
+        "files": [
+          {
+            "exists": true,
+            "path": "/home/probe/probe-data/ab024926f8473795d5fda040463cdfe8",
+            "permissions": 16832,
+            "sha256": null,
+            "size": 4096,
+            "symlink": false
+          },
+          {
+            "exists": false,
+            "path": "/home/probe/probe-data/ab024926f8473795d5fda040463cdfe8/.partial"
+          },
+          {
+            "exists": true,
+            "path": "/home/probe/probe-data/ab024926f8473795d5fda040463cdfe8/final.png",
+            "permissions": 33152,
+            "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+            "size": 4,
+            "symlink": false
+          }
+        ],
+        "operation": {
+          "ack_dropped": false,
+          "barrier": "completed",
+          "binding": {
+            "attachment_id": "2353cfdc83cf725d3b72073691ab08c7",
+            "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+            "config_generation": 1,
+            "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+            "generation": 1,
+            "operation_id": "ab024926f8473795d5fda040463cdfe8",
+            "profile_id": "primary",
+            "session_id": "77f997de3d755a666ce7ded5a1f5fc75",
+            "writer_epoch": 1
+          },
+          "bytes_written": 0,
+          "cancel_requested": false,
+          "cleanup_pending": false,
+          "cleanup_steps": 1,
+          "commit_dispatched": true,
+          "commit_rejected": false,
+          "error": null,
+          "external_steps_admitted": 10,
+          "insert_state": "none",
+          "last_step": "readback",
+          "result": {
+            "cleanup_pending": false,
+            "final_commit": "confirmed",
+            "mapping_id": null,
+            "readback_verified": true,
+            "shell_path": null,
+            "transfer_path": "/home/probe/probe-data/ab024926f8473795d5fda040463cdfe8/final.png"
+          },
+          "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+          "upload_state": "committed"
+        },
+        "retry": {
+          "ack_dropped": false,
+          "barrier": "completed",
+          "binding": {
+            "attachment_id": "2353cfdc83cf725d3b72073691ab08c7",
+            "client_id": "6e0edd7a3bc9c3b044510d8d0bec7268",
+            "config_generation": 1,
+            "core_instance_id": "4ad7e66e9bddb2d90196f491910c67f9",
+            "generation": 1,
+            "operation_id": "ab024926f8473795d5fda040463cdfe8",
+            "profile_id": "primary",
+            "session_id": "77f997de3d755a666ce7ded5a1f5fc75",
+            "writer_epoch": 1
+          },
+          "bytes_written": 0,
+          "cancel_requested": false,
+          "cleanup_pending": false,
+          "cleanup_steps": 1,
+          "commit_dispatched": true,
+          "commit_rejected": false,
+          "error": null,
+          "external_steps_admitted": 10,
+          "insert_state": "none",
+          "last_step": "readback",
+          "result": {
+            "cleanup_pending": false,
+            "final_commit": "confirmed",
+            "mapping_id": null,
+            "readback_verified": true,
+            "shell_path": null,
+            "transfer_path": "/home/probe/probe-data/ab024926f8473795d5fda040463cdfe8/final.png"
+          },
+          "scope_digest": "d7850b0343cc7a39602669d4e81cc56c2b32cfbae6da088d9791facf655de3c3",
+          "upload_state": "committed"
+        },
+        "scope_changes_after_commit": [
+          {
+            "actual_pty_bytes_since_ready": 0,
+            "change": "absent",
+            "denial": {
+              "error": {
+                "code": -32000,
+                "data": {
+                  "name": "PATH_DENIED",
+                  "operation_id": null,
+                  "phase": null,
+                  "retryable": false
+                },
+                "message": "PATH_DENIED"
+              },
+              "id": "1394",
+              "jsonrpc": "2.0"
+            },
+            "files": [
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/10189c91e91bbb39e08d8d404c15bd7c",
+                "permissions": 16832,
+                "sha256": null,
+                "size": 4096,
+                "symlink": false
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/10189c91e91bbb39e08d8d404c15bd7c/.partial"
+              },
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/10189c91e91bbb39e08d8d404c15bd7c/final.png",
+                "permissions": 33152,
+                "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+                "size": 4,
+                "symlink": false
+              }
+            ]
+          },
+          {
+            "actual_pty_bytes_since_ready": 0,
+            "change": "root",
+            "denial": {
+              "error": {
+                "code": -32000,
+                "data": {
+                  "name": "PATH_DENIED",
+                  "operation_id": null,
+                  "phase": null,
+                  "retryable": false
+                },
+                "message": "PATH_DENIED"
+              },
+              "id": "1442",
+              "jsonrpc": "2.0"
+            },
+            "files": [
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/a31b204b3696485490f89804ce13756e",
+                "permissions": 16832,
+                "sha256": null,
+                "size": 4096,
+                "symlink": false
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/a31b204b3696485490f89804ce13756e/.partial"
+              },
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/a31b204b3696485490f89804ce13756e/final.png",
+                "permissions": 33152,
+                "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+                "size": 4,
+                "symlink": false
+              }
+            ]
+          },
+          {
+            "actual_pty_bytes_since_ready": 0,
+            "change": "namespace",
+            "denial": {
+              "error": {
+                "code": -32000,
+                "data": {
+                  "name": "PATH_DENIED",
+                  "operation_id": null,
+                  "phase": null,
+                  "retryable": false
+                },
+                "message": "PATH_DENIED"
+              },
+              "id": "1491",
+              "jsonrpc": "2.0"
+            },
+            "files": [
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/071a337b0f920c6946ac920b9feeda1d",
+                "permissions": 16832,
+                "sha256": null,
+                "size": 4096,
+                "symlink": false
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/071a337b0f920c6946ac920b9feeda1d/.partial"
+              },
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/071a337b0f920c6946ac920b9feeda1d/final.png",
+                "permissions": 33152,
+                "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+                "size": 4,
+                "symlink": false
+              }
+            ]
+          },
+          {
+            "actual_pty_bytes_since_ready": 0,
+            "change": "policy",
+            "denial": {
+              "error": {
+                "code": -32000,
+                "data": {
+                  "name": "PATH_DENIED",
+                  "operation_id": null,
+                  "phase": null,
+                  "retryable": false
+                },
+                "message": "PATH_DENIED"
+              },
+              "id": "1539",
+              "jsonrpc": "2.0"
+            },
+            "files": [
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/a3cc63e59c6eb98dedf82673d79b6430",
+                "permissions": 16832,
+                "sha256": null,
+                "size": 4096,
+                "symlink": false
+              },
+              {
+                "exists": false,
+                "path": "/home/probe/probe-data/a3cc63e59c6eb98dedf82673d79b6430/.partial"
+              },
+              {
+                "exists": true,
+                "path": "/home/probe/probe-data/a3cc63e59c6eb98dedf82673d79b6430/final.png",
+                "permissions": 33152,
+                "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+                "size": 4,
+                "symlink": false
+              }
+            ]
+          }
+        ]
+      },
+      "status": "pass"
+    },
+    {
+      "case": "C12",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Two generated targets keep files and PTY independent; unavailable upload leaves login usable",
+      "experiment": "upload",
+      "limitations": [],
+      "observations": {
+        "full_core_suite": "simultaneous uploads and switching during stream tested separately",
+        "login_echo": true,
+        "primary": [
+          {
+            "exists": true,
+            "path": "/home/probe/probe-data/15a94571ec26ba558d27c3eb24cf3901",
+            "permissions": 16832,
+            "sha256": null,
+            "size": 4096,
+            "symlink": false
+          },
+          {
+            "exists": false,
+            "path": "/home/probe/probe-data/15a94571ec26ba558d27c3eb24cf3901/.partial"
+          },
+          {
+            "exists": true,
+            "path": "/home/probe/probe-data/15a94571ec26ba558d27c3eb24cf3901/final.png",
+            "permissions": 33152,
+            "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+            "size": 4,
+            "symlink": false
+          }
+        ],
+        "run_ids": [
+          "b590f2c6767da5384787f0c063feaa79",
+          "93f2db10abe08010513e2956a7ac4369"
+        ],
+        "secondary": [
+          {
+            "exists": false,
+            "path": "/home/probe/probe-data/15a94571ec26ba558d27c3eb24cf3901"
+          },
+          {
+            "exists": false,
+            "path": "/home/probe/probe-data/15a94571ec26ba558d27c3eb24cf3901/.partial"
+          },
+          {
+            "exists": false,
+            "path": "/home/probe/probe-data/15a94571ec26ba558d27c3eb24cf3901/final.png"
+          }
+        ],
+        "switch_input_bytes": 0
+      },
+      "status": "pass"
+    },
+    {
+      "case": "C13",
+      "cleanup_status": "owned handles closed by RAII",
+      "expected": "Source and fixture linkage retained for independent check; no general-root promotion",
+      "experiment": "upload",
+      "limitations": [],
+      "observations": {
+        "fixture_runs": [
+          "b590f2c6767da5384787f0c063feaa79",
+          "93f2db10abe08010513e2956a7ac4369"
+        ],
+        "fixture_teardown": "owned by main after independent check",
+        "general_root": "no-go",
+        "historical_phase0_ready": false,
+        "independent_review": "pending separate run",
+        "sources": {
+          "probes/phase0/Cargo.lock": "0a274b8219488db7067d87b3a0d706f0925a6e4acb5784fb058d6537daf7ee45",
+          "probes/phase0/harness/src/core.rs": "09420b19ac2ee77dfd6e0779d803d478d724e3f7431d97392c21cc137b5a4145",
+          "probes/phase0/harness/src/main.rs": "de56d47d1c6c79ecac1d9aec8e8b052e79e6d11c16df71c54d63767838ccc3e9",
+          "probes/phase0/harness/src/sftp.rs": "1df9837b724409a9b96b58184c73b6cd22a28c125420d23cc7a6bf9196badf67",
+          "probes/phase0/harness/src/suite.rs": "5f4195f2dcfa219a265638811d086407915fefde96cfcf3e957e4385ece385eb",
+          "probes/phase0/harness/src/suite/upload_cases.rs": "9e13aa4678848f765c221d5c6e55d866d9c724ae32ca7b722eddbcae4919cc11",
+          "probes/phase0/harness/src/upload.rs": "665f761a9ff9729ccaebbd0be7ac520f561bee7917413fe4befb6d695b8f7bd7"
+        }
+      },
+      "status": "pass"
+    }
+  ],
+  "controlled_cases_passed": true,
+  "limitations": [
+    "cooperative stable ancestors only",
+    "finite Linux/OpenSSH fixture qualification; no universal support",
+    "probe RPC is not full v1",
+    "fault injections explicitly separated",
+    "no desktop accessed"
+  ],
+  "pending": [
+    "independent review and source fingerprint validation",
+    "exact fixture teardown by main"
+  ],
+  "phase0_ready": false,
+  "runtime_cleanup": "known local files and owned Core process removed",
+  "schema": 1,
+  "suite": "cooperative-upload-runtime"
+}

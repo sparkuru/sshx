@@ -10,6 +10,8 @@ use std::path::Path;
 use std::process::{Child, ChildStdin, ChildStdout, Command, Stdio};
 use std::thread;
 use std::time::{Duration, Instant};
+mod upload_cases;
+pub use upload_cases::run as run_upload;
 
 #[derive(Serialize)]
 struct Case {
@@ -151,14 +153,16 @@ impl Client {
     }
     fn wait_state(&mut self, id: &str, key: &str, value: &str) -> Result<Value> {
         let until = Instant::now() + Duration::from_secs(12);
+        let mut last = Value::Null;
         while Instant::now() < until {
             let r = self.ok("operation.get", json!({"operation_id":id}))?;
             if r[key] == value {
                 return Ok(r);
             }
+            last = r;
             thread::sleep(Duration::from_millis(10));
         }
-        Err(format!("operation timeout {key}={value}").into())
+        Err(format!("operation timeout {key}={value}; last projection: {last}").into())
     }
     fn close(mut self) {
         self.input.take();
@@ -186,10 +190,17 @@ fn upload(c: &mut Client, id: &str, name: &str, bytes: &[u8]) -> Result<Value> {
     c.ok("probe.release", json!({"operation_id":id}))?;
     c.wait_state(id, "barrier", "before_commit")?;
     c.ok("probe.release", json!({"operation_id":id}))?;
-    c.wait_state(id, "upload_state", "committed")
+    let result = c.wait_state(id, "barrier", "completed")?;
+    ensure(result["upload_state"] == "committed", "upload failed")?;
+    Ok(result)
 }
 
-pub fn run(fixture_path: &Path, secondary_path: Option<&Path>, output: &Path) -> Result<()> {
+pub fn run(
+    fixture_path: &Path,
+    secondary_path: Option<&Path>,
+    output: &Path,
+    headless: bool,
+) -> Result<()> {
     let fixture = Fixture::load(fixture_path)?;
     let secondary = secondary_path.map(Fixture::load).transpose()?;
     let runtime = std::env::temp_dir().join(format!("sshx-core-{}", random_id()?));
@@ -197,7 +208,9 @@ pub fn run(fixture_path: &Path, secondary_path: Option<&Path>, output: &Path) ->
     fs::set_permissions(&runtime, fs::Permissions::from_mode(0o700))?;
     let mut report = Report { cases: vec![] };
     let mut core_command = Command::new(std::env::current_exe()?);
-    core_command.args(["core", "--fixture"]).arg(fixture_path);
+    core_command
+        .args(["core", "--qualify-upload", "--fixture"])
+        .arg(fixture_path);
     if let Some(path) = secondary_path {
         core_command.arg("--fixture-secondary").arg(path);
     }
@@ -225,7 +238,7 @@ pub fn run(fixture_path: &Path, secondary_path: Option<&Path>, output: &Path) ->
             "A second Core cannot replace a running endpoint",
             || {
                 let status = Command::new(std::env::current_exe()?)
-                    .args(["core", "--fixture"])
+                    .args(["core", "--qualify-upload", "--fixture"])
                     .arg(fixture_path)
                     .arg("--runtime")
                     .arg(&runtime)
@@ -369,7 +382,7 @@ pub fn run(fixture_path: &Path, secondary_path: Option<&Path>, output: &Path) ->
             let rt=tokio::runtime::Runtime::new()?;rt.block_on(async{let s=Sftp::connect(&fixture,None).await?;for id in [&same_a,&same_b]{ensure(s.read_bounded(&format!("{}/{}/.partial",fixture.remote_root,id),1).await?==[137],"simultaneous same-target partial missing")?;}s.close().await})?;
             let mut paths=Vec::new();
             for (client,id) in [(&mut a,&same_a),(&mut b,&same_b)] {
-                client.ok("probe.release",json!({"operation_id":id}))?;client.wait_state(id,"barrier","before_commit")?;client.ok("probe.release",json!({"operation_id":id}))?;let record=client.wait_state(id,"upload_state","committed")?;paths.push(record["result"]["transfer_path"].as_str().ok_or("path")?.to_string());
+                client.ok("probe.release",json!({"operation_id":id}))?;client.wait_state(id,"barrier","before_commit")?;client.ok("probe.release",json!({"operation_id":id}))?;let record=client.wait_state(id,"barrier","completed")?;ensure(record["upload_state"]=="committed","concurrent upload failed")?;paths.push(record["result"]["transfer_path"].as_str().ok_or("path")?.to_string());
             }
             rt.block_on(async{let s=Sftp::connect(&fixture,None).await?;ensure(s.read_bounded(&paths[0],one.len()).await?==one&&s.read_bounded(&paths[1],two.len()).await?==two,"same-target hashes crossed")?;s.close().await})?;
             for (client,id,path,session) in [(&mut a,&same_a,&paths[0],&sid),(&mut b,&same_b,&paths[1],&other)] {
@@ -414,7 +427,7 @@ pub fn run(fixture_path: &Path, secondary_path: Option<&Path>, output: &Path) ->
         nonce += 1;
         let id = op(&mut a, &sid, 1, nonce)?;
         report.case("E7","upload-zero-byte-refresh-and-response-loss","Insertion retry after refused context reuses committed file; lost ack never writes twice",||{
-            let current=a.ok("probe.capture.begin",json!({"operation_id":id}))?;let (data,image_evidence)=capture_after_trigger(&runtime,&current["binding"],None)?;let sealed=crate::seal::validate(&data)?;let up=upload(&mut a,&id,"sealed.png",&data)?;let path=up["result"]["transfer_path"].as_str().ok_or("path")?.to_string();
+            let current=a.ok("probe.capture.begin",json!({"operation_id":id}))?;let (data,image_evidence)=if headless {(png_payload(42)?,json!({"evidence_kind":"synthetic_png","desktop_capture":"excluded by --headless"}))}else{capture_after_trigger(&runtime,&current["binding"],None)?};let sealed=crate::seal::validate(&data)?;let up=upload(&mut a,&id,"sealed.png",&data)?;let path=up["result"]["transfer_path"].as_str().ok_or("path")?.to_string();
             a.ok("probe.upload",json!({"operation_id":id,"upload_key":"upload-1","basename":"sealed.png","data":data}))?;a.denied("probe.upload",json!({"operation_id":id,"upload_key":"upload-1","basename":"sealed.png","data":[9,9,9]}),"DEDUP_CONFLICT")?;
             a.denied("probe.insert",json!({"operation_id":id,"insert_key":"insert-1","text":path,"context_revision":0,"mapping":true}),"CONTEXT_UNKNOWN")?;
             let before=a.output(&sid)?.len();let first=a.ok("probe.insert",json!({"operation_id":id,"insert_key":"insert-1","text":path,"context_revision":1,"mapping":true,"lose_ack":true}))?;a.wait_output(&sid,path.as_bytes())?;let after=a.output(&sid)?;let replay=a.ok("probe.insert",json!({"operation_id":id,"insert_key":"insert-1","text":path,"context_revision":1,"mapping":true}))?;
@@ -445,7 +458,8 @@ pub fn run(fixture_path: &Path, secondary_path: Option<&Path>, output: &Path) ->
             b.ok("session.close",json!({"session_id":csid}))?;clean_remote(&fixture,&path)?;
             Ok(json!({"ipc_reply_received":false,"retained_insert_state":status["insert_state"],"actual_pty_occurrences":1,"retarget_retry_denied":true,"fault_boundary":"Core closes real Client IPC after syscall, before framed response"}))
         });
-        report.case("E7","cancel-and-switch-during-private-capture","An actual independent private-image process may finish after cancellation/switch; its original bound bytes cannot reach any SFTP target or PTY",||{
+        if !headless {
+            report.case("E7","cancel-and-switch-during-private-capture","An actual independent private-image process may finish after cancellation/switch; its original bound bytes cannot reach any SFTP target or PTY",||{
             let mut c=Client::connect(&socket)?;let started=c.ok("session.start",json!({}))?;let csid=started["session_id"].as_str().ok_or("capture session")?.to_string();c.wait_output(&csid,b"PHASE0_READY")?;
             let oid=op(&mut c,&csid,1,1)?;let admitted=c.ok("probe.capture.begin",json!({"operation_id":oid}))?;
             c.denied("probe.capture.begin",json!({"operation_id":oid}),"DEDUP_CONFLICT")?;
@@ -462,6 +476,17 @@ pub fn run(fixture_path: &Path, secondary_path: Option<&Path>, output: &Path) ->
             c.ok("session.close",json!({"session_id":csid}))?;c.ok("session.close",json!({"session_id":next_sid}))?;
             Ok(json!({"actual_capture_pipeline":image,"cancel_barrier":"child process started and alive before private capture/encode completion","second_capture_admitted":false,"late_upload_admitted":false,"actual_remote_directory_absent":true,"new_pty_path_bytes":0}))
         });
+        } else {
+            report.cases.push(Case {
+                experiment: "E7".into(),
+                case: "cancel-and-switch-during-private-capture".into(),
+                status: "excluded".into(),
+                expected: "Desktop cases excluded by --headless".into(),
+                observations: Value::Null,
+                limitations: vec!["No desktop access authorized for this run".into()],
+                cleanup_status: "no resources".into(),
+            });
+        }
         nonce += 1;
         let expired = op(&mut a, &sid, 1, nonce)?;
         report.case("E7","trigger-highwater-after-retention","Removed retained record cannot recreate an old nonce",||{a.ok("probe.forget",json!({"operation_id":expired}))?;a.denied("action.invoke",json!({"session_id":sid,"writer_epoch":1,"trigger_nonce":nonce.to_string(),"action_id":"image"}),"EXPIRED")?;Ok(json!({"retained_record_removed":true,"old_nonce_recreated":false,"clock":"explicit test retention-removal hook; not elapsed-wallclock evidence"}))});
@@ -482,7 +507,7 @@ pub fn run(fixture_path: &Path, secondary_path: Option<&Path>, output: &Path) ->
                 read_partial(&fixture,&y)?;read_partial(second,&x)?;
                 a.ok("probe.release",json!({"operation_id":y}))?;a.wait_state(&y,"barrier","before_commit")?;a.ok("probe.release",json!({"operation_id":y}))?;
                 c.ok("probe.release",json!({"operation_id":x}))?;c.wait_state(&x,"barrier","before_commit")?;c.ok("probe.release",json!({"operation_id":x}))?;
-                let py=a.wait_state(&y,"upload_state","committed")?;let px=c.wait_state(&x,"upload_state","committed")?;
+                let py=a.wait_state(&y,"barrier","completed")?;let px=c.wait_state(&x,"barrier","completed")?;ensure(py["upload_state"]=="committed"&&px["upload_state"]=="committed","two-target upload failed")?;
                 ensure(py["binding"]["profile_id"]=="primary"&&px["binding"]["profile_id"]=="secondary","operation target changed")?;
                 let yp=py["result"]["transfer_path"].as_str().ok_or("primary path")?.to_string();let xp=px["result"]["transfer_path"].as_str().ok_or("secondary path")?.to_string();
                 for (f,path,other_path,data) in [(&fixture,&yp,&xp,&one),(second,&xp,&yp,&two)] {
@@ -630,6 +655,7 @@ pub fn run(fixture_path: &Path, secondary_path: Option<&Path>, output: &Path) ->
     for name in [
         "core.sock",
         "core.lock",
+        "qualification.json",
         "frozen_config",
         "frozen_known_hosts",
         "frozen_config-secondary",
@@ -646,7 +672,7 @@ pub fn run(fixture_path: &Path, secondary_path: Option<&Path>, output: &Path) ->
     fs::remove_dir(&runtime)?;
     let failed = report.cases.iter().any(|c| c.status == "fail");
     let gaps = report.cases.iter().any(|c| c.status == "not-run");
-    let document = json!({"schema":1,"fixture_id":fixture.run_id,"secondary_fixture_id":secondary.as_ref().map(|f|&f.run_id),"environment":{"client_os":"Linux native","architecture":std::env::consts::ARCH,"terminal_host":"native Unix PTY / synthetic raw cat","local_shell":"no user shell used","display":"none except explicitly private-Xvfb child image suites","ssh_build":Command::new("ssh").arg("-V").output().ok().map(|x|String::from_utf8_lossy(&x.stderr).trim().to_string()),"backend":"system ssh pipes + russh-sftp3.0.1 probe","auth_mode":"generated key/password"},"cases":report.cases,"cleanup":{"runtime_removed":!runtime.exists(),"removed":cleanup},"controlled_linux_cases_passed":!failed&&!gaps,"phase0_ready":false,"supplemental_evidence":[{"fault_group":"E1 other-user IPC","report":"research/ipc-crossuid.json","status":"separately-executed","scope":"native kernel DAC and SO_PEERCRED refusal; not rerun inside this suite"},{"fault_group":"E6 packages/events","report":"research/check-plugin-results.json","status":"also-covered-by-independent-python-plugin-case","scope":"bounded test broker/USTAR gate, not production installer"}],"scope_limits":[{"surface":"physical IME/hardware key/MFA; Windows/macOS/Wayland/native non-Linux servers; reboot","status":"deferred-outside-approved-fixtures"},{"surface":"Core dynamic Include/Match/proxy config binding","status":"rejected-before-helper-execution; native trusted jump/proxy/reuse and chroot separately executed"},{"surface":"full Phase1 product API, installer, real-Shell context and every dispatch race permutation","status":"not-implemented; deterministic representative barriers exercise the shared admission checks"}],"limitations":["Probe-specific RPC methods differ from Phase1 public API and accept only synthetic owned fixtures","No all-platform or full-product support claim","Only explicitly generated controlled roots are advertised; lstat cannot defeat a malicious same-UID remote directory swap","Synthetic probe.capture.begin admits one pipeline; actual child may finish after cancellation, then Core rejects its late result"]});
+    let document = json!({"schema":1,"fixture_id":fixture.run_id,"secondary_fixture_id":secondary.as_ref().map(|f|&f.run_id),"environment":{"client_os":"Linux native","architecture":std::env::consts::ARCH,"terminal_host":"native Unix PTY / synthetic raw cat","local_shell":"no user shell used","display":if headless {"none; desktop execution excluded"} else {"private-Xvfb child image suites"},"ssh_build":Command::new("ssh").arg("-V").output().ok().map(|x|String::from_utf8_lossy(&x.stderr).trim().to_string()),"backend":"system ssh pipes + russh-sftp3.0.1 probe","auth_mode":"generated key/password"},"cases":report.cases,"cleanup":{"runtime_removed":!runtime.exists(),"removed":cleanup},"controlled_linux_cases_passed":!failed&&!gaps,"phase0_ready":false,"supplemental_evidence":[{"fault_group":"E1 other-user IPC","report":".trellis/tasks/archive/2026-10/10-22-sshx-phase0-feasibility/research/ipc-crossuid.json","status":"historical; not executed in this run","scope":"native kernel DAC and SO_PEERCRED refusal; not rerun inside this suite"},{"fault_group":"E6 packages/events","report":".trellis/tasks/archive/2026-10/10-22-sshx-phase0-feasibility/research/check-plugin-results.json","status":"historical detailed report; current nested plugin cases are inside this report","scope":"bounded test broker/USTAR gate, not production installer"}],"scope_limits":[{"surface":"physical IME/hardware key/MFA; Windows/macOS/Wayland/native non-Linux servers; reboot","status":"deferred-outside-approved-fixtures"},{"surface":"Core dynamic Include/Match/proxy config binding","status":"rejected-before-helper-execution; native trusted jump/proxy/reuse and chroot separately executed"},{"surface":"full Phase1 product API, installer, real-Shell context and every dispatch race permutation","status":"not-implemented; deterministic representative barriers exercise the shared admission checks"}],"limitations":["Probe-specific RPC methods differ from Phase1 public API and accept only synthetic owned fixtures","No all-platform or full-product support claim","Only explicitly generated controlled roots are advertised; lstat cannot defeat a malicious same-UID remote directory swap",if headless {"Desktop capture excluded; synthetic PNG preserves changed transfer/insert coverage"} else {"Synthetic probe.capture.begin admits one pipeline; actual child may finish after cancellation, then Core rejects its late result"}]});
     let mut f = OpenOptions::new()
         .write(true)
         .create_new(true)
@@ -1174,7 +1200,7 @@ fn core_crash(fixture_path: &Path) -> Result<Value> {
         fs::set_permissions(&dir, fs::Permissions::from_mode(0o700))?;
         let mut core = OwnedChild(
             Command::new(std::env::current_exe()?)
-                .args(["core", "--fixture"])
+                .args(["core", "--qualify-upload", "--fixture"])
                 .arg(fixture_path)
                 .arg("--runtime")
                 .arg(&dir)
@@ -1230,6 +1256,7 @@ fn core_crash(fixture_path: &Path) -> Result<Value> {
         for name in [
             "core.sock",
             "core.lock",
+            "qualification.json",
             "frozen_config",
             "frozen_known_hosts",
         ] {
@@ -1259,7 +1286,7 @@ fn endpoint_and_config_refusal(fixture_path: &Path) -> Result<Value> {
     let socket = dir.join("core.sock");
     symlink(&sentinel, &socket)?;
     let first = Command::new(std::env::current_exe()?)
-        .args(["core", "--fixture"])
+        .args(["core", "--qualify-upload", "--fixture"])
         .arg(fixture_path)
         .arg("--runtime")
         .arg(&dir)
@@ -1297,7 +1324,7 @@ fn endpoint_and_config_refusal(fixture_path: &Path) -> Result<Value> {
     serde_json::to_writer(&mut out, &variant)?;
     drop(out);
     let second = Command::new(std::env::current_exe()?)
-        .args(["core", "--fixture"])
+        .args(["core", "--qualify-upload", "--fixture"])
         .arg(&manifest)
         .arg("--runtime")
         .arg(&dir)
@@ -1314,6 +1341,7 @@ fn endpoint_and_config_refusal(fixture_path: &Path) -> Result<Value> {
     for name in [
         "core.sock",
         "core.lock",
+        "qualification.json",
         "sentinel",
         "config",
         "fixture.json",

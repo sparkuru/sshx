@@ -1,0 +1,18 @@
+{"file":".trellis/spec/trellis-plus/index.md","reason":"Shared policy and actual context-loading contract"}
+{"file":".trellis/spec/trellis-plus/development-principles.md","reason":"Scope, reuse and credential boundaries"}
+{"file":".trellis/spec/trellis-plus/sshx-contracts.md","reason":"Cooperative policy, publication and cleanup contracts"}
+{"file":".trellis/spec/trellis-plus/development.md","reason":"Pinned build and generated fixture lifecycle"}
+{"file":".trellis/spec/trellis-plus/validation.md","reason":"Evidence and human review gates"}
+{"file":".trellis/spec/trellis-plus/continuity.md","reason":"Authority and main-session lifecycle ownership"}
+{"file":".trellis/spec/trellis-plus/commit-policy.md","reason":"Preservation and Git closure boundaries"}
+{"file":".trellis/spec/trellis-plus/sshx-design.txt","reason":"Canonical source V VII IX XII XIII"}
+{"file":".trellis/spec/guides/cross-layer-thinking-guide.md","reason":"Effects and result consistency across callers"}
+{"file":".trellis/spec/guides/code-reuse-thinking-guide.md","reason":"Reuse existing Core and fixture execution paths"}
+{"file":".trellis/mainline.md","reason":"Current initiative and approved scope"}
+{"file":"docs/protocol.md","reason":"Authoritative policy and UploadResult definitions"}
+{"file":"docs/adr/0003-transfer-backend.md","reason":"Selected B route and hardlink restrictions"}
+{"file":"docs/image-paste.md","reason":"Independent upload, cleanup and input outcomes"}
+{"file":"docs/phase-0.md","reason":"Historical versus prospective runtime gates"}
+{"file":"docs/platform-matrix.md","reason":"Environment-limited claims"}
+{"file":".trellis/tasks/10-22-sshx-upload-root-runtime/research/planning-evidence.md","reason":"Inspected paths, pinned interface and unresolved runtime evidence"}
+{"file":".trellis/tasks/archive/2026-10/10-22-sshx-phase0-feasibility/research/dual-target-fixture.md","reason":"Fresh secondary fixture procedure and historical cleanup distinction"}

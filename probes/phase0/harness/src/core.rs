@@ -1,5 +1,6 @@
 use crate::native::Pty;
 use crate::sftp::Sftp;
+use crate::upload::{self, Policy};
 use crate::{json, random_id, sha, Fixture, Result, Value};
 use serde::Serialize;
 use sshx_phase0_protocol::{read_frame, write_frame, RequestCounter};
@@ -42,6 +43,7 @@ struct Profile {
     fixture: Fixture,
     source_config: String,
     config_digest: String,
+    policy: Option<Policy>,
 }
 #[derive(Clone)]
 struct Operation {
@@ -68,6 +70,13 @@ struct Operation {
     capture_started: bool,
     commit_confirmed: bool,
     content_verified: bool,
+    scope_digest: Option<String>,
+    fault: String,
+    error: Option<String>,
+    commit_dispatched: bool,
+    commit_rejected: bool,
+    ack_dropped: bool,
+    cleanup_steps: usize,
     deadline: std::time::Instant,
 }
 struct Client {
@@ -99,6 +108,44 @@ struct State {
     retired_sessions: BTreeMap<String, Value>,
 }
 impl State {
+    fn check_scope(&self, o: &Operation) -> Domain<()> {
+        let profile = &self
+            .sessions
+            .get(&o.binding.session_id)
+            .ok_or("STALE_BINDING")?
+            .profile;
+        let policy = profile.policy.as_ref().ok_or("PATH_DENIED")?;
+        if !policy.enabled
+            || o.scope_digest.as_ref() != Some(&policy.scope_digest)
+            || policy.root != profile.fixture.remote_root
+            || policy.namespace != format!("fixture-sftp:{}", profile.fixture.run_id)
+        {
+            return Err("PATH_DENIED");
+        }
+        if !policy.qualified {
+            return Err("COMMIT_UNSUPPORTED");
+        }
+        Ok(())
+    }
+    fn cleanup_binding(&self, o: &Operation) -> Domain<()> {
+        let s = self
+            .sessions
+            .get(&o.binding.session_id)
+            .ok_or("STALE_BINDING")?;
+        if self.boot != o.binding.core_instance_id
+            || s.generation != o.binding.generation
+            || s.profile.id != o.binding.profile_id
+            || s.pty.ended.load(std::sync::atomic::Ordering::SeqCst)
+        {
+            return Err("STALE_BINDING");
+        }
+        let current = bounded_file(Path::new(&s.profile.source_config), 65_536)
+            .map_err(|_| "CONFIG_CHANGED")?;
+        if sha(&current) != s.profile.config_digest {
+            return Err("CONFIG_CHANGED");
+        }
+        self.check_scope(o)
+    }
     fn detach_client_writer(&mut self, cid: &str) {
         let mut detached = Vec::new();
         for (sid, s) in &mut self.sessions {
@@ -165,6 +212,7 @@ impl State {
             return Err("STALE_BINDING");
         }
         if s.generation != o.binding.generation
+            || self.boot != o.binding.core_instance_id
             || s.attachment != o.binding.attachment_id
             || s.epoch != o.binding.writer_epoch
             || s.writer.as_deref() != Some(&o.binding.client_id)
@@ -180,7 +228,7 @@ impl State {
         Ok(())
     }
     fn projection(o: &Operation) -> Value {
-        json!({"binding":o.binding,"upload_state":o.upload,"insert_state":o.insert,"cancel_requested":o.cancel,"bytes_written":o.bytes,"barrier":o.barrier,"external_steps_admitted":o.external_steps,"last_step":o.last_step,"cleanup_pending":o.cleanup_pending,"result":o.path.as_ref().map(|p|json!({"transfer_path":p,"shell_path":null,"mapping_id":null,"final_commit_confirmed":o.commit_confirmed,"readback_verified":o.content_verified}))})
+        json!({"binding":o.binding,"upload_state":o.upload,"insert_state":o.insert,"cancel_requested":o.cancel,"bytes_written":o.bytes,"barrier":o.barrier,"external_steps_admitted":o.external_steps,"last_step":o.last_step,"cleanup_pending":o.cleanup_pending,"cleanup_steps":o.cleanup_steps,"error":o.error,"scope_digest":o.scope_digest,"commit_dispatched":o.commit_dispatched,"commit_rejected":o.commit_rejected,"ack_dropped":o.ack_dropped,"result":o.path.as_ref().map(|p|json!({"transfer_path":p,"shell_path":null,"mapping_id":null,"final_commit":if o.commit_confirmed {"confirmed"} else {"indeterminate"},"cleanup_pending":o.cleanup_pending,"readback_verified":o.content_verified}))})
     }
 }
 fn string<'a>(p: &'a Value, k: &str) -> Domain<&'a str> {
@@ -222,7 +270,10 @@ fn allowed_fields(method: &str) -> &'static [&'static str] {
             "hold_after_commit",
             "hold_mid_stream",
             "hold_step",
+            "fault",
+            "required_policy",
         ],
+        "probe.policy" => &["session_id", "change"],
         "probe.release" => &["operation_id"],
         "grant.decide" => &["operation_id", "decision"],
         "probe.ticket.issue" => &["session_id", "writer_epoch", "purpose"],
@@ -573,6 +624,13 @@ fn handle(
                 capture_started: false,
                 commit_confirmed: false,
                 content_verified: false,
+                scope_digest: s.profile.policy.as_ref().map(|p| p.scope_digest.clone()),
+                fault: String::new(),
+                error: None,
+                commit_dispatched: false,
+                commit_rejected: false,
+                ack_dropped: false,
+                cleanup_steps: 0,
                 deadline: std::time::Instant::now() + Duration::from_secs(300),
             };
             st.clients.get_mut(&cid).ok_or("ROLE_DENIED")?.highwater = nonce;
@@ -697,6 +755,25 @@ fn handle(
             }
             Ok(json!({"enabled":st.plugin_enabled}))
         }
+        "probe.policy" => {
+            // Authenticated local test Client only; not a plugin RPC method.
+            let sid = string(p, "session_id")?;
+            let change = string(p, "change")?;
+            let s = st.sessions.get_mut(sid).ok_or("NOT_FOUND")?;
+            if s.writer.as_deref() != Some(&cid) {
+                return Err("STALE_BINDING");
+            }
+            let policy = s.profile.policy.as_mut().ok_or("PATH_DENIED")?;
+            match change {
+                "absent" => policy.enabled = false,
+                "unqualified" => policy.qualified = false,
+                "root" => policy.root.push_str("-changed"),
+                "namespace" => policy.namespace.push_str("-changed"),
+                "policy" => policy.scope_digest.push_str("-changed"),
+                _ => return Err("INVALID_PARAMS"),
+            }
+            Ok(json!({"changed":true}))
+        }
         "probe.upload" => {
             let o = owned(&st, &cid, p)?.clone();
             let id = o.binding.operation_id.clone();
@@ -711,10 +788,9 @@ fn handle(
                     "write",
                     "close",
                     "commit_parent_lstat",
-                    "rename",
-                    "readback_open",
+                    "link",
+                    "cleanup",
                     "readback",
-                    "readback_close",
                 ]
                 .contains(&name)
                 {
@@ -739,11 +815,41 @@ fn handle(
                 return Err("PATH_DENIED");
             }
             let data = bytes(p, "data", 65_536)?;
+            let fault = p
+                .get("fault")
+                .map(|v| v.as_str().ok_or("INVALID_PARAMS"))
+                .transpose()?
+                .unwrap_or("");
+            if ![
+                "",
+                "drop_link_ack",
+                "missing_extension",
+                "unsupported_version",
+                "unsupported_response",
+                "missing_ledger",
+                "lost_transport",
+                "boot_change",
+                "unlink_denied",
+            ]
+            .contains(&fault)
+            {
+                return Err("INVALID_PARAMS");
+            }
+            let required_policy = p
+                .get("required_policy")
+                .map(|v| v.as_str().ok_or("INVALID_PARAMS"))
+                .transpose()?
+                .unwrap_or("cooperative");
             if data.starts_with(b"\x89PNG") {
                 crate::seal::validate(&data).map_err(|_| "CORRUPT_IMAGE")?;
             }
-            let intent =
-                sha(format!("{}:{basename}:{}", o.binding.operation_id, sha(&data)).as_bytes());
+            let intent = sha(format!(
+                "{}:{basename}:{}:{:?}:{required_policy}",
+                o.binding.operation_id,
+                sha(&data),
+                o.scope_digest
+            )
+            .as_bytes());
             if let Some(old) = &o.upload_key {
                 return if old == key && o.upload_digest.as_deref() == Some(&intent) {
                     Ok(State::projection(&o))
@@ -752,6 +858,10 @@ fn handle(
                 };
             }
             st.check_effect(&o)?;
+            st.check_scope(&o)?;
+            if required_policy != "cooperative" {
+                return Err("PATH_DENIED");
+            }
             let f = st
                 .sessions
                 .get(&o.binding.session_id)
@@ -763,8 +873,11 @@ fn handle(
             o.upload = "in_progress".into();
             o.upload_key = Some(key.into());
             o.upload_digest = Some(intent);
-            o.barrier = "before_open".into();
+            // Only the worker publishes releasable barriers; publishing here can lose
+            // a fast Client release when the new worker subsequently enters barrier().
+            o.barrier = "starting".into();
             o.pause_step = pause_step;
+            o.fault = fault.into();
             let hold = p["hold_after_commit"].as_bool().unwrap_or(false);
             let mid = p["hold_mid_stream"].as_bool().unwrap_or(false);
             let shared = state.clone();
@@ -812,6 +925,7 @@ fn handle(
             if o.upload != "committed" || !o.content_verified {
                 return Err("UNKNOWN_DELIVERY");
             }
+            st.check_scope(&o)?;
             let entry = st.operations.get_mut(&id).ok_or("NOT_FOUND")?;
             entry.insert_key = Some(key.into());
             entry.insert_digest = Some(digest);
@@ -917,6 +1031,108 @@ fn barrier(state: &Arc<Mutex<State>>, id: &str, name: &str) -> Domain<()> {
         thread::sleep(Duration::from_millis(5));
     }
 }
+#[derive(Default)]
+struct UploadLedger {
+    directory: Option<russh_sftp::protocol::FileAttributes>,
+    temp: Option<russh_sftp::protocol::FileAttributes>,
+    size: u64,
+    uncertain: bool,
+    directory_created: bool,
+    boot: String,
+    namespace: String,
+}
+
+async fn cleanup_upload(
+    state: &Arc<Mutex<State>>,
+    id: &str,
+    s: &Sftp,
+    f: &Fixture,
+    ledger: &UploadLedger,
+    committed: bool,
+) -> Result<()> {
+    let dir = format!("{}/{}", f.remote_root, id);
+    let temp = format!("{dir}/.partial");
+    if ledger.uncertain || !s.continuous || ledger.namespace != format!("fixture-sftp:{}", f.run_id)
+    {
+        return Err("cleanup continuity uncertain".into());
+    }
+    let binding = || -> Result<()> {
+        let st = state.lock().map_err(|_| "state")?;
+        let o = st.operations.get(id).ok_or("operation")?;
+        if ledger.boot != st.boot {
+            return Err("cleanup boot changed".into());
+        }
+        st.cleanup_binding(o).map_err(|e| e.to_string())?;
+        Ok(())
+    };
+    let Some(parent) = &ledger.directory else {
+        return if ledger.directory_created {
+            Err("missing directory ledger".into())
+        } else {
+            Ok(())
+        };
+    };
+    binding()?;
+    let current = upload::directory(s, &f.remote_root, &dir).await?;
+    if !upload::same_access(parent, &current) {
+        return Err("PATH_DENIED".into());
+    }
+    if let Some(original) = &ledger.temp {
+        let current = s.raw.lstat(&temp).await?.attrs;
+        if !current.is_regular()
+            || current.is_symlink()
+            || !upload::same_access(original, &current)
+            || current.size != Some(ledger.size)
+        {
+            return Err("PATH_DENIED".into());
+        }
+        binding()?;
+        let inject_denial = state
+            .lock()
+            .map_err(|_| "state")?
+            .operations
+            .get(id)
+            .is_some_and(|o| o.fault == "unlink_denied");
+        let removal = if inject_denial {
+            Err(russh_sftp::client::error::Error::Status(
+                russh_sftp::protocol::Status {
+                    id: 0,
+                    status_code: russh_sftp::protocol::StatusCode::PermissionDenied,
+                    error_message: "injected remove reply".into(),
+                    language_tag: "".into(),
+                },
+            ))
+        } else {
+            s.raw.remove(&temp).await
+        };
+        removal?;
+        state
+            .lock()
+            .map_err(|_| "state")?
+            .operations
+            .get_mut(id)
+            .ok_or("operation")?
+            .cleanup_steps += 1;
+    }
+    if !committed {
+        binding()?;
+        let current = upload::directory(s, &f.remote_root, &dir).await?;
+        if !upload::same_access(parent, &current) {
+            return Err("PATH_DENIED".into());
+        }
+        binding()?;
+        s.raw.rmdir(&dir).await?;
+        state
+            .lock()
+            .map_err(|_| "state")?
+            .operations
+            .get_mut(id)
+            .ok_or("operation")?
+            .cleanup_steps += 1;
+    }
+    Ok(())
+}
+
 fn upload(
     state: Arc<Mutex<State>>,
     id: String,
@@ -928,40 +1144,82 @@ fn upload(
 ) {
     let result = (|| -> Result<String> {
         barrier(&state, &id, "before_open").map_err(|e| e.to_string())?;
-        let rt = tokio::runtime::Runtime::new()?;
-        rt.block_on(async {
-            let s = step(&state, &id, "connect", Sftp::connect(&f, None)).await?;
+        let fault = state
+            .lock()
+            .map_err(|_| "state")?
+            .operations
+            .get(&id)
+            .ok_or("operation")?
+            .fault
+            .clone();
+        tokio::runtime::Runtime::new()?.block_on(async {
+            use russh_sftp::protocol::{FileAttributes, OpenFlags, StatusCode};
+            let mut s = step(
+                &state,
+                &id,
+                "connect",
+                Sftp::connect_hardlink_fault(&f, fault == "drop_link_ack"),
+            )
+            .await?;
+            if fault == "missing_extension" {
+                s.extensions.remove("hardlink@openssh.com");
+            }
+            if fault == "unsupported_version" {
+                s.extensions
+                    .insert("hardlink@openssh.com".into(), "2".into());
+            }
             let dir = format!("{}/{}", f.remote_root, id);
             let temp = format!("{dir}/.partial");
             let final_path = format!("{dir}/{basename}");
-            let mut owns_dir = false;
-            let mut owns_temp = false;
+            let mut ledger = UploadLedger {
+                boot: state.lock().map_err(|_| "state")?.boot.clone(),
+                namespace: format!("fixture-sftp:{}", f.run_id),
+                ..Default::default()
+            };
             let mut committed = false;
-            let result = async {
-                let root = step(&state, &id, "root_lstat", s.raw.lstat(&f.remote_root)).await?;
-                if !root.attrs.is_dir() {
-                    return Err("PATH_DENIED".into());
+            let result: Result<String> = async {
+                if !s.hardlink_v1() {
+                    return Err("COMMIT_UNSUPPORTED".into());
+                }
+                step(
+                    &state,
+                    &id,
+                    "root_lstat",
+                    upload::directory(&s, &f.remote_root, &f.remote_root),
+                )
+                .await?;
+                match s.raw.lstat(&dir).await {
+                    Err(russh_sftp::client::error::Error::Status(e))
+                        if e.status_code == StatusCode::NoSuchFile => {}
+                    Ok(_) => return Err("PATH_DENIED".into()),
+                    Err(e) => return Err(e.into()),
                 }
                 step(
                     &state,
                     &id,
                     "mkdir",
                     s.raw.mkdir(
-                        dir.clone(),
-                        russh_sftp::protocol::FileAttributes {
+                        &dir,
+                        FileAttributes {
                             permissions: Some(0o700),
                             ..Default::default()
                         },
                     ),
                 )
                 .await?;
-                owns_dir = true;
-                let parent = step(&state, &id, "parent_lstat", s.raw.lstat(&dir)).await?;
-                if !parent.attrs.is_dir() {
-                    return Err("PATH_DENIED".into());
-                }
-                // An open failure does not establish ownership: never remove an unknown temp.
-                use russh_sftp::protocol::{FileAttributes, OpenFlags};
+                // Creation was acknowledged; until its observation is captured, cleanup cannot adopt it.
+                ledger.directory_created = true;
+                ledger.uncertain = true;
+                ledger.directory = Some(
+                    step(
+                        &state,
+                        &id,
+                        "parent_lstat",
+                        upload::directory(&s, &f.remote_root, &dir),
+                    )
+                    .await?,
+                );
+                ledger.uncertain = false;
                 let handle = step(
                     &state,
                     &id,
@@ -969,11 +1227,16 @@ fn upload(
                     s.raw.open(
                         &temp,
                         OpenFlags::WRITE | OpenFlags::CREATE | OpenFlags::EXCLUDE,
-                        FileAttributes::default(),
+                        FileAttributes {
+                            permissions: Some(0o600),
+                            ..Default::default()
+                        },
                     ),
                 )
                 .await?;
-                owns_temp = true;
+                ledger.uncertain = true;
+                ledger.temp = Some(s.raw.fstat(handle.handle.clone()).await?.attrs);
+                ledger.uncertain = false;
                 let streamed: Result<()> = async {
                     let split = if mid { data.len().min(1) } else { 0 };
                     if mid {
@@ -985,72 +1248,132 @@ fn upload(
                                 .write(handle.handle.clone(), 0, data[..split].to_vec()),
                         )
                         .await?;
+                        ledger.size = split as u64;
                         barrier(&state, &id, "during_stream").map_err(|e| e.to_string())?;
                     }
-                    for (n, chunk) in data[split..].chunks(32_768).enumerate() {
+                    for chunk in data[split..].chunks(32_768) {
                         step(
                             &state,
                             &id,
                             "write",
-                            s.raw.write(
-                                handle.handle.clone(),
-                                (split + n * 32_768) as u64,
-                                chunk.to_vec(),
-                            ),
+                            s.raw
+                                .write(handle.handle.clone(), ledger.size, chunk.to_vec()),
                         )
                         .await?;
+                        ledger.size += chunk.len() as u64;
                     }
                     step(&state, &id, "close", s.raw.close(handle.handle.clone())).await?;
                     Ok(())
                 }
                 .await;
                 if let Err(e) = streamed {
-                    // Cleanup of an already owned handle is permitted after cancellation.
                     let _ = s.raw.close(handle.handle).await;
                     return Err(e);
                 }
                 barrier(&state, &id, "before_commit").map_err(|e| e.to_string())?;
-                let parent = step(&state, &id, "commit_parent_lstat", s.raw.lstat(&dir)).await?;
-                if !parent.attrs.is_dir() {
+                let parent = step(
+                    &state,
+                    &id,
+                    "commit_parent_lstat",
+                    upload::directory(&s, &f.remote_root, &dir),
+                )
+                .await?;
+                if !upload::same_access(ledger.directory.as_ref().ok_or("ledger")?, &parent) {
+                    ledger.uncertain = true;
                     return Err("PATH_DENIED".into());
                 }
-                step(
-                    &state,
-                    &id,
-                    "rename",
-                    s.rename_no_replace(&temp, &final_path),
-                )
-                .await?;
-                committed = true;
-                owns_temp = false;
+                let observed = s.raw.lstat(&temp).await?.attrs;
+                if !observed.is_regular()
+                    || observed.is_symlink()
+                    || !upload::same_access(ledger.temp.as_ref().ok_or("ledger")?, &observed)
+                    || observed.size != Some(ledger.size)
                 {
-                    let mut st = state.lock().map_err(|_| "state poisoned")?;
-                    let o = st.operations.get_mut(&id).ok_or("missing operation")?;
+                    ledger.uncertain = true;
+                    return Err("PATH_DENIED".into());
+                }
+                // A known occupied name is a confirmed collision. Generic server FAILURE below stays IO_ERROR.
+                match s.raw.lstat(&final_path).await {
+                    Ok(_) => return Err("NAME_EXISTS".into()),
+                    Err(russh_sftp::client::error::Error::Status(e))
+                        if e.status_code == StatusCode::NoSuchFile => {}
+                    Err(e) => return Err(e.into()),
+                }
+                let publication = step(&state, &id, "link", async {
+                    if fault == "unsupported_response" {
+                        return Err(russh_sftp::client::error::Error::Status(
+                            russh_sftp::protocol::Status {
+                                id: 0,
+                                status_code: StatusCode::OpUnsupported,
+                                error_message: "injected at hardlink response boundary".into(),
+                                language_tag: "".into(),
+                            },
+                        ));
+                    }
+                    state
+                        .lock()
+                        .map_err(|_| russh_sftp::client::error::Error::IO("state".into()))?
+                        .operations
+                        .get_mut(&id)
+                        .ok_or_else(|| russh_sftp::client::error::Error::IO("operation".into()))?
+                        .commit_dispatched = true;
+                    s.raw.hardlink(&temp, &final_path).await
+                })
+                .await;
+                if let Err(e) = publication {
+                    let rejected = e
+                        .downcast_ref::<russh_sftp::client::error::Error>()
+                        .and_then(|e| {
+                            if let russh_sftp::client::error::Error::Status(status) = e {
+                                Some(status.status_code)
+                            } else {
+                                None
+                            }
+                        });
+                    if let Some(code) = rejected {
+                        state
+                            .lock()
+                            .map_err(|_| "state")?
+                            .operations
+                            .get_mut(&id)
+                            .ok_or("operation")?
+                            .commit_rejected = true;
+                        return Err(if code == StatusCode::OpUnsupported {
+                            "COMMIT_UNSUPPORTED"
+                        } else {
+                            "IO_ERROR"
+                        }
+                        .into());
+                    }
+                    // A refusal before admission is not ambiguous remote delivery.
+                    let sent = state
+                        .lock()
+                        .map_err(|_| "state")?
+                        .operations
+                        .get(&id)
+                        .ok_or("operation")?
+                        .commit_dispatched;
+                    ledger.uncertain = sent;
+                    if sent {
+                        let mut st = state.lock().map_err(|_| "state")?;
+                        let o = st.operations.get_mut(&id).ok_or("operation")?;
+                        o.path = Some(final_path.clone());
+                        o.ack_dropped = s.ack_dropped.load(std::sync::atomic::Ordering::SeqCst);
+                    }
+                    return Err(e);
+                }
+                committed = true;
+                {
+                    let mut st = state.lock().map_err(|_| "state")?;
+                    let o = st.operations.get_mut(&id).ok_or("operation")?;
                     o.path = Some(final_path.clone());
                     o.commit_confirmed = true;
+                    o.upload = "committed".into();
                 }
-                let read_handle = step(
-                    &state,
-                    &id,
-                    "readback_open",
-                    s.raw
-                        .open(&final_path, OpenFlags::READ, FileAttributes::default()),
-                )
-                .await?;
                 let read = step(
                     &state,
                     &id,
                     "readback",
-                    s.raw
-                        .read(read_handle.handle.clone(), 0, (data.len() + 1) as u32),
-                )
-                .await?
-                .data;
-                step(
-                    &state,
-                    &id,
-                    "readback_close",
-                    s.raw.close(read_handle.handle),
+                    s.read_bounded(&final_path, data.len()),
                 )
                 .await?;
                 if read != data {
@@ -1064,48 +1387,47 @@ fn upload(
                     .ok_or("operation")?
                     .content_verified = true;
                 if hold {
-                    {
-                        let mut st = state.lock().map_err(|_| "state")?;
-                        let o = st.operations.get_mut(&id).ok_or("operation")?;
-                        o.path = Some(final_path.clone());
-                        o.upload = "committed".into();
-                        o.barrier = "after_commit".into();
-                    }
-                    let until = std::time::Instant::now() + Duration::from_secs(10);
-                    loop {
-                        let st = state.lock().map_err(|_| "state")?;
-                        if st
-                            .operations
-                            .get(&id)
-                            .is_some_and(|o| o.barrier == "released")
-                        {
-                            break;
-                        }
-                        drop(st);
-                        if std::time::Instant::now() > until {
-                            break;
-                        }
-                        thread::sleep(Duration::from_millis(5));
-                    }
+                    barrier(&state, &id, "after_commit").map_err(|e| e.to_string())?;
                 }
                 Ok(final_path.clone())
             }
             .await;
-            if result.is_err() && !committed {
-                let uncertain = state
-                    .lock()
-                    .map_err(|_| "state")?
-                    .operations
-                    .get(&id)
-                    .is_some_and(|o| o.barrier == "commit_dispatched");
-                if !uncertain {
-                    let temp_removed = !owns_temp || s.raw.remove(&temp).await.is_ok();
-                    let dir_removed = !owns_dir || s.raw.rmdir(&dir).await.is_ok();
-                    if let Some(o) = state.lock().map_err(|_| "state")?.operations.get_mut(&id) {
-                        o.cleanup_pending = !(temp_removed && dir_removed);
-                    }
+            // Transport ambiguity or lost creation/write acknowledgements invalidate the entire ledger.
+            if let Err(e) = &result {
+                if e.downcast_ref::<russh_sftp::client::error::Error>()
+                    .is_some_and(|e| !matches!(e, russh_sftp::client::error::Error::Status(_)))
+                {
+                    ledger.uncertain = true;
                 }
             }
+            let pause = state
+                .lock()
+                .map_err(|_| "state")?
+                .operations
+                .get(&id)
+                .is_some_and(|o| o.pause_step.as_deref() == Some("cleanup"));
+            if pause {
+                let _ = barrier(&state, &id, "before_cleanup");
+            }
+            // Test-only faults alter the actual evidence consumed by ordinary cleanup guards.
+            match fault.as_str() {
+                "missing_ledger" => ledger.directory = None,
+                "lost_transport" => {
+                    let _ = s.disconnect();
+                }
+                "boot_change" => ledger.boot = random_id()?,
+                _ => {}
+            }
+            let pending = cleanup_upload(&state, &id, &s, &f, &ledger, committed)
+                .await
+                .is_err();
+            state
+                .lock()
+                .map_err(|_| "state")?
+                .operations
+                .get_mut(&id)
+                .ok_or("operation")?
+                .cleanup_pending = pending;
             let _ = s.close().await;
             result
         })
@@ -1116,20 +1438,20 @@ fn upload(
                 Ok(path) => {
                     o.path = Some(path);
                     o.upload = "committed".into();
-                    o.barrier = "completed".into();
                 }
-                Err(_) => {
+                Err(e) => {
+                    o.error = Some(e.to_string());
                     o.upload = if o.commit_confirmed {
                         "committed"
-                    } else if o.barrier == "commit_dispatched" {
+                    } else if o.commit_dispatched && !o.commit_rejected {
                         "indeterminate"
                     } else {
                         "failed"
                     }
                     .into();
-                    o.barrier = "completed".into();
                 }
             }
+            o.barrier = "completed".into();
         }
     }
 }
@@ -1164,11 +1486,12 @@ where
         let mut st = state.lock().map_err(|_| "state poisoned")?;
         let o = st.operations.get(id).ok_or("missing operation")?;
         st.check_effect(o).map_err(|e| e.to_string())?;
+        st.check_scope(o).map_err(|e| e.to_string())?;
         let o = st.operations.get_mut(id).ok_or("missing operation")?;
         o.external_steps += 1;
         o.last_step = name.into();
-        if name == "rename" {
-            o.barrier = "commit_dispatched".into();
+        if name == "link" {
+            o.barrier = "link_admitted".into();
         }
     }
     // Admission above linearizes against cancellation; a step in flight may complete.
@@ -1196,7 +1519,12 @@ fn peer(stream: &UnixStream) -> io::Result<()> {
     }
     Ok(())
 }
-pub fn serve(fixture: Fixture, secondary: Option<Fixture>, runtime: &Path) -> Result<()> {
+pub fn serve(
+    fixture: Fixture,
+    secondary: Option<Fixture>,
+    runtime: &Path,
+    qualify: bool,
+) -> Result<()> {
     let m = fs::symlink_metadata(runtime)?;
     if !m.is_dir() || m.mode() & 0o077 != 0 || m.uid() != unsafe { libc::geteuid() } {
         return Err("runtime directory ownership/mode".into());
@@ -1218,11 +1546,17 @@ pub fn serve(fixture: Fixture, secondary: Option<Fixture>, runtime: &Path) -> Re
     fs::set_permissions(&socket, fs::Permissions::from_mode(0o600))?;
     listener.set_nonblocking(true)?;
     let mut profiles = BTreeMap::new();
+    let mut qualifications = Vec::new();
     for (id, f) in std::iter::once(("primary", fixture)).chain(secondary.map(|f| ("secondary", f)))
     {
         let source_config = f.ssh_config_file.clone();
         let original_config = bounded_file(Path::new(&source_config), 65_536)?;
         let frozen = freeze_fixture(f, runtime, id)?;
+        let mut policy = qualify.then(|| Policy::new(&frozen, &sha(&original_config)));
+        if let Some(p) = &mut policy {
+            qualifications
+                .push(tokio::runtime::Runtime::new()?.block_on(upload::qualify(&frozen, p))?);
+        }
         profiles.insert(
             id.into(),
             Profile {
@@ -1230,8 +1564,18 @@ pub fn serve(fixture: Fixture, secondary: Option<Fixture>, runtime: &Path) -> Re
                 fixture: frozen,
                 source_config,
                 config_digest: sha(&original_config),
+                policy,
             },
         );
+    }
+    if qualify {
+        use std::io::Write;
+        let mut evidence = OpenOptions::new()
+            .write(true)
+            .create_new(true)
+            .mode(0o600)
+            .open(runtime.join("qualification.json"))?;
+        evidence.write_all(&serde_json::to_vec_pretty(&qualifications)?)?;
     }
     let state = Arc::new(Mutex::new(State {
         boot: random_id()?,
