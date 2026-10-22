@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "component": "build-and-ssh-fixture",
+  "date": "2026-10-22",
+  "scope": "Linux controlled infrastructure only; not an E1-E7 acceptance result",
+  "build": {
+    "platform": "linux/amd64",
+    "rust": "1.90.0 (1159e78c4 2025-09-14)",
+    "cargo": "1.90.0 (840b83a10 2025-07-30)",
+    "image": "rust@sha256:3914072ca0c3b8aad871db9169a651ccfce30cf58303e5d6f2db16d1d8a7e58f",
+    "derived_image_id": "sha256:1b83a6dc7f4132d5cc36f44df414ce003935e0fb63508d806a988f0bd6aa6ef1",
+    "rustfmt": "1.8.0-stable (1159e78c47 2025-09-14)",
+    "clippy": "0.1.90 (1159e78c47 2025-09-14)",
+    "run_uses_immutable_local_id_and_pull_never": true,
+    "sentinel_uid": 1000,
+    "sentinel_cleanup": "complete",
+    "native_elf": "ELF64 x86-64 /lib64/ld-linux-x86-64.so.2",
+    "native_abi_result": "pass",
+    "build_credentials_excluded": true,
+    "default_network": "none"
+  },
+  "server": {
+    "base": "debian@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587",
+    "image_id": "sha256:cb3eb061776d0835b474754593e692492c473a811607dbab68a815b02cedc70c",
+    "openssh_server": "1:9.2p1-2+deb12u10",
+    "openssh_sftp_server": "1:9.2p1-2+deb12u10",
+    "python3": "3.11.2-1+b1",
+    "libc6": "2.36-9+deb12u14",
+    "publish_host": "127.0.0.1",
+    "quota_tmpfs_bytes": 1048576
+  },
+  "checks": {
+    "shell_syntax_shellcheck_shfmt": "pass",
+    "python_compile_help": "pass",
+    "strict_key_login": "pass",
+    "no_sftp_login_and_subsystem_refusal": "pass",
+    "chroot_subsystem": "pass",
+    "password_only_batchmode_refusal": "pass",
+    "owned_denied_quota_paths": "pass",
+    "private_modes": "pass",
+    "nonloopback_refusal": "pass",
+    "teardown_twice_credentials_removed_port_released": "pass"
+  },
+  "integration_resource": {
+    "run_id": "09422203e8e5490890c2ddf05c2ff249",
+    "container_id": "1d11fd8f596079ec7873f3b488974d53630e37560494bb1935960b6755327be3",
+    "status": "intentionally running for core integration",
+    "cleanup_status": "pending main-session integration teardown"
+  },
+  "limitations": [
+    "Future apt repository availability is a build prerequisite; exact exercised image and packages are recorded.",
+    "Password-only interactive login and substantive E1-E7 assertions belong to core and visual suites.",
+    "No physical IME, MFA, existing desktop, Windows, macOS or Wayland claim."
+  ]
+}

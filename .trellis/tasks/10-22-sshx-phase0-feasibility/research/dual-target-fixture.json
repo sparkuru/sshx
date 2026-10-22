@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "date": "2026-10-22",
+  "component": "dual-target-loopback-fixture",
+  "primary": {
+    "run_id": "09422203e8e5490890c2ddf05c2ff249",
+    "host": "127.0.0.1",
+    "port": 32770,
+    "container_id": "1d11fd8f596079ec7873f3b488974d53630e37560494bb1935960b6755327be3",
+    "image_id": "sha256:cb3eb061776d0835b474754593e692492c473a811607dbab68a815b02cedc70c",
+    "host_key_fingerprint": "256 SHA256:kSusXBuqKc9/pTYSjk7GZC/Net/Md/O0MSPG5H85pVY phase0-host (ED25519)"
+  },
+  "secondary": {
+    "run_id": "8a26f072521876cee2e63876fc9bd093",
+    "host": "127.0.0.1",
+    "port": 32771,
+    "container_id": "b0ea52e13e90b7a7272b5d9ed8056bf0b0f96ebe1be4f43c1022adb83e014939",
+    "image_id": "sha256:cb3eb061776d0835b474754593e692492c473a811607dbab68a815b02cedc70c",
+    "host_key_fingerprint": "256 SHA256:ptnZAsRZZ+qt4Q2i1CptzY9u1K6Wtgm5kcWJMB0Bw1g phase0-host (ED25519)"
+  },
+  "secondary_state_file": "/home/wkyuu/cargo/repo/29-sshx/.devhome/phase0/secondary/8a26f072521876cee2e63876fc9bd093/state.json",
+  "checks": {
+    "primary_pointer_preserved": true,
+    "both_containers_running": true,
+    "distinct_container_ids_ports_expected_hostkeys": true,
+    "only_ipv4_loopback_published": true,
+    "private_modes_verified": true,
+    "secondary_strict_hostkey_authenticated_readiness": "pass"
+  },
+  "cleanup": {
+    "status": "intentionally running for integration; main session owns final teardown",
+    "secondary_runtime": "/home/wkyuu/cargo/repo/29-sshx/.devhome/phase0/secondary",
+    "secondary_method": "load explicit local lifecycle.py with Python -I -S; down(repo, repo / \".devhome/phase0/secondary\")",
+    "primary_method": "./dev.sh down"
+  },
+  "limitations": [
+    "Two distinct SSH server identities/endpoints on one Docker host; two physical machines were not tested.",
+    "Operations against both targets in one Core require separate integration evidence."
+  ]
+}

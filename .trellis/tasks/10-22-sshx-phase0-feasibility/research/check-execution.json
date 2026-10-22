@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "commands_log": "/tmp/sshx-phase0-check-build-final.log",
+  "execution": {
+    "start_utc_epoch": 1792672458.5225275,
+    "end_utc_epoch": 1792672525.0357962,
+    "exit_code": 0,
+    "command": [
+      "phase0-probe",
+      "suite",
+      "--fixture",
+      "OWNED_PRIMARY",
+      "--fixture-secondary",
+      "OWNED_SECONDARY",
+      "--output",
+      "/tmp/sshx-phase0-check-core-final.json"
+    ]
+  },
+  "native_report": "research/check-core-results.json",
+  "native_report_sha256": "c74bb4208be5f101b2a9cf77eb5c83cf1783326044f78bad419c3c891c23678f",
+  "source_sha256": {
+    "probes/phase0/harness/src/native.rs": "ded4cfea10da2ad0429c7933e892fd003edc809acd2ffab54e3a457d4bb576ab",
+    "probes/phase0/harness/src/plugin.rs": "6f9d2d88e6c1330e3820aa38413c7a611e5e210ffa50739a6cee96e3f77b1ddf",
+    "probes/phase0/harness/src/core.rs": "9b5d225cae6c36348d533de14120a66c420ce18110017c2e84b3c8e37c24c639",
+    "probes/phase0/harness/src/seal.rs": "79830aba3e857a6e961a1fc89765a40d94303383c376f88827b4e10f968f0c2c",
+    "probes/phase0/harness/src/main.rs": "b7d5621218ecb0d091d0fb1bd781fd5d175054b92b5abcf3c43b03e9ce16be9b",
+    "probes/phase0/harness/src/suite.rs": "004f8a2673b0acfccde670f94afa86d12c384a6346e1e4b2887dda9c69c09adc",
+    "probes/phase0/harness/src/sftp.rs": "70f347d984dcadd174218607b115db9dc540527ce0e66caefe8ba4192f06e600",
+    "probes/phase0/protocol/src/lib.rs": "725cf64db89a183524c6b644769eb2e2144d29cdb4e61c89b5602ea8cd75501f",
+    "probes/phase0/image-probe/src/plugin.rs": "64b8cc1b486da225e3e41c0a04d9089dad777300f53ddb8582a313c069fb7d3d",
+    "probes/phase0/image-probe/src/image.rs": "8eab1e8249087369bbcb4f9bc7efd21316b2b77a017bfd648aa56deaa214248a",
+    "probes/phase0/image-probe/src/runtime.rs": "c269c713f52f64ba32aa6db4258e8305cfd7737b22bd6ac4a4599063f0f260b6",
+    "probes/phase0/image-probe/src/visual.rs": "c8cddbf7b89129639d804aa9a54fa9e5c79ea5b677b0e1227a0380b2f944680c",
+    "probes/phase0/image-probe/src/main.rs": "302de22f71247d820ab638c17d2f9b59ccbe43f79af6bd0ced9b47c84a905e6d",
+    "probes/phase0/image-probe/src/suite.rs": "7271a39baa9dfa316649c72d08616b3137995e52451ad5486ca7400fa1d9fea1",
+    "probes/phase0/Cargo.toml": "447b6f0f99b54c0f2ea4bab7c931555110d22b72456fc80e9f4f7cdaddd7ff32",
+    "probes/phase0/Cargo.lock": "0a274b8219488db7067d87b3a0d706f0925a6e4acb5784fb058d6537daf7ee45",
+    "probes/phase0/fixtures/plugin.py": "800a5d3c9eb485a61e90d1d4bbad2f2311fb3e7513b37c2d8b5f0f74640dfed2"
+  },
+  "source_unchanged_through_native_run": true
+}

@@ -1,0 +1,144 @@
+#!/usr/bin/env bash
+# hako - Build the Phase 0 Rust workspace without a host Rust installation.
+# The derived Rust 1.90 Bookworm image adds rustfmt/clippy to the pinned base.
+# Build it once with ./hako --build-image; it mounts probes/phase0 at /work and only
+# task-owned .devhome caches at /cache, with the invoking UID/GID.
+# Usage:
+#   ./hako rustc --version
+#   ./hako cargo build --locked --workspace
+#   ./hako cargo fmt --all -- --check
+#   ./hako cargo clippy --locked --workspace --all-targets -- -D warnings
+#   ./hako cargo test --locked --workspace --all-targets
+# Ordinary commands publish no ports. Dependency access is enabled only when
+# HAKO_NETWORK=bridge is explicitly set. dev.sh uses the fixture-only helpers.
+# The SSH fixture listens on all container interfaces, published on host loopback.
+set -Eeuo pipefail
+
+HAKO_BIND_HOST="${HAKO_BIND_HOST:-127.0.0.1}"
+SSH_HOST_PORT="${SSH_HOST_PORT:-0}"
+SSH_CONTAINER_PORT="${SSH_CONTAINER_PORT:-2222}"
+readonly IMAGE='sshx-phase0-build:rust1.90'
+REPO_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+readonly REPO_ROOT
+readonly TASK_LABEL='10-22-sshx-phase0-feasibility'
+readonly FIXTURE_IMAGE='sshx-phase0-fixture:local'
+readonly STYLE_TITLE=$'\033[1;36m' STYLE_ERROR=$'\033[1;31m' STYLE_RESET=$'\033[0m'
+step_index=0
+
+color_text() {
+	if [[ -t 2 && -z "${NO_COLOR:-}" ]]; then printf '%s%s%s' "$1" "$2" "$STYLE_RESET"; else printf '%s' "$2"; fi
+}
+
+die() {
+	printf '%s\n' "$(color_text "$STYLE_ERROR" "Error: $*")" >&2
+	exit 1
+}
+require_command() { command -v "$1" >/dev/null 2>&1 || die "required command not found: $1"; }
+run_step() {
+	step_index=$((step_index + 1))
+	printf '#%s [hako run] ' "$step_index" >&2
+	printf '%q ' "$@" >&2
+	printf '\n' >&2
+	"$@"
+}
+usage() {
+	printf '%s\n' "$(color_text "$STYLE_TITLE" 'Usage: ./hako COMMAND [ARG ...]')" >&2
+	printf '%s\n' 'Run a command in the actual probes/phase0 workspace.' 'Example: HAKO_NETWORK=bridge ./hako cargo fetch --locked' >&2
+}
+
+fixture_command() {
+	local action=${1:-}
+	shift
+	case "$action" in
+	build)
+		[[ $# -eq 0 ]] || die 'fixture build accepts no arguments'
+		run_step docker build --platform linux/amd64 --progress plain --tag "$FIXTURE_IMAGE" "$REPO_ROOT/probes/phase0/fixtures/sshd"
+		;;
+	start)
+		[[ $# -eq 2 ]] || die 'fixture start requires RUN_ID and credential directory'
+		[[ "$HAKO_BIND_HOST" == 127.0.0.1 ]] || die 'fixture host must be 127.0.0.1'
+		[[ "$SSH_HOST_PORT" =~ ^[0-9]+$ && "$SSH_CONTAINER_PORT" =~ ^[0-9]+$ ]] || die 'ports must be decimal integers'
+		[[ "$1" =~ ^[a-f0-9]{32}$ ]] || die 'invalid fixture run ID'
+		[[ "$2" == "$REPO_ROOT/.devhome/phase0/"* && -d "$2" && ! -L "$2" ]] || die 'invalid fixture credential directory'
+		run_step docker run --detach --pull never --platform linux/amd64 --init --pids-limit 128 --memory 256m --cpus 1 \
+			--label "hako.repo=$REPO_ROOT" --label hako.scope=dev.sh --label hako.service=ssh \
+			--label "sshx.task=$TASK_LABEL" --label "sshx.run=$1" \
+			--publish "$HAKO_BIND_HOST:$SSH_HOST_PORT:$SSH_CONTAINER_PORT" \
+			--mount "type=bind,src=$2,dst=/fixture,readonly" \
+			--tmpfs /run:rw,nosuid,nodev,size=16m --tmpfs /tmp:rw,nosuid,nodev,size=16m \
+			--tmpfs /quota:rw,nosuid,nodev,noexec,size=1m,mode=1777 \
+			--env "SSH_CONTAINER_PORT=$SSH_CONTAINER_PORT" "$FIXTURE_IMAGE"
+		;;
+	inspect)
+		[[ $# -eq 1 && "$1" =~ ^[a-f0-9]{64}$ ]] || die 'inspect requires an exact container ID'
+		run_step docker inspect "$1"
+		;;
+	remove)
+		[[ $# -eq 2 && "$1" =~ ^[a-f0-9]{64}$ && "$2" =~ ^[a-f0-9]{32}$ ]] || die 'remove requires exact container and run IDs'
+		local labels
+		labels=$(docker inspect --format '{{index .Config.Labels "hako.repo"}}|{{index .Config.Labels "sshx.task"}}|{{index .Config.Labels "sshx.run"}}|{{index .Config.Labels "hako.scope"}}' "$1")
+		[[ "$labels" == "$REPO_ROOT|$TASK_LABEL|$2|dev.sh" ]] || die 'container ownership labels do not match'
+		run_step docker rm --force "$1"
+		;;
+	image)
+		[[ $# -eq 0 ]] || die 'fixture image accepts no arguments'
+		run_step docker image inspect "$FIXTURE_IMAGE"
+		;;
+	*) die 'unknown fixture helper' ;;
+	esac
+}
+
+main() {
+	[[ $# -gt 0 ]] || {
+		usage
+		return 2
+	}
+	case "$1" in --help | -h)
+		usage
+		return
+		;;
+	esac
+	require_command docker
+	if [[ "$1" == --build-image ]]; then
+		[[ $# -eq 1 ]] || die '--build-image accepts no arguments'
+		run_step docker build --platform linux/amd64 --progress plain --tag "$IMAGE" "$REPO_ROOT/probes/phase0/fixtures/build"
+		return
+	fi
+	if [[ "$1" == --fixture ]]; then
+		shift
+		fixture_command "$@"
+		return
+	fi
+	[[ -f "$REPO_ROOT/probes/phase0/Cargo.toml" ]] || die 'probe Cargo workspace is absent'
+	local image_id
+	image_id=$(docker image inspect --format '{{.Id}}' "$IMAGE") || die 'build image is absent or Docker is unavailable; run ./hako --build-image through the normal approval path'
+	require_command mkdir
+	require_command chmod
+	require_command id
+	[[ ! -L "$REPO_ROOT/.devhome" ]] || die '.devhome must not be a symlink'
+	local cache_name
+	for cache_name in cargo target home; do
+		[[ ! -L "$REPO_ROOT/.devhome/$cache_name" ]] || die 'cache directories must not be symlinks'
+	done
+	umask 077
+	run_step mkdir -p -- "$REPO_ROOT/.devhome/cargo" "$REPO_ROOT/.devhome/target" "$REPO_ROOT/.devhome/home"
+	for cache_name in . cargo target home; do
+		[[ -d "$REPO_ROOT/.devhome/$cache_name" && -O "$REPO_ROOT/.devhome/$cache_name" ]] || die 'cache directory has an unexpected owner or type'
+		run_step chmod 700 -- "$REPO_ROOT/.devhome/$cache_name"
+	done
+	local -a tty_flags=()
+	[[ ! -t 0 ]] || tty_flags+=(-i)
+	[[ ! -t 0 || ! -t 1 ]] || tty_flags+=(-t)
+	local network=${HAKO_NETWORK:-none}
+	[[ "$network" == none || "$network" == bridge ]] || die 'HAKO_NETWORK must be none or bridge'
+	run_step docker run --rm --pull never --platform linux/amd64 --network "$network" "${tty_flags[@]}" \
+		--user "$(id -u):$(id -g)" --security-opt no-new-privileges --cap-drop ALL \
+		--label "hako.repo=$REPO_ROOT" --label hako.scope=manual --label hako.service=build \
+		--mount "type=bind,src=$REPO_ROOT/probes/phase0,dst=/work" \
+		--mount "type=bind,src=$REPO_ROOT/.devhome/cargo,dst=/cache/cargo" \
+		--mount "type=bind,src=$REPO_ROOT/.devhome/target,dst=/cache/target" \
+		--mount "type=bind,src=$REPO_ROOT/.devhome/home,dst=/cache/home" \
+		--env HOME=/cache/home --env CARGO_HOME=/cache/cargo --env CARGO_TARGET_DIR=/cache/target \
+		--workdir /work "$image_id" "$@"
+}
+main "$@"

@@ -1,6 +1,6 @@
 # SSHX Development Environment
 
-Read before application work or configuration/toolchain changes. The initialization baseline has no `Cargo.toml`, app source, lockfile, app tests, CI, `hako`, lifecycle script, environment example or preview service. There is no current app build/start command. The [design source](sshx-design.txt), X–XII, proposes Rust/system OpenSSH and native CLI/TUI; listed crates and platforms remain unverified.
+Read before application work or configuration/toolchain changes. The initialization baseline had no runnable workspace. The approved Phase 0 task now adds a disposable Rust probe workspace under `probes/phase0`, root `hako` and `dev.sh` for isolated experiments. These are feasibility tools, not a released application or product service. The [design source](sshx-design.txt), X–XII, retains Rust/system OpenSSH and native CLI/TUI; only explicitly recorded experiment combinations are verified.
 
 ## Before-development checkpoint
 
@@ -15,6 +15,35 @@ The first authorized application task must finish this checkpoint before install
 7. Update this profile with exact wrapper/build/test/start/stop/readiness commands and local prerequisites actually verified; register it in both task contexts and run the focused acceptance checks. Unavailable platform environments remain explicit gaps.
 
 No initialization wrapper or container run has been performed merely by installing this checkpoint.
+
+## Verified Phase 0 build and fixture infrastructure
+
+The [fixture evidence](../../tasks/10-22-sshx-phase0-feasibility/research/fixture-evidence.md) records actual tool/image/package versions and smoke/teardown results. Build Rust is 1.90.0, Cargo 1.90.0 on the pinned linux/amd64 Rust image. Host-native Rust tools remain absent; no host toolchain was installed. A reviewed container-built ELF ran on the Debian 13 x86_64 host. This ABI smoke is separate from substantive probe cases.
+
+- `./hako rustc --version` executes in `/work` mapped from `probes/phase0`. Only source and separate `.devhome/{cargo,target,home}` caches are mounted. Fixture credentials in `.devhome/phase0`, personal SSH/agent/display and repository metadata are excluded. UID/GID map to the caller. Ordinary commands use network none; authorized dependency retrieval explicitly sets `HAKO_NETWORK=bridge`.
+- `./dev.sh start` builds/starts a generated-key/password SSH/SFTP service and prints its private state path. `./dev.sh status` prints redacted metadata; stopped status exits 1. `./dev.sh down` verifies exact recorded container labels/ID, removes that service and its generated credentials; repeated down is safe. Coordinate with active cases before restarting/downing it.
+- Fixture publication is dynamically assigned IPv4 loopback only. Server accounts cover normal, password-only, no-SFTP and chroot behavior; denied paths and a bounded 1 MiB quota tmpfs support negative cases. Known-host expectations derive from generated host keys before first connection. The server is a test fixture, not an application preview.
+- Native probes are built to `.devhome/target/debug/`. Final Cargo checks are recorded below; infrastructure smoke alone does not pass E1–E7. Generated runtime state remains mode 0700/0600 and ignored. No browser/mobile preview applies.
+
+## Phase 0 commands and selected probe dependencies
+
+The independent whole-workspace run passed all of these commands in the scoped Docker image, with network none and the reviewed lockfile:
+
+~~~sh
+./hako cargo fmt --all -- --check
+./hako cargo clippy --locked --offline --workspace --all-targets -- -D warnings
+./hako cargo check --locked --offline --workspace --all-targets
+./hako cargo test --locked --offline --workspace --all-targets
+./hako cargo build --locked --offline --workspace
+~~~
+
+There are 14 meaningful unit tests: image 5, harness 4, public protocol 5. The derived image ID is `sha256:1b83a6dc7f4132d5cc36f44df414ce003935e0fb63508d806a988f0bd6aa6ef1`; rustfmt 1.8.0 and Clippy 0.1.90 were exercised. `./hako --build-image` explicitly builds this toolchain layer from its pinned Rust base. Required crate retrieval uses `HAKO_NETWORK=bridge ./hako cargo fetch --locked`; ordinary commands never implicitly pull an unavailable local development tag.
+
+Resolved direct probe versions include serde 1.0.229, serde_json 1.0.154, Tokio 1.54.1, libc 0.2.191, russh-sftp 3.0.1, png 0.18.1, vt100 0.18.1 with default features off, flate2 1.1.10, crc32fast 1.5.0, base64 0.22.1 and sha2 0.10.9. Cargo.lock is authoritative for all resolutions. This selects experimental dependencies only, not every proposed product crate/platform.
+
+Native interfaces are `.devhome/target/debug/phase0-probe --help` and `phase0-image --help`. The full two-target Core run adds `--fixture-secondary SECOND_STATE` to `suite --fixture PRIMARY_STATE --output NEW_JSON`; [second-fixture setup/teardown](../../tasks/10-22-sshx-phase0-feasibility/research/dual-target-fixture.md) reuses the existing lifecycle functions under a separate private pointer. Never call normal `dev.sh start` to create a second instance while the first is in use: start replaces its own recorded service. Core accepts only prevalidated generated profiles, and every Session keeps its own frozen profile.
+
+Native image/visual tests additionally need the existing host C compiler, Xlib headers/runtime, Xvfb, xterm and Vim; no host package installation occurred. Run only with the task's fixture authority and fresh evidence paths. Private Xvfb cookies and generated SSH credentials are removed with their exact owners; caches/build images may remain intentionally. General mutable-parent SFTP capability, complete v1 API, real Shell edit-context integration, full attach and other native platforms remain unsupported/unverified regardless of passing finite probe cases.
 
 ## Service and preview applicability
 

@@ -1,0 +1,98 @@
+{
+  "schema": 1,
+  "component": "native-cross-uid-ipc",
+  "date": "2026-10-22",
+  "run_id": "5e5a4483444e32dac9a092166a67fbd8",
+  "host_core_uid": 1000,
+  "core_pid": 159979,
+  "runtime_mode": "0700",
+  "socket_mode": "0600",
+  "image_id": "sha256:cb3eb061776d0835b474754593e692492c473a811607dbab68a815b02cedc70c",
+  "cases": [
+    {
+      "experiment": "E1",
+      "case": "cross-uid-runtime-dac",
+      "status": "pass",
+      "expected": "UID65534 actual EACCES",
+      "observations": {
+        "uid": 65534,
+        "cap_eff": "0000000000000000",
+        "uid_map": "0          0 4294967295",
+        "connect": "denied",
+        "errno": 13
+      },
+      "isolation": {
+        "network": "none",
+        "read_only": true,
+        "cap_drop": "ALL",
+        "cap_add": [],
+        "host_mounts": [
+          "task-owned synthetic Core runtime, read-only"
+        ],
+        "fixture_credentials_mounted": false
+      },
+      "cleanup_status": "--rm exact container exited"
+    },
+    {
+      "experiment": "E1",
+      "case": "cross-uid-so-peercred",
+      "status": "pass",
+      "expected": "UID0 bypasses only DAC but native Core closes channel before hello",
+      "observations": {
+        "uid": 0,
+        "cap_eff": "0000000000000002",
+        "uid_map": "0          0 4294967295",
+        "connect": "accepted",
+        "first_read_bytes": 0,
+        "before_hello": true
+      },
+      "isolation": {
+        "network": "none",
+        "read_only": true,
+        "cap_drop": "ALL",
+        "cap_add": [
+          "DAC_OVERRIDE"
+        ],
+        "host_mounts": [
+          "task-owned synthetic Core runtime, read-only"
+        ],
+        "fixture_credentials_mounted": false
+      },
+      "cleanup_status": "--rm exact container exited"
+    }
+  ],
+  "core_metadata_before": {
+    "clients": 1,
+    "grants": 0,
+    "metadata_accounted_upper_bound": 512,
+    "metadata_budget": 16777216,
+    "operations": 0,
+    "sessions": 0,
+    "tickets": 0
+  },
+  "core_metadata_after": {
+    "clients": 1,
+    "grants": 0,
+    "metadata_accounted_upper_bound": 512,
+    "metadata_budget": 16777216,
+    "operations": 0,
+    "sessions": 0,
+    "tickets": 0
+  },
+  "cleanup": {
+    "core_waited": true,
+    "core_exit": 0,
+    "socket_and_frozen_config_removed": true,
+    "runtime_removed": true,
+    "peer_container_ids": [
+      "0926a0499424e9b5def8f94592e70acbc4366df83e312512ad6b69640de2d312",
+      "26aa47e32b29638e856d5d1ee04cd0792b2d28450e38f59985671e9730c176b9"
+    ],
+    "peer_containers_absent": true,
+    "existing_ssh_fixture_untouched": true
+  },
+  "limitations": [
+    "Linux same-kernel container UIDs exercise native Core DAC and SO_PEERCRED; not Windows pipe ACLs or macOS peer APIs",
+    "DAC_OVERRIDE only on the isolated test peer bypasses the synthetic runtime DAC to reach SO_PEERCRED; no privileged/host namespace or credential mount"
+  ]
+}

@@ -1,0 +1,479 @@
+{
+  "artifact": null,
+  "cases": [
+    {
+      "case": "empty-private-selection",
+      "experiment": "E3",
+      "observed": {
+        "encoded_bytes": 0,
+        "largest_property_request": 0,
+        "name": "CLIPBOARD_EMPTY"
+      },
+      "status": "pass"
+    },
+    {
+      "alpha_preserved": true,
+      "capture_count_for_operation": 1,
+      "captured_png_sha256": "bb159bfa3401776c3357005c19fd7b42d62cb935bfa83461c2210d24ed4bd20c",
+      "case": "one-shot-alpha-immutable",
+      "experiment": "E3",
+      "native_bounds": {
+        "encoded_bytes": 80,
+        "largest_property_request": 80,
+        "name": "CAPTURED"
+      },
+      "raw_byte_length": 16,
+      "raw_sha256": "d9cd6270e5c6ecfed62f2bff9baabcd03ec7b3ca1b8618af3f7879e0f67e8d58",
+      "selection_changed": true,
+      "status": "pass",
+      "unrelated_existing_display_accessed": false
+    },
+    {
+      "binding": {
+        "attachment_id": "88888888888888888888888888888888",
+        "client_id": "77777777777777777777777777777777",
+        "config_generation": 1,
+        "core_instance_id": "11111111111111111111111111111111",
+        "generation": 1,
+        "operation_id": "55555555555555555555555555555555",
+        "profile_id": "99999999999999999999999999999999",
+        "session_id": "66666666666666666666666666666666",
+        "writer_epoch": 1
+      },
+      "binding_sha256": "78b8ab7269cbeb66ee682d6ff81e5be65b857dbf73ae164f1f2d5fecff6e95ca",
+      "case": "independent-image-plugin-public-rpc",
+      "environment": "minimal PATH/HOME/LANG; no DISPLAY/XAUTHORITY/agent/credentials",
+      "experiment": "E3",
+      "limitation": "public encoding subset only; transfer and insertion are separate real Core probes",
+      "methods": [
+        "action.register",
+        "clipboard.read_image",
+        "blob.read",
+        "blob.create",
+        "blob.write",
+        "blob.seal",
+        "ui.notify"
+      ],
+      "private_core_dependency": false,
+      "raw_sha256": "d9cd6270e5c6ecfed62f2bff9baabcd03ec7b3ca1b8618af3f7879e0f67e8d58",
+      "sealed_bytes": 80,
+      "sealed_sha256": "bb159bfa3401776c3357005c19fd7b42d62cb935bfa83461c2210d24ed4bd20c",
+      "snapshot_calls": 1,
+      "status": "pass"
+    },
+    {
+      "case": "triggering-client-desktop-binding",
+      "client_A_snapshot_calls": 1,
+      "client_B_selection_owner_alive": true,
+      "client_B_snapshot_calls": 0,
+      "experiment": "E3",
+      "limitation": "controlled Client fixture processes; Core broker integration is recorded separately",
+      "private_display_count": 2,
+      "status": "pass"
+    },
+    {
+      "case": "selection-owner-exit",
+      "experiment": "E3",
+      "observed": {
+        "encoded_bytes": 0,
+        "largest_property_request": 0,
+        "name": "CLIPBOARD_EMPTY"
+      },
+      "status": "pass"
+    },
+    {
+      "case": "native-corrupt-selection",
+      "experiment": "E3",
+      "observed": {
+        "encoded_bytes": 0,
+        "largest_property_request": 36,
+        "name": "CORRUPT_IMAGE"
+      },
+      "status": "pass"
+    },
+    {
+      "case": "native-text-only-selection",
+      "experiment": "E3",
+      "observed": {
+        "encoded_bytes": 0,
+        "largest_property_request": 0,
+        "name": "CLIPBOARD_EMPTY"
+      },
+      "status": "pass",
+      "text_fallback": false
+    },
+    {
+      "case": "native-dimension-preallocation",
+      "experiment": "E3",
+      "observed": {
+        "encoded_bytes": 80,
+        "largest_property_request": 36,
+        "name": "LIMIT_EXCEEDED"
+      },
+      "raw_output_allocated": 0,
+      "status": "pass"
+    },
+    {
+      "case": "native-encoded-size-preallocation",
+      "experiment": "E3",
+      "observed": {
+        "encoded_bytes": 16777217,
+        "largest_property_request": 36,
+        "name": "LIMIT_EXCEEDED"
+      },
+      "raw_output_allocated": 0,
+      "status": "pass"
+    },
+    {
+      "case": "incr-adapter-refusal",
+      "experiment": "E3",
+      "observed": {
+        "encoded_bytes": 0,
+        "largest_property_request": 36,
+        "name": "INCR_UNSUPPORTED"
+      },
+      "selection_effect": "INCR combination unsupported; no unbounded accumulation",
+      "status": "pass"
+    },
+    {
+      "case": "missing-and-denied-desktop",
+      "denied": "CLIPBOARD_UNAVAILABLE",
+      "experiment": "E3",
+      "limitation": "XOpenDisplay cannot reliably distinguish denied from unavailable; CLIPBOARD_DENIED classification unsupported",
+      "missing": "CLIPBOARD_UNAVAILABLE",
+      "status": "pass"
+    },
+    {
+      "bomb_largest_rust_allocation": 43296,
+      "bomb_peak_extra_rust_bytes": 43365,
+      "case": "png-preallocation-and-alpha-profile",
+      "decoded_bytes": 16777216,
+      "decompression_bomb_rejected": true,
+      "experiment": "E3",
+      "limitations": [
+        "allocator counters measure Rust allocations, Xlib property requests are separately bounded",
+        "png Limits is best effort; strict preflight excludes ancillary/interlaced/APNG allocation paths and metadata claims are checked before decoder creation"
+      ],
+      "oversized_claim_largest_rust_allocation": 24,
+      "png_max": 16777216,
+      "raw_max": 67108864,
+      "status": "pass",
+      "valid_largest_rust_allocation": 16777216,
+      "valid_peak_extra_rust_bytes": 17058936
+    },
+    {
+      "baseline_cursor": [
+        3,
+        8
+      ],
+      "baseline_modes": {
+        "1": "\u001b[?1;1$y",
+        "1049": "\u001b[?1049;2$y",
+        "2004": "\u001b[?2004;1$y",
+        "25": "\u001b[?25;2$y"
+      },
+      "baseline_screen_sha256": "e2da66c0a424a2ee6f0858e5e87a9511fa3803ad096f921f140fb4b65dabd292",
+      "case": "normal-cursor-modes",
+      "contains_osc": false,
+      "cursor_equal": true,
+      "experiment": "E5",
+      "limitation": "attributes, wrap flags, hidden normal-screen state and scroll regions are not faithfully restored by this limited renderer",
+      "model_cursor_equal": true,
+      "modes_equal": true,
+      "restored_cursor": [
+        3,
+        8
+      ],
+      "restored_modes": {
+        "1": "\u001b[?1;1$y",
+        "1049": "\u001b[?1049;2$y",
+        "2004": "\u001b[?2004;1$y",
+        "25": "\u001b[?25;2$y"
+      },
+      "restored_screen_sha256": "e2da66c0a424a2ee6f0858e5e87a9511fa3803ad096f921f140fb4b65dabd292",
+      "scope": "native private-Xvfb xterm; bounded selected visual state",
+      "screen_equal": true,
+      "snapshot_bytes": 601,
+      "status": "pass"
+    },
+    {
+      "baseline_cursor": [
+        5,
+        13
+      ],
+      "baseline_modes": {
+        "1": "\u001b[?1;2$y",
+        "1049": "\u001b[?1049;1$y",
+        "2004": "\u001b[?2004;2$y",
+        "25": "\u001b[?25;1$y"
+      },
+      "baseline_screen_sha256": "218a48ba74fb507377232d2c5885547b17f8f4d79786a399020979b0180635b2",
+      "case": "alternate-screen",
+      "contains_osc": false,
+      "cursor_equal": true,
+      "experiment": "E5",
+      "limitation": "attributes, wrap flags, hidden normal-screen state and scroll regions are not faithfully restored by this limited renderer",
+      "model_cursor_equal": true,
+      "modes_equal": true,
+      "restored_cursor": [
+        5,
+        13
+      ],
+      "restored_modes": {
+        "1": "\u001b[?1;2$y",
+        "1049": "\u001b[?1049;1$y",
+        "2004": "\u001b[?2004;2$y",
+        "25": "\u001b[?25;1$y"
+      },
+      "restored_screen_sha256": "218a48ba74fb507377232d2c5885547b17f8f4d79786a399020979b0180635b2",
+      "scope": "native private-Xvfb xterm; bounded selected visual state",
+      "screen_equal": true,
+      "snapshot_bytes": 602,
+      "status": "pass"
+    },
+    {
+      "case": "alternate-return-normal",
+      "experiment": "E5",
+      "limitation": "visible alternate snapshot does not retain the hidden normal buffer; this renderer is rejected as a full attach strategy",
+      "screen_equal": false,
+      "status": "rejected-candidate"
+    },
+    {
+      "baseline_cursor": [
+        2,
+        20
+      ],
+      "baseline_modes": {
+        "1": "\u001b[?1;2$y",
+        "1049": "\u001b[?1049;2$y",
+        "2004": "\u001b[?2004;2$y",
+        "25": "\u001b[?25;1$y"
+      },
+      "baseline_screen_sha256": "ae11a1b51fd1b922d1db17617ce28b9f12996c064246827e7db9e9919c71880c",
+      "case": "resize-reflow",
+      "contains_osc": false,
+      "cursor_equal": true,
+      "experiment": "E5",
+      "limitation": "width truncation matches this tested xterm398 case; reflow emulators remain unverified",
+      "model_cursor_equal": true,
+      "modes_equal": true,
+      "restored_cursor": [
+        2,
+        20
+      ],
+      "restored_modes": {
+        "1": "\u001b[?1;2$y",
+        "1049": "\u001b[?1049;2$y",
+        "2004": "\u001b[?2004;2$y",
+        "25": "\u001b[?25;1$y"
+      },
+      "restored_screen_sha256": "ae11a1b51fd1b922d1db17617ce28b9f12996c064246827e7db9e9919c71880c",
+      "scope": "native private-Xvfb xterm; bounded selected visual state",
+      "screen_equal": true,
+      "snapshot_bytes": 362,
+      "status": "pass"
+    },
+    {
+      "baseline_cursor": [
+        4,
+        14
+      ],
+      "baseline_modes": {
+        "1": "\u001b[?1;2$y",
+        "1049": "\u001b[?1049;2$y",
+        "2004": "\u001b[?2004;2$y",
+        "25": "\u001b[?25;1$y"
+      },
+      "baseline_screen_sha256": "77fcdbf90f4c027439d050c9328bbbf9707aec03f829138a6e80039eb9fad2be",
+      "case": "resize-explicit-redraw",
+      "contains_osc": false,
+      "cursor_equal": true,
+      "experiment": "E5",
+      "limitation": "attributes, wrap flags, hidden normal-screen state and scroll regions are not faithfully restored by this limited renderer",
+      "model_cursor_equal": true,
+      "modes_equal": true,
+      "restored_cursor": [
+        4,
+        14
+      ],
+      "restored_modes": {
+        "1": "\u001b[?1;2$y",
+        "1049": "\u001b[?1049;2$y",
+        "2004": "\u001b[?2004;2$y",
+        "25": "\u001b[?25;1$y"
+      },
+      "restored_screen_sha256": "77fcdbf90f4c027439d050c9328bbbf9707aec03f829138a6e80039eb9fad2be",
+      "scope": "native private-Xvfb xterm; bounded selected visual state",
+      "screen_equal": true,
+      "snapshot_bytes": 408,
+      "status": "pass"
+    },
+    {
+      "baseline_cursor": [
+        1,
+        5
+      ],
+      "baseline_modes": {
+        "1": "\u001b[?1;2$y",
+        "1049": "\u001b[?1049;2$y",
+        "2004": "\u001b[?2004;2$y",
+        "25": "\u001b[?25;1$y"
+      },
+      "baseline_screen_sha256": "8b3369944dd2a3fab39e32d1aeb1f763946a458ae3e6368a46432adc8f3a0860",
+      "case": "clipboard-side-effect-not-replayed",
+      "contains_osc": false,
+      "cursor_equal": true,
+      "experiment": "E5",
+      "limitation": "attributes, wrap flags, hidden normal-screen state and scroll regions are not faithfully restored by this limited renderer",
+      "model_cursor_equal": true,
+      "modes_equal": true,
+      "restored_cursor": [
+        1,
+        5
+      ],
+      "restored_modes": {
+        "1": "\u001b[?1;2$y",
+        "1049": "\u001b[?1049;2$y",
+        "2004": "\u001b[?2004;2$y",
+        "25": "\u001b[?25;1$y"
+      },
+      "restored_screen_sha256": "8b3369944dd2a3fab39e32d1aeb1f763946a458ae3e6368a46432adc8f3a0860",
+      "scope": "native private-Xvfb xterm; bounded selected visual state",
+      "screen_equal": true,
+      "snapshot_bytes": 601,
+      "status": "pass"
+    },
+    {
+      "case": "restricted-redraw",
+      "experiment": "E5",
+      "limitation": "requires explicit cooperating receiver redraw; arbitrary alternate-screen/editor restoration unsupported",
+      "status": "pass"
+    },
+    {
+      "case": "detached-output-bounded",
+      "cell_bytes": 32,
+      "dimensions_over_limit_refused": true,
+      "experiment": "E5",
+      "input_bytes": 8454144,
+      "largest_rust_allocation": 16000,
+      "limitations": [
+        "no terminal history retained",
+        "Core/SSH process survival and network/Core failure evidence are separate core harness cases"
+      ],
+      "peak_extra_rust_bytes": 9619200,
+      "retained_render_bytes": 152341,
+      "scrollback_capacity": 0,
+      "status": "pass",
+      "visible_cells": 150000,
+      "vt_budget": 16777216
+    },
+    {
+      "after_resize_bytes": 819,
+      "baseline_bytes": 627,
+      "baseline_screen_sha256": "aebcebb22dbf0f9976ee274a6cf4412963ee45cbc43137d71c77c33d56d4b01d",
+      "case": "controlled-vim-native-pty",
+      "child_alive_after_resize": true,
+      "child_alive_before_resize": true,
+      "cursor_equal": true,
+      "experiment": "E5",
+      "limitation": "Vim on native task-owned PTY, independent private xterm oracle; no attributes/wrap fidelity or generic arbitrary-editor redraw promise",
+      "modes_equal": true,
+      "normal_exit": true,
+      "redraw_bytes": 590,
+      "restored_screen_sha256": "aebcebb22dbf0f9976ee274a6cf4412963ee45cbc43137d71c77c33d56d4b01d",
+      "restricted_redraw_screen_equal": true,
+      "screen_equal": true,
+      "status": "pass"
+    }
+  ],
+  "cleanup": {
+    "owned_display_stopped": true,
+    "private_runtime_removed": true
+  },
+  "environment": {
+    "architecture": "x86_64",
+    "display": "new private Xvfb -nolisten tcp, private Xauthority",
+    "libraries": {
+      "base64": "0.22.1",
+      "crc32fast": "1.5.0",
+      "png": "0.18.1",
+      "vt100": "0.18.1 no std feature (bounded vte OSC ArrayVec)"
+    },
+    "native_os": "linux",
+    "terminal": "xterm private display"
+  },
+  "limitations": [
+    "not a released clipboard or terminal adapter",
+    "INCR/Wayland/Windows/macOS/physical IME unsupported or unverified",
+    "restoration is selected plain visual state; attributes/wrap/scroll regions and resize reflow not faithful",
+    "Core/PTY/SSH survival and network/Core recovery are separate core harness observations"
+  ],
+  "schema_version": 1,
+  "status": "pass-with-rejected-candidates",
+  "suite": "phase0-image-visual",
+  "commands": [
+    [
+      "./hako",
+      "cargo",
+      "fmt",
+      "--manifest-path",
+      "image-probe/Cargo.toml",
+      "--",
+      "--check"
+    ],
+    [
+      "./hako",
+      "cargo",
+      "clippy",
+      "--locked",
+      "--offline",
+      "-p",
+      "sshx-phase0-image",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    [
+      "./hako",
+      "cargo",
+      "test",
+      "--offline",
+      "-p",
+      "sshx-phase0-image"
+    ],
+    [
+      "./hako",
+      "cargo",
+      "build",
+      "--locked",
+      "--offline",
+      "-p",
+      "sshx-phase0-image"
+    ],
+    [
+      ".devhome/target/debug/phase0-image",
+      "suite",
+      "--output",
+      "/tmp/sshx-phase0-visual-final-bound.json",
+      "--binding-file",
+      "/tmp/sshx-phase0-visual-binding.json"
+    ]
+  ],
+  "native_tool_versions": {
+    "xterm": "398-1",
+    "xvfb": "2:21.1.16-1.3+deb13u4",
+    "vim": "2:9.1.1230-2",
+    "libx11-6": "2:1.8.12-1",
+    "libx11-dev": "2:1.8.12-1",
+    "gcc": "4:14.2.0-1"
+  },
+  "case_counts": {
+    "pass": 20,
+    "rejected-candidate": 1
+  },
+  "scope_note": "Standalone E3/E5 subset evidence; Core-owned SSH survival, actual remote upload/insertion and exact Core B linkage are separate core evidence.",
+  "evidence_exported_utc": "2026-10-22T12:01:57.639724+00:00",
+  "native_run_timestamps": null,
+  "native_run_timestamp_note": "Exact start/completion timestamps were not captured; commands and actual exit status were observed."
+}

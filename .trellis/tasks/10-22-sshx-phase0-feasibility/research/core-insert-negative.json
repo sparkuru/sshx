@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "fixture_id": "09422203e8e5490890c2ddf05c2ff249",
+  "status": "pass",
+  "source": "separate actual native Core/IPC/SFTP/PTY, no mocks",
+  "cases": [
+    {
+      "case": "current-writer-arbitrary-safe-text",
+      "status": "pass",
+      "error": "CAPABILITY_DENIED",
+      "actual_pty_bytes_added": 0
+    },
+    {
+      "case": "current-writer-unknown-mapping",
+      "status": "pass",
+      "error": "MAPPING_UNKNOWN",
+      "actual_pty_bytes_added": 0
+    },
+    {
+      "case": "control-denial-then-valid-same-key",
+      "status": "pass",
+      "rejected_controls": 4,
+      "valid_insert_bytes": 68,
+      "actual_pty_occurrences": 1,
+      "png_sha256": "4a2565a37e6bf202b1dc2e92847dd5ad1d172c9961bb4d685c22093489028683"
+    }
+  ],
+  "cleanup": {
+    "known_final_files_removed": true,
+    "core_exited": true,
+    "files": 3,
+    "runtime_removed": true
+  }
+}

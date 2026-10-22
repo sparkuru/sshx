@@ -1,10 +1,10 @@
 # SSHX architecture
 
-Status: proposed product contracts, 2026-10-22. The approved deliverable is this documentation package. No SSHX executable, dependency selection or native feasibility result exists. Requirements come from the retained [source I–XIII](../.trellis/spec/trellis-plus/sshx-design.txt); task acceptance is [R1–R7](../.trellis/tasks/archive/2026-10/10-22-sshx-architecture-feasibility/prd.md). Words such as “must” define future acceptance, not implemented behavior.
+Status: proposed product contracts, 2026-10-22. The original architecture task delivered this documentation package. The subsequent approved Phase 0 task now implements disposable Linux probe executables and records [native evidence and limits](phase-0.md); it does not implement the complete product API. Requirements come from the retained [source I–XIII](../.trellis/spec/trellis-plus/sshx-design.txt); task acceptance is [R1–R7](../.trellis/tasks/archive/2026-10/10-22-sshx-architecture-feasibility/prd.md). Words such as “must” define future acceptance, not implemented behavior.
 
 ## Requirement trace and decision classes
 
-F = fixed source requirement; D = source default; P = concrete proposal in this package; U = requires evidence; S = superseded by source. The method names and numeric limits in the protocol are P. Runtime support is U throughout.
+F = fixed source requirement; D = source default; P = concrete proposal in this package; U = requires evidence; S = superseded by source. The method names and numeric limits in the protocol are P. Broad runtime support remains U; only the exact measured [platform combinations](platform-matrix.md#measured-phase-0-combinations) have experimental evidence.
 
 | ID | Source | Class and retained obligation | Owning artifact | Verification |
 | --- | --- | --- | --- | --- |

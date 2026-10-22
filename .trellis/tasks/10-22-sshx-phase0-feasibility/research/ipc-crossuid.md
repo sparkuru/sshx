@@ -1,0 +1,18 @@
+# Native Linux cross-UID IPC evidence
+
+Observed 2026-10-22. Two required E1 negative cases **passed** against a new native user Core, without creating/changing a host account or touching the active integration Core/SSH fixture. [Machine observations](ipc-crossuid.json) contain actual UIDs, capability masks, errno, metadata and exact resource IDs.
+
+The existing reviewed native `.devhome/target/debug/phase0-probe core --fixture STATE --runtime NEW_PRIVATE_DIR` ran as UID 1000 in a newly generated `/tmp/sshx-phase0-crossuid-*` directory. Actual directory/socket modes were asserted as 0700/0600. One same-user control Client negotiated the public hello, confirmed zero Sessions and captured `probe.metadata`. No SSH process or transfer was started in this Core.
+
+Each peer ran Python `-I -S -c REVIEWED_SYNTHETIC_CODE` in the exercised server image `sha256:cb3eb061776d0835b474754593e692492c473a811607dbab68a815b02cedc70c`, with `docker run --rm --pull never --platform linux/amd64 --network none --read-only --cap-drop ALL --security-opt no-new-privileges --pids-limit 16 --memory 64m`. Its only host mount was **that new synthetic Core runtime, read-only**, at `/peer`; no fixture state, key, password, home, agent/socket or existing runtime was mounted. Repo/task/run/scope labels and each exact container ID were recorded. No privileged mode or host namespace was used.
+
+| Peer | Actual observation | Meaning |
+| --- | --- | --- |
+| UID/GID 65534, no capabilities | `connect('/peer/core.sock')` raised errno 13 `EACCES`; `CapEff=0000000000000000` | Actual different-kernel-UID refusal at runtime/socket DAC, not a string predicate or mocked peer credential |
+| UID/GID 0, only `DAC_OVERRIDE` added after dropping all capabilities | `CapEff=0000000000000002`; connect succeeded, first read was zero bytes **before sending hello** | Bypassing only this synthetic runtime's DAC allowed the native Linux `SO_PEERCRED` UID check to be exercised independently; Core closed the different-UID peer before role/version allocation |
+
+The second branch is a narrow test necessity: ordinary private-directory DAC otherwise prevents a different UID reaching the credential check. It did not grant the peer a broad mount or a privileged container. Both peers printed their own `/proc/self/uid_map` for actual mapping evidence; the native Core's peer check was reviewed at `core.rs` (`getsockopt(SO_PEERCRED)`, compare to effective UID, reject before connection handler). These Linux results do not establish Windows pipe or macOS API behavior, same-user malicious-process isolation, or an OS plugin sandbox.
+
+The same-user Core metadata before/after was identical: one Client, zero Sessions, operations, grants and tickets. Normal `core.stop` returned stopping and the owned Core exited 0. Socket/frozen configuration disappeared; only its known lock file remained and was removed before deleting the exact runtime. Both `--rm` peer containers were inspected by exact recorded IDs and were absent. The existing generated SSH fixture was left untouched for other integration cases. All cleanup assertions passed.
+
+The exact temporary driver was `/tmp/sshx-phase0-crossuid-probe.py`, invoked with `python3 -I -S` through the normal scoped native/Docker approval path. It serialized protocol byte lengths, performed the control/negative cases, verified metadata and cleanup, then created the machine report owner-only. No security policy or host account was changed. This evidence resolves the previously unavailable Linux second-UID check for this native harness; it does not turn other unsupported E1 lifecycle/race cases into passes.

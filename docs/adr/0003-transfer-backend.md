@@ -1,6 +1,6 @@
 # ADR 0003: Select one OpenSSH-backed SFTP route after Phase 0
 
-Date: 2026-10-22. Status: **deferred by evidence gate**; no backend selected or implemented.
+Date: 2026-10-22. Status: **B retained for cooperative Linux experiments; general MVP promotion blocked**. No backend is approved for mutable-parent/root capability guarantees.
 
 ## Context and options
 
@@ -24,3 +24,11 @@ The selected route must satisfy [target/path authority](../protocol.md#targetcon
 ## Selection and reopening gate
 
 E4 compares candidate probes on the chosen fixture/server set. Pass requires verified target/config binding; key/agent/master and extra-auth results; special paths/namespaces; collision/symlink/full-disk/partial/cancel outcomes; bounded errors and no Shell prompt theft. Select one candidate only if all mandatory invariants pass; otherwise report a blocker and restrict the advertised fixture set or revisit the route explicitly. Record dependency/version/interface evidence only for the chosen exercised implementation. Reopen on a server/platform requirement that fails a load-bearing invariant, with a scoped comparison rather than silently shipping both backends.
+
+## Phase 0 measured outcome and no-go boundary
+
+The Linux probes compare both routes against generated-key, strict-host-check OpenSSH fixtures. Candidate A's ordinary batch `put` overwrites an existing destination and exposes no demonstrated exclusive-create primitive for this contract; it is rejected as the implementation route. Candidate B uses system ssh subsystem pipes plus `russh-sftp 3.0.1` raw requests, with no second SSH stack. Actual exclusive leaf creation, baseline no-replace rename, special names, destination/symlink collisions, denied/quota writes, partial/cancelled streams, readback hashes and lost-reply read-only reconciliation are exercised in the [Phase 0 probes](../phase-0.md). The measured server is OpenSSH `1:9.2p1-2+deb12u10`; these results do not establish another server's rename/durability behavior.
+
+Retain **B only as the cooperative-fixture experiment route**. No general MVP backend is promoted: SFTP v3 filename operations provide no directory-handle-relative parent capability. Exclusive leaf creation and no-clobber rename do not atomically bind every ancestor to the granted root; an operation directory owned by the same SSH UID can be renamed/replaced by another process with that UID. Pre/post lstat checks still leave a gap between requests. Arbitrary concurrently mutable parent/root support therefore remains a no-go requiring explicit capability refusal (`PATH_DENIED`/`COMMIT_UNSUPPORTED`) or a separately justified narrower environment contract. Do not label this invariant passed from the positive fixture cases, introduce a hidden overwrite/remote-command fallback, or solve it by silently installing a remote Agent.
+
+The probe's frozen generated profiles and direct native jump/proxy/master/chroot observations have distinct scopes: success of a native helper route does not establish complete Core binding for arbitrary executable user configuration. Namespace mapping and real Shell edit context remain separately checked/refused; controlled raw-cat input is not a general Shell-insertion proof. Final promotion needs an explicit resolution of the unsupported root/route set and the independent task review. This negative feasibility result is useful evidence and is not a Phase 0 PASS or automatic Phase 1 approval.

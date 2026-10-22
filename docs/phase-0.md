@@ -1,8 +1,30 @@
 # Phase 0 feasibility runbook and later gates
 
-Status: **procedures only**, 2026-10-22. No experiment in this document has been run. This repository has no application workspace or probe harness. Commands below are future procedures for an explicitly authorized Phase 0 task, not current-repository test claims. Missing native environments/fixtures block their affected runs, not this design deliverable.
+Status: **controlled Linux probes implemented and independently checked; general MVP promotion blocked**, 2026-10-22. The [formal report](../.trellis/tasks/10-22-sshx-phase0-feasibility/check-report.md) records 14 passing unit tests and 44 passing native cases, including independent plugins and bound-image effects. [Acceptance/source map](../.trellis/tasks/10-22-sshx-phase0-feasibility/research/acceptance-map.md) accounts for XII.1–12. [Exact final cleanup](../.trellis/tasks/10-22-sshx-phase0-feasibility/research/cleanup.md) passed. General SFTP parent/root atomic binding remains no-go; full hidden-screen restoration and product/platform scope remain limited. Phase 0 PASS, task closure and MVP readiness are not granted by the passing controlled cases.
 
 Source basis: [XI–XIII](../.trellis/spec/trellis-plus/sshx-design.txt). Experiments E0–E7 jointly cover the high-risk questions. [Protocol](protocol.md) owns every proposed resource limit/error; record any experimental deviation rather than silently editing the baseline. [Matrix](platform-matrix.md) owns platform dimensions and [ADRs](adr/0001-language.md) own selection gates.
+
+## Runnable Linux probe interfaces
+
+The Phase 0 workspace is `probes/phase0`; `hako` builds it and `.devhome/target/debug/` holds host-native Linux binaries. Both binaries’ `--help` were exercised. These commands are now real interfaces, while per-case success still requires recorded results. Build dependencies stay inside the scoped Docker environment.
+
+~~~sh
+./hako --build-image
+HAKO_NETWORK=bridge ./hako cargo fetch --locked
+./hako cargo fmt --all -- --check
+./hako cargo clippy --locked --workspace --all-targets -- -D warnings
+./hako cargo test --locked --workspace --all-targets
+./hako cargo build --locked --workspace
+phase0_state=$(./dev.sh start)
+./dev.sh status
+.devhome/target/debug/phase0-probe suite --fixture "$phase0_state" --output /tmp/sshx-core-new.json
+.devhome/target/debug/phase0-image suite --output /tmp/sshx-visual-new.json
+./dev.sh down
+~~~
+
+Run from the repository root, with Docker/native-fixture authority and the recorded prerequisites. Choose fresh output names: reports refuse replacement. `phase0-probe case --fixture STATE --case ID --output NEW_JSON` and `plugin --fixture STATE --output NEW_JSON` support focused reruns. For the complete two-target matrix add `--fixture-secondary SECOND_STATE`; create that separate generated fixture using the [recorded existing lifecycle helper](../.trellis/tasks/10-22-sshx-phase0-feasibility/research/dual-target-fixture.md), preserving the primary pointer. Core/Client modes are disposable harness internals, with explicit `probe.*` fault controls; the released SSHX API does not exist. The image plugin builds independently against the public protocol crate. Its suite creates its own private display; it never uses the current DISPLAY.
+
+The derived Rust image adds exact-toolchain rustfmt/Clippy to the pinned base; `--build-image` is explicit and ordinary commands default to network none. The SSH fixture binds only dynamically assigned IPv4 loopback and uses generated identities/passwords/known-host expectations. The [fixture report](../.trellis/tasks/10-22-sshx-phase0-feasibility/research/fixture-evidence.md) records exact versions, mounts and lifecycle proof. These controlled Linux probes establish no Windows/macOS/Wayland, physical IME/MFA, generic live-Shell context or released-product support.
 
 ## Entry gate and controlled fixtures
 
@@ -39,11 +61,11 @@ sftp -h
 
 **Pass:** every planned case has a native or controlled remote fixture owner, known data boundary, expected outcome and teardown; unavailable platforms are explicit matrix gaps. **Failure/cleanup:** no services need start for inventory; remove only task-created scratch metadata. E0 chooses what later probes can run, not a universal platform priority.
 
-## Future probe harness contract
+## Probe harness acceptance contract
 
-E1–E7 need a small disposable future harness, not a generated application skeleton in this task. Proposed input is a case ID, explicit fixture manifest, protocol/limits revision, native adapter/backend candidate and deterministic interleaving schedule. Output is the evidence record above plus timestamped state/effect markers, resource ledger, synthetic byte hashes and final cleanup status. Fail with a nonzero status for assertion failure or unmet prerequisites; unsupported must be distinct from pass. It must expose barriers immediately before external open/rename/write and after dispatch/before acknowledgement so cancellation races are reproducible, rather than relying on sleeps.
+E1–E7 use a small disposable experimental harness, separate from a released application. Proposed input is a case ID, explicit fixture manifest, protocol/limits revision, native adapter/backend candidate and deterministic interleaving schedule. Output is the evidence record above plus timestamped state/effect markers, resource ledger, synthetic byte hashes and final cleanup status. Fail with a nonzero status for assertion failure or unmet prerequisites; unsupported must be distinct from pass. It must expose barriers immediately before external open/rename/write and after dispatch/before acknowledgement so cancellation races are reproducible, rather than relying on sleeps.
 
-The illustrative interface is “probe --experiment E7 --case switch-after-upload --fixture FIXTURE --schedule SCHEDULE --output EVIDENCE”. **No such command exists here.** Later implementation must publish its real executable/flags/fixture schema and smoke-test that interface before anyone treats it as runnable. Case-specific contracts below are acceptance for that harness. Use standard-tool observations as baselines, not as evidence of an unbuilt Core.
+The illustrative interface is “probe --experiment E7 --case switch-after-upload --fixture FIXTURE --schedule SCHEDULE --output EVIDENCE”. That illustrative shape is not the implemented CLI; use the runnable interfaces above and their exercised help. Case-specific contracts below are acceptance for that harness. Use standard-tool observations as baselines, not as evidence of an unbuilt Core.
 
 ## E1: Core, IPC, CLI and ownership
 

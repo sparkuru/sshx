@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "kind": "evidence-index",
+  "date": "2026-10-22",
+  "controlled_linux_status": "pass",
+  "phase0_ready": false,
+  "canonical_native_report": "check-core-results.json",
+  "canonical_native_report_sha256": "c74bb4208be5f101b2a9cf77eb5c83cf1783326044f78bad419c3c891c23678f",
+  "canonical_execution": {
+    "executor": "independent trellis-check role",
+    "exit_code": 0,
+    "top_level_cases": 44,
+    "passed": 44,
+    "failed": 0,
+    "nested_python_plugin_cases": 32,
+    "nested_private_image_suites": 2,
+    "elapsed_seconds": 66.5132687,
+    "private_core_runtime_removed": true
+  },
+  "supplemental_report": "core-insert-negative.json",
+  "supplemental_cases": 3,
+  "supplemental_status": "pass",
+  "historical_supplement_diagnostic": "core-insert-negative-initial.json",
+  "historical_supplement_limitation": "First isolated driver attempt timed out after one verified upload. Location was not instrumented; all owned cleanup passed. A diagnostic-only driver change followed by the same three-case run passed without a harness source change. No root cause is established.",
+  "checks": {
+    "cargo_fmt_all_check": "pass",
+    "cargo_clippy_locked_workspace_all_targets_deny_warnings": "pass",
+    "cargo_test_locked_workspace_all_targets": {"status": "pass", "tests": 14},
+    "cargo_build_locked_workspace": "pass",
+    "native_help": "pass",
+    "temporary_supplement_py_compile": "pass"
+  },
+  "source_sha256": {
+    "harness/src/core.rs": "9b5d225cae6c36348d533de14120a66c420ce18110017c2e84b3c8e37c24c639",
+    "harness/src/suite.rs": "004f8a2673b0acfccde670f94afa86d12c384a6346e1e4b2887dda9c69c09adc",
+    "harness/src/native.rs": "ded4cfea10da2ad0429c7933e892fd003edc809acd2ffab54e3a457d4bb576ab",
+    "harness/src/sftp.rs": "70f347d984dcadd174218607b115db9dc540527ce0e66caefe8ba4192f06e600",
+    "harness/src/seal.rs": "79830aba3e857a6e961a1fc89765a40d94303383c376f88827b4e10f968f0c2c",
+    "harness/src/main.rs": "b7d5621218ecb0d091d0fb1bd781fd5d175054b92b5abcf3c43b03e9ce16be9b"
+  },
+  "remaining_scope": [
+    "Only generated controlled remote roots are advertised; hostile same-UID remote ancestor swaps remain unverified and must not be promoted to a general safe-root guarantee.",
+    "The prototype does not implement the complete v1 API, product installer, generic real-Shell context, or OS plugin sandbox.",
+    "Physical IME, hardware/MFA, existing user desktop, Windows/macOS/Wayland, native non-Linux remote servers and reboot remain unverified.",
+    "Final exact SSH fixture/container/credential teardown belongs to main-session evidence."
+  ]
+}

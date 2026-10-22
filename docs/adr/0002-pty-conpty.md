@@ -1,6 +1,6 @@
 # ADR 0002: Core-owned PTY and ConPTY
 
-Date: 2026-10-22. Status: **ownership decided; implementation candidate unselected**.
+Date: 2026-10-22. Status: **ownership decided; direct Linux PTY APIs exercised in Phase 0**; portable/ConPTY candidate unselected.
 
 ## Decision and context
 
@@ -17,3 +17,7 @@ Terminal data stays bytes across reads. Ctrl+C received locally, byte 0x03 writt
 ## Selection and reopening gate
 
 E1/E2 requires Unicode/IME, resize, Ctrl+C/Ctrl+D/job control, password/MFA, paste/full-screen behavior, exit status and terminal restoration. Native Windows must separately exercise process creation, I/O, resize and close ordering, including blocked output. Select a wrapper only after those results; unavailable platforms stay unverified. Reopen on a reproduced fidelity/deadlock/lifetime defect, not on cross-compilation alone.
+
+## Phase 0 scope
+
+The Linux harness uses direct `openpty`/controlling-terminal/resize APIs through libc, with close-on-exec descriptors and a Core-owned SSH child. Actual independent Client/IPC, terminal-control and failure cases are recorded by the Phase 0 harness; [cross-UID IPC](../../.trellis/tasks/10-22-sshx-phase0-feasibility/research/ipc-crossuid.md) separately verifies kernel DAC and peer identity. This selects the smallest experimental Linux adapter; it does not select a portable wrapper or establish ConPTY, physical keyboard/IME, user-terminal or hardware-MFA behavior. The private native-PTY Vim comparison in [visual evidence](../../.trellis/tasks/10-22-sshx-phase0-feasibility/research/visual-evidence.md) is a separate visual-scope result.

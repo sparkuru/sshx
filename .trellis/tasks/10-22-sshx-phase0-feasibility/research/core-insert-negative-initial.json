@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "fixture_id": "09422203e8e5490890c2ddf05c2ff249",
+  "status": "fail",
+  "source": "separate actual native Core/IPC/SFTP/PTY, no mocks",
+  "error_type": "TimeoutError",
+  "cleanup": {
+    "known_final_files_removed": true,
+    "core_exited": true,
+    "files": 1,
+    "runtime_removed": true
+  }
+}

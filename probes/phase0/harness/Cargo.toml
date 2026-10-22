@@ -1,0 +1,22 @@
+[package]
+name = "sshx-phase0-probe"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[[bin]]
+name = "phase0-probe"
+path = "src/main.rs"
+
+[dependencies]
+sshx-phase0-protocol = { path = "../protocol" }
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+libc.workspace = true
+tokio.workspace = true
+russh-sftp.workspace = true
+png = "=0.18.1"
+crc32fast = "=1.5.0"
+flate2 = "=1.1.10"

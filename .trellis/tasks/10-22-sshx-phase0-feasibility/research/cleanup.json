@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "observed_utc": "2026-10-22T12:41:54.414302+00:00",
+  "status": "pass",
+  "fixtures": {
+    "primary": {
+      "run_id": "09422203e8e5490890c2ddf05c2ff249",
+      "container_id": "1d11fd8f596079ec7873f3b488974d53630e37560494bb1935960b6755327be3",
+      "loopback_port": 32770,
+      "credentials_removed": true,
+      "pointer_removed": true,
+      "container_absent": true,
+      "port_rebind_verified": true
+    },
+    "secondary": {
+      "run_id": "8a26f072521876cee2e63876fc9bd093",
+      "container_id": "b0ea52e13e90b7a7272b5d9ed8056bf0b0f96ebe1be4f43c1022adb83e014939",
+      "loopback_port": 32771,
+      "credentials_removed": true,
+      "pointer_removed": true,
+      "container_absent": true,
+      "port_rebind_verified": true
+    }
+  },
+  "remaining_task_container_ids": [],
+  "remaining_owned_processes": [],
+  "retained": "Ignored Cargo/build caches, local build images and documented synthetic /tmp reports/artifacts only; runtime locks contain no credentials",
+  "unrelated_resources_modified": false
+}

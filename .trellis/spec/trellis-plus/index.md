@@ -3,7 +3,7 @@
 - ownership: project-shared
 - source: project-authored; the separately retained design source has its own provenance below
 - tracking: track this index and its project-owned details through explicit-path review; local agent settings and secrets remain untracked
-- baseline: Trellis 0.6.17; SSHX has design documents and initialization data, with no application workspace, CI or runnable product yet
+- baseline: Trellis 0.6.17; SSHX has design documents and a bounded Phase 0 probe workspace; no released application or CI is established
 
 This directory is the single shared policy entry for SSHX. It supplements the installed Trellis workflow without modifying its runtime. The existing backend/frontend guideline files remain generic scaffolds: these project rules supersede their generic assumptions for this design-stage CLI/TUI project. They do not claim that scaffold examples or application conventions have been implemented.
 

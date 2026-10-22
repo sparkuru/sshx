@@ -1,6 +1,6 @@
 # SSHX Validation and Submit-Ready Review
 
-Read when defining acceptance, checking a change and before staging, commit, completion or archive. Evidence derives from actual repository/task files; record each command and result in the task, with unavailable checks distinguished from passed checks. Current baseline: original design and documentation, no application workspace, CI, test runner or browser UI.
+Read when defining acceptance, checking a change and before staging, commit, completion or archive. Evidence derives from actual repository/task files; record each command and result in the task, with unavailable checks distinguished from passed checks. Initialization baseline: original design/documentation only. Phase 0 now has a scoped Rust probe workspace and native fixture suites; no released application, CI or browser UI is established. Exact task evidence distinguishes container checks from host-native experiments.
 
 ## Initialization validation profile
 
@@ -20,7 +20,7 @@ For new/untracked files, `git diff --check` alone is insufficient. Also inspect 
 
 Inspect final ownership/path inventory, no secret/personal material, and preserved generic scaffolds. The initial repository has no commits and pre-existing untracked user work, so a clean-looking Git diff is not proof of unchanged content or task ownership. Record actual results in the task; this profile itself is not successful execution evidence.
 
-No Cargo build/lint/test, SSH/SFTP behavior, plugin execution, platform terminal or clipboard behavior can currently pass: the application does not exist. Those checks belong to later authorized tasks, as specified in the [before-development checkpoint](development.md). Browser/mobile tests are inapplicable to this docs-only initialization rather than unavailable product coverage.
+The original documentation-only initialization could not pass application runtime checks. The approved Phase 0 task now exercises Cargo checks and controlled SSH/SFTP/plugin/terminal/image probes, with actual results recorded in task research and the [development profile](development.md). These results do not prove the complete product or untested native platforms. Browser/mobile tests remain inapplicable to these native probe binaries.
 
 ## Application risk profile (conditional)
 

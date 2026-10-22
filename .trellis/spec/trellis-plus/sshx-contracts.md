@@ -1,6 +1,6 @@
 # SSHX Design Contracts
 
-These are design obligations derived from [the retained source](sshx-design.txt), sections I–XIII. They describe no implemented API or tested platform. Read the original sections for complete requirements. [Mainline](../../mainline.md) controls authorized work; importing the design does not start the product roadmap.
+These are design obligations derived from [the retained source](sshx-design.txt), sections I–XIII. They remain proposed product obligations; the bounded Phase 0 subset has measured Linux evidence linked from the runbook, without implementing the complete API. Read the original sections for complete requirements. [Mainline](../../mainline.md) controls authorized work; importing the design does not start the product roadmap.
 
 ## Decisions, defaults and unknowns
 
@@ -67,6 +67,10 @@ Independent processes isolate failure, **not** same-user filesystem/network auth
 Local IPC must authenticate peers: protected user runtime directory/Unix socket on Unix; current-user ACL, peer validation and remote-access limits on Windows Named Pipes. Address randomization is insufficient. Handle endpoint/symlink/stale-file races. Client and Plugin channel roles cannot upgrade into each other. Core has no default TCP management endpoint.
 
 Credentials, private keys/passwords, agent access and full environments never reach plugins, logs or telemetry. Minimize diagnostics; exclude terminal/clipboard/command bodies by default. Do not persist keystrokes or recordings by default. Keep bounded memory, separate plugin/Core storage and platform-standard config directories. Terminal passthrough is not proof of sanitizing every control sequence.
+
+## PNG validation implementation evidence
+
+The Phase 0 finite RGBA8/noninterlaced profile requires encoded-size/IHDR/raw-layout preflight before output allocation, bounded chunk/CRC/order validation, and an independent bounded streaming zlib check for exactly `height * (width * 4 + 1)` filtered bytes with no unused compressed bytes. A measured png 0.18.1 decoder path accepted surplus decompressed pixels after an IHDR dimension reduction; decoder success and its best-effort limits alone do not establish exact layout or a hard allocation bound. Core verifies the original sealed bytes and hash; it does not silently repair/re-encode plugin output. See the [measured regression and allocation evidence](../../tasks/10-22-sshx-phase0-feasibility/research/visual-evidence.md). This is a bounded probe implementation rule, not proof for every PNG/native clipboard adapter.
 
 ## Image Paste transaction (VII)
 

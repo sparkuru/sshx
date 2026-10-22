@@ -1,0 +1,47 @@
+# Phase 0 independent full-scope check
+
+Date: 2026-10-22. **Controlled Linux checks pass; Phase 0 is not approved as PASS or MVP-ready.** The unresolved atomic parent/root capability blocks general transfer-backend promotion. Main owns the residual human-review decision and final lifecycle/document convergence; this report authorizes no commit, archive or later product phase.
+
+## Findings (fixed)
+
+- File: `probes/phase0/harness/src/plugin.rs`, `probes/phase0/fixtures/plugin.py`.
+  Issue: the independent E6 receive queue enforced 16 frames but could exceed the proposed 1 MiB wire-byte cap.
+  Fix: reviewer added actual header/body byte reservations before publication, release on consumption and refusal on overflow, retaining the stricter frame cap. The real five-frame Python flood admits four frames (960,376 peak wire bytes), refuses the fifth and preserves actual SSH progress. This bounds queued wire bytes, not JSON heap/RSS or every product allocation.
+- File: `probes/phase0/protocol/src/lib.rs`.
+  Issue: kind-3 binary error payloads accepted non-UTF-8 data despite the protocol contract.
+  Fix: reviewer added read/write validation and regressions for malformed wire bytes, no partial invalid local write and a valid error-name round trip; kind-1 arbitrary data remains supported.
+- File: `probes/phase0/harness/src/native.rs`.
+  Issue: a repeated ESC could reopen an OSC sequence after filtering.
+  Fix: coordinated with the Core owner to retain escape state and add lasting split-read/unit/native regressions; verified final source and execution.
+- File: `probes/phase0/harness/src/core.rs`.
+  Issue: external upload steps lacked individual serialized admission against cancellation/revocation; blocking PTY dispatch could stall control requests; noncanonical trigger counters, unbounded fault labels and invalid target/control types could consume state or select defaults. One Client could also retain multiple Session writers.
+  Fix: owners added per-step admission, one nonblocking PTY syscall with actual-count/BUSY semantics, canonical counters before high-water advancement, bounded typed fault controls, strict supplied-parameter validation and prior-writer revocation on switch. Actual IPC/remote-file/PTY regressions verify these effects, including legitimate same-key requests after rejection, cancelled-step counts, blocked-receiver control progress and stale-writer refusal. Parent also identified the per-Client writer issue; the reviewer independently verified its fix.
+- File: `probes/phase0/harness/src/suite.rs`.
+  Issue: capture orchestration could accept an artifact without requiring the image subprocess to succeed.
+  Fix: owner requires successful child completion before artifact admission; final integrated pipelines pass.
+
+Full loading paths, reproduction details, fix ownership and source snapshots are in [the independent review record](research/check-review.md). Final checks cover all changed packages and their cross-layer paths, not only the last corrections.
+
+## Findings (not fixed)
+
+- **General mutable-parent/root capability — blocking design limitation.** `probes/phase0/harness/src/sftp.rs` uses filename-based SFTP v3 requests. Exclusive leaf creation and baseline no-replace rename do not atomically bind all ancestors to the granted root. Another process with the same remote UID can rename/replace an operation directory; 0700 ownership and pre/post `lstat` do not close the inter-request race. Cooperative-fixture assertions pass, but no general safe-root guarantee is established. [ADR 3](../../../docs/adr/0003-transfer-backend.md) correctly retains B only for cooperative Linux experiments and blocks general MVP promotion. Resolving this requires a product/environment capability decision, outside a local review fix; unsupported binding must be refused rather than silently advertised as supported.
+- **Initial supplementary driver timeout — cause unestablished.** [The original attempt](research/core-insert-negative-initial.json) failed with `TimeoutError` after one verified upload and cleaned its owned resources. Diagnostic-only driver changes preceded a [3/3 passing rerun](research/core-insert-negative.json), with no harness source change. The failed attempt remains preserved; no identified runtime fix or established root cause is claimed.
+- **Explicit implementation/coverage boundaries.** Full v1 APIs/installer, generic real-Shell context and mappings, arbitrary executable-config closure, complete allocation/RSS accounting, full attach and hidden-buffer fidelity remain unimplemented or unproved. The actual reconstruction candidate rejection is a negative feasibility result. Physical IME/MFA, existing desktop permissions, Windows/macOS/Wayland, native non-Linux servers and reboot remain outside the approved fixtures. These are documented scope boundaries, not passing product claims; experimental `probe.*` controls and synthetic attestations do not supply real Shell trust. [Acceptance/source-XII map](research/acceptance-map.md) records each disposition.
+- **Closure decision remains with main/user.** Implemented authentication/permission enforcement and the unresolved general-root guarantee require the project's human-review gate. The reviewer does not alter that policy or choose a broader supported environment. Final main-owned lifecycle/document updates must retain the no-go disposition.
+
+## Verification
+
+- **Lint: pass.** Pinned, network-none Docker wrapper ran workspace `cargo fmt --all -- --check` and strict locked Clippy for all targets. Shell syntax, ShellCheck and shfmt pass; Python fixture compilation and annotation inventory pass. No host toolchain/package installation.
+- **TypeCheck: pass for Rust.** Explicit `cargo check --locked --offline --workspace --all-targets` passes. Python syntax/annotations were checked; no Python static type-checker execution is claimed.
+- **Unit tests/build: pass.** Locked whole-workspace tests pass **14/14** (image 5, harness 4, protocol 5); locked workspace build passes. Final build/check log: `/tmp/sshx-phase0-check-build-final.log`.
+- **Independent native integration: pass.** Final frozen-source dual-server suite exits 0 in **66.513 seconds**, **44/44** top-level cases, including **32** nested independent Python plugin cases and **two** private-X11 bound-image pipelines. [Canonical report](research/check-core-results.json) has SHA-256 `c74bb4208be5f101b2a9cf77eb5c83cf1783326044f78bad419c3c891c23678f`; [execution record](research/check-execution.json) binds source hashes and timing. Source stayed unchanged through execution. The report deliberately retains `phase0_ready: false`.
+- **Supplemental evidence:** independent standalone visual rerun has **20 passes and one explicit rejected hidden-normal-buffer candidate**; separately executed cross-UID DAC/SO_PEERCRED has **2/2** passes. The final actual Core/IPC/SFTP/PTY current-writer supplement has **3/3** passes: arbitrary text/unknown mapping add zero PTY bytes; four control paths fail, then the legitimate same-key insertion writes 68 bytes exactly once. Nested/repeated runs are not summed as unique product coverage.
+- **Real-effect checks:** cancellation verifies unchanged subsequent SFTP admission counts and actual remote absence/owned cleanup; concurrency verifies distinct files, hashes and initiating PTYs on same and different targets. A blocked receiver accepted 2,124,800 bytes before BUSY while cancel/status completed at 0 ms measured resolution. Overflow drained 4,194,316 bytes, retained zero after detach and revoked its writer. These establish finite tested boundaries only.
+- **Context/spec/integrity:** saved truncated hook output was read, then complete direct-read fallback loaded all task inputs (now 23), PRD/design/implement, all six ADRs/runbook/matrix and actual changed code. The complete 46,819-byte protocol was read in segments. All 102 pre-existing tracked inputs remain present; only 14 authorized existing project documents differ. Canonical design remains 30,205 bytes with SHA-256 `d115212b36001c4f0f83f128fb0af5f15623d20121bc0e5820d23da76893d4ff`. No source/notice/Trellis-runtime replacement, staging, commit or archive.
+- **Cleanup: pass.** Native reports confirm owned child/display/Core-runtime cleanup. Main subsequently removed both exact SSH fixtures and generated credentials/pointers, verified ports 32770/32771 can rebind and found no exact task containers/processes remaining; reviewed [cleanup record](research/cleanup.md) and [machine observations](research/cleanup.json). Retained caches/images and documented synthetic artifacts are intentional.
+
+The controlled implementation and evidence are reviewable. **General transfer capability and human approval remain unresolved; passing these checks does not close that gate.**
+
+## Subsequent human disposition (main session)
+
+On 2026-10-22 the user replied “接受” to the report’s precise negative feasibility conclusion and the concrete local Git/archive batch. This satisfies the required human disposition for the controlled deliverable and closes AC4/AC9 as documented in the PRD. The original independent findings, preserved timeout and source-bound reports remain unchanged; general mutable-root capability is still unsupported and `phase0_ready: false` persists. No Phase 1/product release is authorized. Actual Git/archive results belong in mainline and the journal after execution.

@@ -4,13 +4,13 @@
 
 - title: SSHX — cross-platform SSH sessions and independent plugins
 - parent task: none; the completed initialization task is not a product epic
-- current approved objective: SSHX architecture contracts and the Phase 0 feasibility plan are delivered and archived. Application implementation and feasibility execution are not active
-- owner decision: on 2026-10-21 the user approved initialization, source import and its concrete commit/archive batch. On 2026-10-22 the user requested implementation, consented to the architecture-and-feasibility task, approved the final plan after the language/architecture explanation ("ok；批准方案"), then explicitly approved the checked deliverable's concrete work/archive/journal commit batch ("可以")
-- current task: none; [SSHX architecture and feasibility plan](tasks/archive/2026-10/10-22-sshx-architecture-feasibility/prd.md) completed and moved to archive on 2026-10-22; work/archive commits verified and Session 2 recorded
+- current approved objective: execute the accepted Phase 0 local work/merge/archive/journal batch; retain the explicit general-SFTP-root no-go finding and no automatic MVP continuation
+- owner decision: on 2026-10-21 the user approved initialization/source/closure. On 2026-10-22 the user approved the architecture plan and concrete work/archive/journal batch; those commits are verified below. The user then selected Phase 0 ("开始") and consented to its task creation/planning ("可以"); the user then approved its concrete Docker/native/loopback-SSH/private-Xvfb execution scope with “可以”
+- current task: [SSHX Phase 0 feasibility](tasks/10-22-sshx-phase0-feasibility/prd.md), status `in_progress`; architecture work remains completed/archived
 
 ## Requirements and sources
 
-The canonical repository-local design is [SSHX design](spec/trellis-plus/sshx-design.txt). It was imported byte for byte from the user-supplied file; see [provenance](tasks/archive/2026-10/10-21-trellis-plus-bootstrap/research/source-provenance.md). Import is approved. It establishes the requirements for the completed architecture package and future feasibility work. There are no application sources or runtime acceptance results yet.
+The canonical repository-local design is [SSHX design](spec/trellis-plus/sshx-design.txt). It was imported byte for byte from the user-supplied file; see [provenance](tasks/archive/2026-10/10-21-trellis-plus-bootstrap/research/source-provenance.md). Import is approved. It establishes the requirements for the completed architecture package and future feasibility work. The approved Phase 0 task now adds experimental sources and controlled Linux runtime results; the released application and later phases remain unimplemented.
 
 ### Source decisions to retain
 
@@ -41,15 +41,15 @@ The canonical repository-local design is [SSHX design](spec/trellis-plus/sshx-de
 - Core uses authenticated user-local IPC, not a TCP management port. IPC randomness is not authorization. Independent processes are failure isolation, not an OS sandbox; initial plugins must be explicitly trusted local packages.
 - No basic-login requirement for SFTP or remote Agent. No implicit file overwrite, continuous clipboard monitoring, terminal recording or history persistence.
 - No full GUI/remote IDE, cloud accounts, AI service, plugin marketplace or WASM requirement. Container tests and cross-compilation do not substitute for native clipboard, ConPTY or terminal evidence.
-- Detach process survival, screen restoration and recovery after network/Core/machine failure have separate acceptance criteria. None is currently implemented.
+- Detach process survival, screen restoration and recovery after network/Core/machine failure have separate acceptance criteria. The complete product contracts are not implemented; Phase 0 probes separately measure bounded examples.
 
 ## Continuation
 
 - mode: guided
 - serial authorization: none
-- next pulse: now after closure, or on a relevant user request with no active task
-- permitted next action: read-only Phase 0 readiness recommendation; wait for user selection and the normal planning gates before product task creation/execution
-- product implementation: proposed; Phase 0 and application phases remain outside this task, and each selected item requires normal task-creation/planning/start gates
+- next pulse: after the current task closes, or on a relevant user request with no active task
+- permitted next action: execute the user-approved three local commits, fast-forward merge and supported task archive; report the retained general-root limitation without starting Phase 1
+- product implementation: this task proposes Phase 0 probes only; the application MVP and other product phases remain outside its scope and serial authority
 
 ## Ordered work
 
@@ -59,7 +59,7 @@ These source-ordered rows distinguish completed design work from later proposals
 | --- | --- | --- | --- |
 | 0 | [Trellis Plus bootstrap](tasks/archive/2026-10/10-21-trellis-plus-bootstrap/prd.md) | complete | Policy/source/checks delivered, both tasks archived with verified attributed commits, archived contexts valid and session recorded |
 | 1 | [Architecture and feasibility plan (XIII)](tasks/archive/2026-10/10-22-sshx-architecture-feasibility/prd.md) | complete | Eleven documents and all AC1–AC8 delivered; review `human-not-needed`; work `9b483af`, archive `04dd6b6`. Completed date, archived references and unique attribution verified; Session 2 records checks and limits |
-| 2 | Phase 0 feasibility (XI) | proposed | Depends on preceding plan, selected primary native environment and controlled SSH/SFTP fixtures; collect methods/results/limitations per platform |
+| 2 | [Phase 0 feasibility (XI)](tasks/10-22-sshx-phase0-feasibility/prd.md) | in_progress | Controlled implementation/checks/cleanup complete: 14 unit and 44 native cases pass; general mutable-parent/root SFTP capability is no-go. User accepted the negative deliverable and exact local Git/archive batch; execution pending |
 | 3 | Phase 1 C/S and independent-plugin MVP (XI) | proposed | Depends on evidenced Phase 0 choices; primary-platform vertical slice, plugin failure isolation and honest other-platform gaps |
 | 4 | Phase 2 TUI and common plugins (XI) | proposed | Depends on MVP; switching/attach/screen/input handoff and File Transfer/Port Forward/Command Reference |
 | 5 | Phase 3 structured remote integration (XI) | proposed | Depends on supported Shell contracts and authorization; History/Clipboard Bridge and auxiliary interactive authentication |
@@ -77,6 +77,9 @@ These source-ordered rows distinguish completed design work from later proposals
 - Current delivery evidence: [implementation report](tasks/archive/2026-10/10-22-sshx-architecture-feasibility/research/implementation-evidence.md) and [independent check](tasks/archive/2026-10/10-22-sshx-architecture-feasibility/check-report.md) establish eleven design documents, thirteen primary-source reviews, native injection plus direct-read fallback and AC1–AC8 verification. Independent snapshot: 21 Markdown files and 80 local links/fragments; pre-commit check: 22 Markdown files, 82 links/fragments and exactly 25 work-commit files; post-archive links: 81. Five JSON examples, all twelve fault groups and archived contexts 12 implement / 13 check pass. The 30,205-byte source/hash remains exact; final original-file changes are limited to mainline/shared index/contracts and the two authorized journal files. Metadata/trigger dedup gaps were corrected. Mermaid was manually inspected without rendering; no application/native evidence exists.
 - Closure authorization: [explicit commit/archive plan](tasks/archive/2026-10/10-22-sshx-architecture-feasibility/research/commit-plan.md) was approved on 2026-10-22 and executed through supported no-auto-commit helpers and explicit paths. Work commit is `9b483af56c319ef0aff21ac37a4536d17dcb46e6`; archive commit is `04dd6b67b3119c2f3e9e6777f259d0752a51bb8a`, with completed date/status, cleared task pointer and exactly one Codex attribution trailer verified. `human-not-needed` applies to the checked documentation scope.
 - Session 2 evidence: [journal](workspace/wkyuu/journal-1.md) records the actual work commit, document/archive checks, runtime limitations and guided next step; its developer index reports two sessions. The separate journal commit receives no task attribution trailer.
-- Next candidate after closure is Phase 0 feasibility, with primary native environment and controlled fixtures still to select. Guided mode grants no automatic Phase 0/application continuation; no further architecture-planning confirmation is needed.
+- Phase 0 planning evidence: [readiness](tasks/10-22-sshx-phase0-feasibility/research/readiness.md) records Debian x86_64/OpenSSH, missing PATH Rust tools, scoped Docker read-only access, actual cached-image architectures and primary-document caveats. Proposed builds use an amd64 cached Rust image; test SSH and X11 are disposable loopback/private fixtures, not personal targets/clipboard. During planning no executable probe, fixture startup or dependency retrieval had occurred.
+- Phase 0 execution evidence: [fixture report](tasks/10-22-sshx-phase0-feasibility/research/fixture-evidence.md) verifies Rust/Cargo 1.90 in the pinned amd64 build image, host-visible UID-mapped mounts, native ELF ABI smoke, strict-key loopback SSH/SFTP and exact fixture teardown. Cargo builds exclude fixture credentials. At that infrastructure checkpoint Core/visual/plugin acceptance and final integration cleanup were still in progress; the final results and no-go disposition are recorded below. Feature branch is `phase0-feasibility`; no Phase 0 commit exists.
+- Phase 0 delivery checkpoint: [formal review](tasks/10-22-sshx-phase0-feasibility/check-report.md), [AC/XII map](tasks/10-22-sshx-phase0-feasibility/research/acceptance-map.md) and [cleanup](tasks/10-22-sshx-phase0-feasibility/research/cleanup.md) record independent 14-unit/44-native success, supplemental 3-case success, fixed findings and no remaining owned services/credentials/processes. General SFTP ancestor binding is no-go; hidden screen/full API/real Shell/platform limitations remain explicit. `human-required` disposition was subsequently supplied by the user’s “接受”; AC4/AC9 are accepted for this controlled negative deliverable, with no MVP-ready claim. Local Git/archive actions remain pending until executed.
+- Current user decision: on 2026-10-22 the user replied “接受” to the precise Phase 0 negative feasibility conclusion and [concrete local batch](tasks/10-22-sshx-phase0-feasibility/research/commit-plan.md). The listed work/archive/journal commits and fast-forward merge are authorized; no automatic application/MVP continuation or broader Git batch is granted.
 
 Initialization work commit: `7aa9291a0e49a522c962362af095586081531389`. The [generic bootstrap](tasks/archive/2026-10/00-bootstrap-guidelines/prd.md) archive commit is `619ecabcf7342b56803b7dfed08f24fdc8b83962`; the Trellis Plus task archive commit is `9d1a70ef7fca39db4950d3ca1abb2352d32b0fbf`. Both tasks completed on 2026-10-21, archived references validate, and initialization wrap-up is complete. Product/runtime claims remain proposed or unverified as above.
