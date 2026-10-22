@@ -13,6 +13,7 @@ This directory is the single shared policy entry for SSHX. It supplements the in
 | --- | --- |
 | [Development principles](development-principles.md) | Starting, resuming, implementing or reviewing any project task |
 | [SSHX contracts](sshx-contracts.md) | Planning or changing CLI, Core, sessions, transport, plugins, clipboard or permissions |
+| [Architecture package](../../../docs/architecture.md) | Detailed design targets for Phase 0 and the first C/S slice; proposed schemas and limits are not implemented APIs or runtime evidence |
 | [Development environment](development.md) | Before application development; whenever toolchain, fixtures or configuration changes |
 | [Validation and review](validation.md) | Planning acceptance, checking changes, and before commit/completion/archive |
 | [Commit and archive policy](commit-policy.md) | Preparing staging, commit, initialization closure or task archival |
@@ -38,6 +39,8 @@ The user authorized importing the current design into spec and mainline. `sshx-d
    Repeat for required detail/source paths and mainline; the loader does not follow this table's links. Do not duplicate existing entries. Check with `task.py validate` and `task.py list-context` as described in the validation profile.
 3. Dispatch with `Active task: <actual task path>`. Prefer complete native hook injection. If the hook gives a saved-output path, read that full output. If injection is absent or unusable, read the role JSONL, every referenced file, `prd.md`, and any `design.md`/`implement.md` before work.
 4. Workers report the exact paths loaded and injection/fallback evidence. Current-task context registration and observed loading belong in task evidence; file existence alone cannot pass loading checks. The main session retains lifecycle and mainline ownership.
+
+Observed in the architecture task on 2026-10-22: native Codex injection resolved explicitly registered inputs, but its total-context limit omitted `design.md` and `implement.md`; the worker recovered them with direct reads. A saved hook-output file can preserve omission markers rather than the omitted contents. Read each named omitted file directly before work. This proves current-task injection plus fallback, not automatic policy discovery for future tasks or completeness from a hook-success marker. See the task's [loading evidence](../../tasks/10-22-sshx-architecture-feasibility/research/implementation-evidence.md).
 
 ## Write ownership and updates
 

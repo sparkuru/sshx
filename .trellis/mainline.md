@@ -4,13 +4,13 @@
 
 - title: SSHX — cross-platform SSH sessions and independent plugins
 - parent task: none; the completed initialization task is not a product epic
-- current approved objective: establish project-owned Trellis policies and import the supplied SSHX design, without implementing application features
-- owner decision: on 2026-10-21 the user requested Trellis Plus initialization, consented to the task, approved its final plan and exact source import, then approved the concrete four-commit/two-task archive batch
-- current task: none; [Trellis Plus bootstrap](tasks/archive/2026-10/10-21-trellis-plus-bootstrap/prd.md) has completed and moved to archive
+- current approved objective: deliver SSHX architecture contracts and the Phase 0 feasibility plan; application implementation and feasibility execution are not active
+- owner decision: on 2026-10-21 the user approved initialization, source import and its concrete commit/archive batch. On 2026-10-22 the user requested implementation, consented to the architecture-and-feasibility task, approved the final plan after the language/architecture explanation ("ok；批准方案"), then explicitly approved the checked deliverable's concrete work/archive/journal commit batch ("可以")
+- current task: [SSHX architecture and feasibility plan](tasks/10-22-sshx-architecture-feasibility/prd.md), status `in_progress`; the earlier [Trellis Plus bootstrap](tasks/archive/2026-10/10-21-trellis-plus-bootstrap/prd.md) remains completed and archived
 
 ## Requirements and sources
 
-The canonical repository-local design is [SSHX design](spec/trellis-plus/sshx-design.txt). It was imported byte for byte from the user-supplied file; see [provenance](tasks/archive/2026-10/10-21-trellis-plus-bootstrap/research/source-provenance.md). Import is approved. It establishes the direction and constraints for future planning; the approved execution scope in this session is initialization only. There are no application sources or runtime acceptance results yet.
+The canonical repository-local design is [SSHX design](spec/trellis-plus/sshx-design.txt). It was imported byte for byte from the user-supplied file; see [provenance](tasks/archive/2026-10/10-21-trellis-plus-bootstrap/research/source-provenance.md). Import is approved. It establishes the direction and constraints for the current architecture-planning task. There are no application sources or runtime acceptance results yet.
 
 ### Source decisions to retain
 
@@ -31,7 +31,7 @@ The canonical repository-local design is [SSHX design](spec/trellis-plus/sshx-de
 
 - Rust plus system OpenSSH is the source's default technical baseline, not a claim that a dependency/toolchain has been chosen or tested. Tokio, portable-pty, Serde/TOML, Ratatui/Crossterm, arboard and SQLite remain candidates (X).
 - Phase 0 must select one SFTP backend using evidence, verify reuse per client/platform/version, compare bounded VT state with restricted redraw, test prefix keys and clipboard access, and document unavailable environments (V, XI).
-- Precise schemas, limits, errors, lifecycle policies and ADR conclusions are design deliverables still to produce; proposed method/command names in the source are not existing APIs (VI, XIII).
+- The [architecture package](../docs/architecture.md) now defines proposed schemas, limits, errors, lifecycle policies and six ADRs. These are detailed design targets, not existing APIs, selected dependencies or runtime evidence; evidence-dependent backend/restoration choices remain deferred (VI, XIII).
 - The source supersedes built-in-first plugins and official-plugin access to private Core traits (I). It does not authorize renaming the SSHX codename now.
 - Initialization policies supersede generic Web/frontend and backend scaffolds for this repository. Generic template checkboxes stay unchecked; application code examples cannot be supplied before code exists.
 
@@ -47,18 +47,18 @@ The canonical repository-local design is [SSHX design](spec/trellis-plus/sshx-de
 
 - mode: guided
 - serial authorization: none
-- next pulse: after archive or a relevant user request with no active task
-- permitted next action: read-only Project Pulse and recommend architecture/feasibility planning; wait for user selection before creating product work
-- product implementation: proposed; each selected item requires the normal task-creation/planning/start gates
+- next pulse: after the current task closes or a relevant user request with no active task
+- permitted next action: execute and verify the approved work/archive/journal batch; Phase 0 remains separately gated
+- product implementation: proposed; Phase 0 and application phases remain outside this task, and each selected item requires normal task-creation/planning/start gates
 
 ## Ordered work
 
-These source-ordered product rows are proposals, not created child tasks or a scheduler. The architecture/design deliverable precedes Phase 0 as required by source XIII. A ready recommendation is not authority to execute it.
+These source-ordered rows distinguish the created planning task from later proposals; they are not a scheduler. The architecture/design deliverable precedes Phase 0 as required by source XIII. A ready recommendation is not authority to execute it.
 
 | order | task / proposed work | state | readiness and dependency evidence |
 | --- | --- | --- | --- |
 | 0 | [Trellis Plus bootstrap](tasks/archive/2026-10/10-21-trellis-plus-bootstrap/prd.md) | complete | Policy/source/checks delivered, both tasks archived with verified attributed commits, archived contexts valid and session recorded |
-| 1 | Architecture and feasibility plan (XIII) | proposed | Next candidate after initialization closure and user selection; deliver requirement classification, platform matrix, processes, data/state/protocol design, Image Paste failure sequence, ADRs and executable Phase 0 plan |
+| 1 | [Architecture and feasibility plan (XIII)](tasks/10-22-sshx-architecture-feasibility/prd.md) | checked; commit/archive pending | Eleven documents and all AC1–AC8 delivered; independent full-scope check passed, main-session review `human-not-needed`. Task remains `in_progress` until separately authorized closure |
 | 2 | Phase 0 feasibility (XI) | proposed | Depends on preceding plan, selected primary native environment and controlled SSH/SFTP fixtures; collect methods/results/limitations per platform |
 | 3 | Phase 1 C/S and independent-plugin MVP (XI) | proposed | Depends on evidenced Phase 0 choices; primary-platform vertical slice, plugin failure isolation and honest other-platform gaps |
 | 4 | Phase 2 TUI and common plugins (XI) | proposed | Depends on MVP; switching/attach/screen/input handoff and File Transfer/Port Forward/Command Reference |
@@ -72,8 +72,10 @@ These source-ordered product rows are proposals, not created child tasks or a sc
 - Verification evidence: both role contexts have 13 valid references and observed complete agent reads; 107 original protected/input fingerprints, 87 template hashes, source/notice bytes, local links and document whitespace checks pass. See [full report](tasks/archive/2026-10/10-21-trellis-plus-bootstrap/check-report.md) and [review](tasks/archive/2026-10/10-21-trellis-plus-bootstrap/research/check-review.md).
 - Current limitation: future tasks need explicit policy reads/context registration; a discovered spec index does not prove automatic policy loading. No actual Trellis update or native application runtime has been exercised. Final checklist: 21 PASS, 1 GAP (automatic future loading), 1 UNKNOWN (actual update cycle), 11 N/A.
 - Version-control follow-up: on 2026-10-22 the user separately requested committing the remaining original initialization files. The 54-file runtime/template/AGENTS/attributes/workspace-index set was reviewed against Trellis 0.6.17 provenance and existing exact license before inclusion. This authorizes tracking those unchanged files, not editing upstream runtime; personal integrations and local state remain excluded.
-- Closure: generic bootstrap supersession is recorded, its original unchecked checklist preserved, and documentation review is `human-not-needed`; the approved [batch](tasks/archive/2026-10/10-21-trellis-plus-bootstrap/research/commit-plan.md) produced completed archive status/dates and one exact Codex trailer per archive commit. No active task remains.
+- Closure: generic bootstrap supersession is recorded, its original unchecked checklist preserved, and documentation review is `human-not-needed`; the approved [batch](tasks/archive/2026-10/10-21-trellis-plus-bootstrap/research/commit-plan.md) produced completed archive status/dates and one exact Codex trailer per archive commit. No initialization task remains active.
 - Session evidence: [Session 1](workspace/wkyuu/journal-1.md) records the actual work/checks/limits and both archives; its developer index reports one session. The separate journal commit also retains final post-archive evidence, without another task trailer.
-- Next user decision: select architecture and feasibility planning if continuing product work. Guided mode grants no automatic task creation or implementation.
+- Current delivery evidence: [implementation report](tasks/10-22-sshx-architecture-feasibility/research/implementation-evidence.md) and [independent check](tasks/10-22-sshx-architecture-feasibility/check-report.md) establish eleven design documents, thirteen primary-source reviews, native injection plus direct-read fallback and AC1–AC8 verification. Independent snapshot: 21 Markdown files and 80 local links/fragments; final bookkeeping check: 22 Markdown files, 82 links/fragments and exactly 25 proposed work-commit files. Five JSON examples, all twelve fault groups and contexts 12 implement / 13 check pass. The 30,205-byte source/hash and 77 of 80 tracked originals are preserved; only mainline/shared index/contracts differ. Metadata/trigger dedup gaps were corrected. Mermaid was manually inspected without rendering; no application/native evidence exists.
+- Closure authorization: [explicit commit/archive plan](tasks/10-22-sshx-architecture-feasibility/research/commit-plan.md) was approved on 2026-10-22. Execution is starting; actual commits/archive/journal outcomes will replace this pending record. Main-session human review is `human-not-needed` for the checked documentation scope.
+- Next candidate after closure is Phase 0 feasibility, with primary native environment and controlled fixtures still to select. Guided mode grants no automatic Phase 0/application continuation; no further architecture-planning confirmation is needed.
 
 Initialization work commit: `7aa9291a0e49a522c962362af095586081531389`. The [generic bootstrap](tasks/archive/2026-10/00-bootstrap-guidelines/prd.md) archive commit is `619ecabcf7342b56803b7dfed08f24fdc8b83962`; the Trellis Plus task archive commit is `9d1a70ef7fca39db4950d3ca1abb2352d32b0fbf`. Both tasks completed on 2026-10-21, archived references validate, and initialization wrap-up is complete. Product/runtime claims remain proposed or unverified as above.

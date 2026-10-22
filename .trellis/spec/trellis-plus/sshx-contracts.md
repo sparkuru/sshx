@@ -90,3 +90,41 @@ History is opt-in structured supported-Shell data, with pre-persistence filters,
 Core owns forwarding resources while plugins own policy/UI. Bind loopback by default; remote text cannot authorize ports or clipboard reads. Distinguish process alive, listener established and target reachable. Later hooks/Agents use minimal optional SSH-protected channels and explicit setup, no silent permanent Shell edits/public listeners. Treat remote events as untrusted, sourced and fresh; do not inject discovery commands into an active interactive Shell.
 
 Before Phase 0, derive requirements/platform matrix, ownership/data flows, models/state machines/protocol limits, Image Paste failure sequence and ADRs. Later phases follow source XI; they remain proposed work until authorized. Use the [validation profile](validation.md) to map source XII failure cases to evidence. No architecture text, cross-compilation or container fixture establishes native three-platform support.
+
+## Proposed v1 implementation handoff
+
+### 1. Scope / trigger
+
+When planning Phase 0 or implementing the first Client/Core/plugin slice, read the [architecture package](../../../docs/architecture.md), [protocol](../../../docs/protocol.md) and [Image Paste transaction](../../../docs/image-paste.md). These are design targets delivered by the architecture task, not a released API, dependency selection or proof of platform support. The retained source remains requirements input; resolve any conflict before implementation. Register the applicable documents explicitly in both role contexts rather than assuming index links are injected.
+
+### 2. Signatures
+
+Proposed control requests include `action.invoke({attachment_id, writer_epoch, action_id, trigger_nonce}) -> {operation}` and `terminal.propose_insert({operation_id, insert_key, output_mode, text, mapping_id, context_revision, grant_ids}) -> {insert_state, reason}`. These excerpts locate the cross-layer boundary; the protocol's method tables own full field/nullable/error definitions. A plugin request is not authentication or a grant.
+
+### 3. Contracts
+
+Core captures immutable binding B, including its boot instance, Operation, Session/generation, Client/Attachment/writer epoch and profile/config generation. Effects resolve B from Core state; they never resolve a new active Session. Input text must match validated formatting of that Operation's confirmed mapped upload result. Upload commit and input commit are independent; a refused zero-byte insert may refresh context evidence without another upload, while partial/unknown writes cannot be automatically repeated. Exact framing, quotas and deadlines have one home in the protocol.
+
+For proposed `action.invoke`, `trigger_nonce` is a per-live-Client monotone decimal-string counter, separate from RPC correlation IDs. Keep its high-water mark for the Client identity's lifetime: an old counter whose result record expired cannot become a fresh action. Reconnection gets a new Client identity and never automatically replays prior actions. Count retained metadata as well as live resources against the protocol caps/budget; TTL alone cannot bound record churn.
+
+### 4. Validation and error matrix
+
+| Condition | Proposed outcome |
+| --- | --- |
+| Stale initiating generation/Attachment/writer | `STALE_BINDING`; no retargeted effect |
+| Unbound or changed auxiliary target/config | `TARGET_UNVERIFIED` / `CONFIG_CHANGED`; basic OpenSSH login remains separate |
+| Upload committed but edit context/mapping unavailable | `CONTEXT_UNKNOWN` / `MAPPING_UNKNOWN`; retain result, no blind insertion |
+| No verified no-overwrite commit primitive | `COMMIT_UNSUPPORTED`; no final-upload success or temp-path insertion |
+| Remote commit/write outcome uncertain | Record indeterminate/partial result; query/reconcile without blind effect replay |
+
+### 5. Good / base / bad cases
+
+Good: A's upload finishes after the user switches to B; A's user-visible metadata can be retained, and B receives no input. Base: no desktop image returns the explicit clipboard result without scanning files or sending text. Bad: a callback queries the current Attachment and inserts an old upload path, even if both Sessions use the same hostname.
+
+### 6. Tests required
+
+The planned Phase 0 protocol and race experiments must exercise framing/version/role refusal, bounded queues, same-key dedup and refreshed-context insertion, switch/detach/reconnect/revoke/cancel ordering, lost commit acknowledgements and partial PTY writes. They are future harness/native tests, not current repository commands or completed evidence. Read the runbook and actual task/fixture prerequisites before execution.
+
+### 7. Wrong versus correct
+
+Wrong: treat cancellation as remote rollback, or resend a partial insertion because its RPC response was lost. Correct: serialize effect admission against B/grants/cancel, record known and uncertain external outcomes, and retain the result for explicit reconciliation. Core crash invalidates boot-scoped authority; metadata does not restore a live Session or exactly-once guarantee.
