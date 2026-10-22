@@ -6,7 +6,7 @@ Turn the retained SSHX requirements into a consistent architecture and executabl
 
 ## Background and authority
 
-- Canonical requirements: [SSHX design](../../spec/trellis-plus/sshx-design.txt), sections I–XIII; section XIII requires this deliverable before Phase 0.
+- Canonical requirements: [SSHX design](../../../../spec/trellis-plus/sshx-design.txt), sections I–XIII; section XIII requires this deliverable before Phase 0.
 - The repository contains project policies and initialization records, with no application workspace, runtime tests or platform support evidence.
 - On 2026-10-22 the user requested implementation, consented to creating this architecture-and-feasibility task, and explicitly approved the final plan after the language/architecture explanation ("ok；批准方案"). Architecture-documentation execution is authorized.
 - This is one integrated design deliverable. The eventual Phase 0 and application phases remain separate proposed work, without serial authorization.

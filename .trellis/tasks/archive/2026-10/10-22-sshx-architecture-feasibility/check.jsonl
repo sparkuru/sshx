@@ -8,5 +8,6 @@
 {"file": ".trellis/spec/trellis-plus/sshx-design.txt", "reason": "Canonical source I–XIII; preserve verbatim"}
 {"file": ".trellis/mainline.md", "reason": "Current authorization, task order and platform evidence gaps"}
 {"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "Trace ownership and contracts through Client/Core/plugin effects"}
-{"file": ".trellis/tasks/10-22-sshx-architecture-feasibility/research/source-map.md", "reason": "Inspected requirements, source mapping and deferred experiment gates"}
-{"file": ".trellis/tasks/10-22-sshx-architecture-feasibility/research/primary-sources.md", "reason": "Dated official sources, documentary findings and untested capability limits"}
+{"file": ".trellis/tasks/archive/2026-10/10-22-sshx-architecture-feasibility/research/source-map.md", "reason": "Inspected requirements, source mapping and deferred experiment gates"}
+{"file": ".trellis/tasks/archive/2026-10/10-22-sshx-architecture-feasibility/research/primary-sources.md", "reason": "Dated official sources, documentary findings and untested capability limits"}
+{"file": ".trellis/tasks/archive/2026-10/10-22-sshx-architecture-feasibility/research/implementation-evidence.md", "reason": "Implementation scope, observed input loading and document checks to independently verify"}

@@ -1,6 +1,6 @@
 # Proposed commit and archive batch
 
-Status: prepared and **explicitly authorized on 2026-10-22**, execution starting. After the checked deliverable and this concrete three-commit batch were presented, the user replied "可以". The independent check passed AC1–AC8; the main session recorded `human-not-needed` before preparing the proposal. There is no application/native runtime evidence and no Phase 0 continuation in this batch.
+Status: **explicitly authorized on 2026-10-22**. Work commit `9b483af56c319ef0aff21ac37a4536d17dcb46e6` succeeded; the supported archive move completed on disk with status/date verified. The archive and journal commit outcomes are recorded in mainline after they actually succeed. After the checked deliverable and this concrete three-commit batch were presented, the user replied "可以". The independent check passed AC1–AC8; the main session recorded `human-not-needed` before preparing the proposal. There is no application/native runtime evidence and no Phase 0 continuation in this batch.
 
 ## 1. Work commit
 
@@ -59,12 +59,12 @@ Independent document/source/context checks passed; native product behavior
 remains unverified. Record the completed task and reconcile archive links.
 
 Task: 10-22-sshx-architecture-feasibility
-Work: append the actual successful work-commit hash before commit
+Work: 9b483af56c319ef0aff21ac37a4536d17dcb46e6
 
 Co-authored-by: OpenAI Codex <codex@openai.com>
 ~~~
 
-The Work line is deliberately a proposal placeholder, not an existing commit claim. Replace it with the actual hash only after step 1 succeeds. Exactly one matching Codex trailer belongs to this successful task archive, and none to the work/journal commits. Preserve Git identity; no amend or push.
+The Work line was filled only after step 1 succeeded. Exactly one matching Codex trailer belongs to this successful task archive, and none to the work/journal commits. Preserve Git identity; no amend or push.
 
 The eleven task files above move from `.trellis/tasks/10-22-sshx-architecture-feasibility/` to `.trellis/tasks/archive/2026-10/10-22-sshx-architecture-feasibility/`. Review/stage each old removal and each new destination individually. The complete relative suffix list is:
 

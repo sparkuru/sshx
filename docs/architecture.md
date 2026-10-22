@@ -1,6 +1,6 @@
 # SSHX architecture
 
-Status: proposed product contracts, 2026-10-22. The approved deliverable is this documentation package. No SSHX executable, dependency selection or native feasibility result exists. Requirements come from the retained [source I–XIII](../.trellis/spec/trellis-plus/sshx-design.txt); task acceptance is [R1–R7](../.trellis/tasks/10-22-sshx-architecture-feasibility/prd.md). Words such as “must” define future acceptance, not implemented behavior.
+Status: proposed product contracts, 2026-10-22. The approved deliverable is this documentation package. No SSHX executable, dependency selection or native feasibility result exists. Requirements come from the retained [source I–XIII](../.trellis/spec/trellis-plus/sshx-design.txt); task acceptance is [R1–R7](../.trellis/tasks/archive/2026-10/10-22-sshx-architecture-feasibility/prd.md). Words such as “must” define future acceptance, not implemented behavior.
 
 ## Requirement trace and decision classes
 
@@ -97,4 +97,4 @@ Process-started, authenticated and Shell-ready are separate fields. Process exis
 
 Use platform-standard user config/data/cache/runtime locations selected during implementation; no universal Unix path. Core stores minimal historical metadata only when enabled; no terminal recording or keystrokes by default. Blob/temp resources are operation-scoped, plugin data uses a separate namespace, and logs exclude credentials, clipboard, commands and terminal bodies. Unsandboxed trusted plugins retain same-user OS access outside RPC; permissions are broker enforcement, not malicious-code confinement.
 
-Continue with [platform conditions](platform-matrix.md), [public protocol](protocol.md), [Image Paste](image-paste.md), the six linked ADRs and [Phase 0](phase-0.md). [Primary-source research](../.trellis/tasks/10-22-sshx-architecture-feasibility/research/primary-sources.md) records documentary evidence and remaining uncertainties.
+Continue with [platform conditions](platform-matrix.md), [public protocol](protocol.md), [Image Paste](image-paste.md), the six linked ADRs and [Phase 0](phase-0.md). [Primary-source research](../.trellis/tasks/archive/2026-10/10-22-sshx-architecture-feasibility/research/primary-sources.md) records documentary evidence and remaining uncertainties.

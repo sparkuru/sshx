@@ -2,7 +2,7 @@
 
 ## Status and boundary
 
-Approved by the user on 2026-10-22 after review of the planning summary and language/architecture explanation. This task produces the source XIII design package, not an application or completed feasibility experiments. The existing [contracts](../../spec/trellis-plus/sshx-contracts.md) remain the shared requirements summary; the verbatim source remains unchanged.
+Approved by the user on 2026-10-22 after review of the planning summary and language/architecture explanation. This task produces the source XIII design package, not an application or completed feasibility experiments. The existing [contracts](../../../../spec/trellis-plus/sshx-contracts.md) remain the shared requirements summary; the verbatim source remains unchanged.
 
 The package is one integrated deliverable because its protocol, state machines, failure transaction and experiment gates must agree before Phase 0 can begin. Do not create a task per document or create follow-up product tasks automatically.
 

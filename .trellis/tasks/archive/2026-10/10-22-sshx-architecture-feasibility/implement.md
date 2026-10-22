@@ -18,7 +18,7 @@ Final planning summary explicitly approved on 2026-10-22 ("ok；批准方案"). 
 - [x] Main session updates reusable specs only if a new established contract warrants it, and records verified results and the next gated candidate in mainline. No automatic Phase 0 task creation.
 - [x] Prepare an explicit commit/archive proposal only after checks, if needed. Obtain the separately required authority before staging, committing, completing or archiving.
 
-Delivery status: AC1–AC8 passed independent full-scope document review; main session classifies `human-not-needed` for this documentation-only scope. The user explicitly approved the separate three-commit batch in `research/commit-plan.md` on 2026-10-22. Execution is starting; no Git/lifecycle completion is implied before the actual commands succeed.
+Delivery status: AC1–AC8 passed independent full-scope document review; main session classifies `human-not-needed` for this documentation-only scope. The user explicitly approved the separate three-commit batch in `research/commit-plan.md` on 2026-10-22. Work commit `9b483af56c319ef0aff21ac37a4536d17dcb46e6` succeeded and the installed archive command completed the task on disk. Final archive/journal commit evidence belongs in mainline after those commands succeed; no Phase 0 authorization is implied.
 
 ## Validation
 

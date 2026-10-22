@@ -14,7 +14,7 @@ Inspected on 2026-10-22. This record maps repository-local requirements to the p
 
 ## Source coverage
 
-The canonical input is [sshx-design.txt](../../../spec/trellis-plus/sshx-design.txt). Anchors below are section and line references to that unchanged input, not a claim of product implementation.
+The canonical input is [sshx-design.txt](../../../../../spec/trellis-plus/sshx-design.txt). Anchors below are section and line references to that unchanged input, not a claim of product implementation.
 
 | Source | Lines | Planning requirement | Required design coverage |
 | --- | --- | --- | --- |
