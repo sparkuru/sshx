@@ -156,3 +156,42 @@ Delivered the user-selected cooperative upload-root document contract, independe
 ### Next Steps
 
 - Guided only: select a bounded cooperative hardlink/publication/policy/cleanup runtime-verification task before broader MVP activation; no new task or execution is authorized by this session.
+
+
+## Session 5: Cooperative upload-root runtime verification
+<!-- trellis-session: v=2 fp=3f7d61b923b1e23e -->
+
+**Date**: 2026-10-23
+**Task**: Cooperative upload-root runtime verification
+**Branch**: `main`
+
+### Summary
+
+Delivered and independently verified bounded cooperative upload-root runtime behavior; user accepted AC1–AC6 and the exact local commit/merge/archive/journal batch on 2026-10-23.
+
+### Main Changes
+
+- Implemented explicit fixture-owner qualification, scoped effect authority, direct no-clobber hardlink publication, independent insertion and conservative exact-resource cleanup in the existing Core/SFTP path.
+- Fixed initial barrier ownership and premature completion observation; preserved earlier failed reports and their evidence limits. No exact causal interleaving is asserted for the old timeout.
+- Work 844f2fdc8a77e18b799346a8bfd9f43d3c915067 fast-forward merged to local main. Supported single-task archival completed as e498d79eca2fe842a998f9d8330ae4793caf27b1 at .trellis/tasks/archive/2026-10/10-22-sshx-upload-root-runtime with completed status/date, cleared current pointer and exactly one Codex task trailer.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `844f2fdc8a77e18b799346a8bfd9f43d3c915067` | feat: verify cooperative upload-root runtime |
+
+### Testing
+
+- [OK] PASS: independent workspace fmt, strict locked offline Clippy, check/build and all 16 unit tests; source-bound final report hashes match committed Rust files.
+- [OK] PASS: 13 focused groups and 43 headless Core cases; one desktop case explicitly excluded. Counts overlap and are not additive platform/product coverage.
+- [OK] PASS: two exact owned containers and generated credentials removed; loopback ports reusable and no matching owned native/SSH processes. Fixture destruction is separate from Core uncertain-resource cleanup.
+- [OK] PASS: exact 43-path work set, 28-file archive move/59 explicit old-new-reference paths, 18/19 context entries, 20 Markdown files/139 local links/24 fragments and unchanged machine report bytes. Oversized context inputs were read fully by both roles, as recorded in task evidence.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Guided: review remaining Phase 1 production/MVP gates before selecting a separate task. Evidence covers only generated Linux/OpenSSH cooperative fixtures; hostile same-account roots, full v1/plugin conformance, real Shell/desktop and broader platform support remain unverified. Historical phase0_ready:false is unchanged. No automatic next task or remote push.

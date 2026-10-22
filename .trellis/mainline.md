@@ -4,9 +4,9 @@
 
 - title: SSHX — cross-platform SSH sessions and independent plugins
 - parent task: none; the completed initialization task is not a product epic
-- current approved objective: reviewed cooperative upload-root runtime implementation and independent checks are technically complete in disposable Linux/OpenSSH fixtures; user accepted the bounded result and exact local batch on 2026-10-23; work 844f2fd is committed and fast-forward merged, and supported task archival has completed on disk; archive/session commits are pending
+- current approved objective: cooperative upload-root runtime verification is accepted, committed, fast-forward merged and archived; Session 5 is recorded. Evidence remains bounded to generated Linux/OpenSSH cooperative fixtures
 - owner decision: on 2026-10-21 the user approved initialization/source/closure. On 2026-10-22 the user approved the architecture plan and concrete work/archive/journal batch; those commits are verified below. The user then selected Phase 0 ("开始") and consented to its task creation/planning ("可以"); the user then approved its concrete Docker/native/loopback-SSH/private-Xvfb execution scope with “可以”, and subsequently accepted the negative feasibility conclusion and exact local Git/archive/journal batch with “接受”
-- current task: [Cooperative upload-root runtime verification](tasks/archive/2026-10/10-22-sshx-upload-root-runtime/prd.md); completed and archived on 2026-10-23 after accepted bounded AC1–AC6 and exact fixture cleanup; archive/session commits pending
+- current task: none; [Cooperative upload-root runtime verification](tasks/archive/2026-10/10-22-sshx-upload-root-runtime/prd.md) completed and archived on 2026-10-23 after accepted bounded AC1–AC6 and exact fixture cleanup; attributed archive and Session 5 verified
 
 ## Requirements and sources
 
@@ -47,8 +47,8 @@ The canonical repository-local design is [SSHX design](spec/trellis-plus/sshx-de
 
 - mode: guided
 - serial authorization: none
-- next pulse: after current runtime-verification task closure, or on a relevant user request
-- permitted next action: execute the accepted three-commit local work/merge/archive/journal batch; no further experiment is pending
+- next pulse: after runtime-verification closure, on the next relevant user request
+- permitted next action: review remaining Phase 1 production/MVP gates and propose a separately scoped task when requested; guided mode does not create or execute it automatically
 - product implementation: current probe/fixture task is approved; broader MVP and later phases remain outside its authority
 
 ## Ordered work
@@ -61,8 +61,8 @@ These source-ordered rows distinguish completed design work from later proposals
 | 1 | [Architecture and feasibility plan (XIII)](tasks/archive/2026-10/10-22-sshx-architecture-feasibility/prd.md) | complete | Eleven documents and all AC1–AC8 delivered; review `human-not-needed`; work `9b483af`, archive `04dd6b6`. Completed date, archived references and unique attribution verified; Session 2 records checks and limits |
 | 2 | [Phase 0 feasibility (XI)](tasks/archive/2026-10/10-22-sshx-phase0-feasibility/prd.md) | complete | User accepted the controlled negative deliverable; 14 unit/44 native checks and exact cleanup pass. Work `620ca22` fast-forward merged to main; supported archive completed. General-root guarantee remains no-go; archive `0e3dddf` and Session 3 verified |
 | 2a | [Remote upload-root boundary](tasks/archive/2026-10/10-22-sshx-upload-root-boundary/prd.md) | complete | AC1–AC5 and human-not-needed document review pass. Work `f56f513` merged to main; archive `c51f2d4` and Session 4 verified. Actual runtime/hardlink validation remains deferred |
-| 2b | [Cooperative upload-root runtime verification](tasks/archive/2026-10/10-22-sshx-upload-root-runtime/prd.md) | complete / archive commit pending | Independent 16 unit tests, 13 focused groups and 43 headless Core cases pass; 1 desktop case excluded. User accepted AC1–AC6, limitations and exact local batch; work 844f2fd merged and supported on-disk archive complete |
-| 3 | Phase 1 C/S and independent-plugin MVP (XI) | proposed / runtime-gated | Cooperative contract now supplies planning input. Actual hardlink/publication, policy/target/auth, Shell-context and platform evidence are still required before activation; no automatic MVP task or general safe-root capability is granted |
+| 2b | [Cooperative upload-root runtime verification](tasks/archive/2026-10/10-22-sshx-upload-root-runtime/prd.md) | complete | Independent 16 unit tests, 13 focused groups and 43 headless Core cases pass; 1 desktop case excluded. User accepted AC1–AC6, limits and local batch; work 844f2fd merged, archive e498d79 verified and Session 5 recorded |
+| 3 | Phase 1 C/S and independent-plugin MVP (XI) | proposed / runtime-gated | Cooperative contract and bounded hardlink/publication/policy/cleanup probes supply planning input. Production target/auth/Shell-context, complete plugin/API and platform evidence remain required before activation; no automatic MVP task or general safe-root capability is granted |
 | 4 | Phase 2 TUI and common plugins (XI) | proposed | Depends on MVP; switching/attach/screen/input handoff and File Transfer/Port Forward/Command Reference |
 | 5 | Phase 3 structured remote integration (XI) | proposed | Depends on supported Shell contracts and authorization; History/Clipboard Bridge and auxiliary interactive authentication |
 | 6 | Phase 4 releases and ecosystem (XI) | proposed | Depends on supported platform evidence, packaging/update/trust decisions; untrusted execution requires verified OS sandboxing first |
@@ -107,3 +107,5 @@ Initialization work commit: `7aa9291a0e49a522c962362af095586081531389`. The [gen
 - Cooperative runtime closure authority: on 2026-10-23 the user replied “接受” to the bounded technical result and [concrete 43-path work/merge/archive/journal batch](tasks/archive/2026-10/10-22-sshx-upload-root-runtime/research/commit-plan.md). The human-required disposition is accepted and the three named local commits, fast-forward merge and single-task archive/session record are authorized. Outcomes will be recorded after execution; no remote push or next-phase activation is granted.
 
 - Cooperative runtime archive checkpoint: work `844f2fdc8a77e18b799346a8bfd9f43d3c915067` is committed and fast-forward merged to local main. The supported single-task `archive --no-commit` route moved the 28-file task to `tasks/archive/2026-10/10-22-sshx-upload-root-runtime/` on 2026-10-23, with completed metadata and cleared current-task pointer. Context/document references are reconciled; source-bound machine reports are preserved. The attributed archive and session commits follow after final checks.
+
+- Cooperative runtime final closure: attributed archive commit `e498d79eca2fe842a998f9d8330ae4793caf27b1` is verified against the 59 explicit old/new/reference paths, completed metadata/date, merged work ancestry and exactly one Codex trailer. Both role contexts (18/19 entries), 139 local links and 24 fragments pass after the move; source-bound machine reports remain byte-identical. [Session 5](workspace/wkyuu/journal-1.md) is recorded through the supported no-auto-commit helper with only work `844f2fdc8a77e18b799346a8bfd9f43d3c915067` in its commit table. No active task remains; the separate three-file journal/evidence commit receives no repeated task trailer.
