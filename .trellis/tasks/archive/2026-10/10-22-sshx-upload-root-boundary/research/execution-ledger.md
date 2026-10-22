@@ -27,3 +27,7 @@ Review category is human-not-needed for future contract documents with all mater
 ## Separate Git authorization
 
 After the completed document check and exact 26-path proposal, the user explicitly replied “批准” on 2026-10-22. The reviewed three local commits, fast-forward merge, supported archive and Session 4 journal are authorized. This is separate from the earlier document execution approval and adds no runtime/MVP authority. Git effects are recorded only after their successful execution.
+
+## Actual work and archive move
+
+Work `f56f51312d6e597541ae973f1fb72f0ccf291ebc` committed the exact 26 reviewed paths, then fast-forward merged to local main after clean-tree/base checks. Supported `archive --no-commit` moved exactly 18 task files on 2026-10-22, completed metadata and cleared the current pointer. Markdown/context self-references and the sole external mainline reference were repaired. Subsequent archive/journal commits remain tracked through mainline so no self-referential commit OID or planned action is fabricated. No new runtime/MVP work.

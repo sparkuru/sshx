@@ -11,11 +11,11 @@
 {"file": "docs/phase-0.md", "reason": "Actual experiment scope and later promotion gates"}
 {"file": ".trellis/tasks/archive/2026-10/10-22-sshx-phase0-feasibility/check-report.md", "reason": "Accepted independent full-scope findings and limitations"}
 {"file": ".trellis/tasks/archive/2026-10/10-22-sshx-phase0-feasibility/research/acceptance-map.md", "reason": "Requirement/source fault coverage and accepted negative outcome"}
-{"file": ".trellis/tasks/10-22-sshx-upload-root-boundary/research/authority-evidence.md", "reason": "Current evidence distinctions and user-owned boundary question"}
+{"file": ".trellis/tasks/archive/2026-10/10-22-sshx-upload-root-boundary/research/authority-evidence.md", "reason": "Current evidence distinctions and user-owned boundary question"}
 {"file": "docs/architecture.md", "reason": "Result target: keep cooperative trust promise aligned with architecture"}
 {"file": "docs/image-paste.md", "reason": "Result target: scope consent, publication, cleanup and independent insertion"}
 {"file": "docs/platform-matrix.md", "reason": "Result target: separate proposed eligibility from measured combinations"}
-{"file": ".trellis/tasks/10-22-sshx-upload-root-boundary/research/primary-sources.md", "reason": "Version-pinned SFTP/rename/hardlink findings and locked-library interface"}
-{"file": ".trellis/tasks/10-22-sshx-upload-root-boundary/research/implementation-evidence.md", "reason": "Actual six-doc implementation, full context-loading/fallback and document integrity evidence"}
-{"file": ".trellis/tasks/10-22-sshx-upload-root-boundary/research/execution-ledger.md", "reason": "Main-owned approved scope, lifecycle and shared-spec execution checkpoints"}
-{"file": ".trellis/tasks/10-22-sshx-upload-root-boundary/research/acceptance-map.md", "reason": "R1–R5 / AC1–AC5 assertions and document-versus-runtime evidence boundary"}
+{"file": ".trellis/tasks/archive/2026-10/10-22-sshx-upload-root-boundary/research/primary-sources.md", "reason": "Version-pinned SFTP/rename/hardlink findings and locked-library interface"}
+{"file": ".trellis/tasks/archive/2026-10/10-22-sshx-upload-root-boundary/research/implementation-evidence.md", "reason": "Actual six-doc implementation, full context-loading/fallback and document integrity evidence"}
+{"file": ".trellis/tasks/archive/2026-10/10-22-sshx-upload-root-boundary/research/execution-ledger.md", "reason": "Main-owned approved scope, lifecycle and shared-spec execution checkpoints"}
+{"file": ".trellis/tasks/archive/2026-10/10-22-sshx-upload-root-boundary/research/acceptance-map.md", "reason": "R1–R5 / AC1–AC5 assertions and document-versus-runtime evidence boundary"}

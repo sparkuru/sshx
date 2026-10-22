@@ -22,7 +22,7 @@ The eight existing targets and their purposes are listed in [design](design.md#c
 - [x] Perform Phase 3.3 spec-sync judgment and actual review-gate classification. Documentation about future security contracts is not implemented enforcement; reuse the explicit A decision, but expose any newly unresolved product contract instead of assuming it resolved.
 - [x] Prepare the exact local commit/archive/journal proposal after all material checks; [the specific plan](research/commit-plan.md) lists every work/move/reference/journal path.
 - [x] Receive separate explicit approval of the exact local batch: user replied “批准” on 2026-10-22. No automatic MVP task/start.
-- [ ] Record actual work/merge/archive outcomes and hand post-archive journal tracking to mainline after execution.
+- [x] Record actual work commit/fast-forward merge/supported archive outcomes; hand the post-archive commit and Session 4 evidence to mainline after actual execution.
 
 ## Required content synchronization
 
