@@ -14,6 +14,7 @@ This inventory supplements existing upstream headers. Project-authored policy in
 - At collection, all 87 existing template-metadata entries matched their files. All 28 `.trellis/scripts/**/*.py` files also matched the installed distribution's corresponding template bytes.
 - The upstream distribution is evidence for the retained initialization files; its CLI runtime and dependency tree were not vendored. Ordinary future dependencies retain their own package notices and should use the project's eventual dependency-license checks.
 - Personal integrations remain local and are excluded from staging. Existing protected runtime/templates were not changed or added to the Trellis Plus commit plan.
+- Tracking follow-up, 2026-10-22: the user's separate commit request covers the 54 remaining original initialization files, including the retained runtime/templates, managed `AGENTS.md`, generated `.gitattributes` and workspace root index. All 87 existing template-metadata hashes still match and the retained license exactly matches the installed 0.6.17 distribution. Files are added unchanged; this does not grant an upstream-code editing exception or change their license. Personal platform files and local state remain excluded.
 
 ## Maintenance
 
